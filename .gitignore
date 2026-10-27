@@ -3,3 +3,5 @@ build-*/
 .qtcreator/
 *.pro.user
 *.pro.user.*
+GUIDE_VALIDATION.md
+PREPARATION_VALIDATION_MCD_MLD.md
