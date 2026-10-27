@@ -2,81 +2,28 @@
 #define GPETMANAGER_H
 
 #include <QMainWindow>
-#include <QDate>
-#include <QDateTime>
-#include <QStringList>
-#include <QVector>
-#include <QMap>
-#include <QList>
-#include <QSet>
 #include <QPointer>
 #include <QFrame>
 #include <QIcon>
+#include <QMap>
+#include <QList>
 #include <functional>
+
+#include "produit.h"
 
 class QLabel;
 class QPushButton;
 class QTimer;
-class QTableWidget;
-class GraphiqueCourbes;
-class GraphiqueCamembert;
+class QAbstractItemView;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class GPetManager; }
 QT_END_NAMESPACE
 
-struct Produit {
-    QString nom;
-    QString categorie;
-    QString espece;                  // "Chien", "Chat" ou "Toutes"
-    QString usage;                   // "Nutrition", "Soin", "Vaccination", ...
-    int quantite = 0;
-    int seuil = 0;
-    QDate dateExpiration;
-    QString fournisseur;
-    double prix = 0;
-    QMap<QDate, int> consommation;   // quantité utilisée par jour
-    QMap<QDate, int> demandeNonSatisfaite;  // demandée mais remplacée / non servie
-};
-
-// Alternative proposée pour un produit indisponible
-struct Alternative {
-    int index = -1;                  // indice du produit alternatif
-    int score = 0;                   // compatibilité de 0 à 100 %
-    QStringList raisons;             // critères qui expliquent le score
-};
-
-// Trace d'une substitution validée par l'utilisateur
-struct Substitution {
-    QDateTime date;
-    QString produitDemande;
-    QString alternative;
-    int quantite = 0;
-    int score = 0;
-    QString motif;
-};
-
-struct Commande {
-    int numero = 0;
-    QString produit;                 // nom du produit commandé
-    int quantite = 0;
-    QString fournisseur;
-    QDate dateCommande;
-    QDate dateLivraison;             // prévue (ou réelle une fois reçue)
-    double montant = 0;
-    QString statut;                  // "En attente", "Reçue", "Annulée"
-};
-
-// Résultat de l'analyse prédictive d'un produit
-struct Analyse {
-    double consoMoyenne = 0;         // unités par jour (30 derniers jours)
-    double joursRestants = -1;       // -1 = inconnu (aucune consommation)
-    QDate dateRupture;               // date prévue où le stock sera inutilisable
-    int priorite = 0;                // 0 aucune, 1 préventive, 2 urgente, 3 critique
-    int qteConseillee = 0;
-    bool commandeEnCours = false;
-};
-
+// =====================================================================
+//  VUE du module Stock : affiche les données et gère les interactions.
+//  Aucune requête SQL ici : tout passe par la classe Produit (modèle).
+// =====================================================================
 class GPetManager : public QMainWindow
 {
     Q_OBJECT
@@ -84,103 +31,111 @@ class GPetManager : public QMainWindow
 public:
     explicit GPetManager(QWidget *parent = nullptr);
     ~GPetManager();
+    void demarrerSurveillance();      // 1er contrôle du stock, appelé par main()
 
 protected:
-    // Clic sur une carte "alternative" du panneau
-    bool eventFilter(QObject *objet, QEvent *evenement) override;
+    bool eventFilter(QObject *objet, QEvent *evenement) override;   // clic sur une carte IA
 
 private slots:
+    // ---- CRUD (slots reliés automatiquement aux boutons du .ui) ----
+    void on_btnEnregistrerStock_clicked();      // Ajouter  (Create)
+    void on_btnModifierStock_clicked();         // Modifier (Update)
+    void on_btnSupprimerStock_clicked();        // Supprimer (Delete)
+    void on_btnAnnulerStock_clicked();
+    void on_btnExcelStock_clicked();
+
+    // ---- Métier 1 : alerte e-mail de réapprovisionnement ----
+    void on_btnVerifierStock_clicked();
+    void on_btnEnvoyerAlerteStock_clicked();
+    void on_btnExcelSuggestionsStock_clicked();
+    void on_btnEnregistrerConfigStock_clicked();
+    void on_btnTesterEmailStock_clicked();
+    void on_btnViderHistoriqueStock_clicked();
+
+    // ---- Métier 2 : alternatives proposées par l'IA ----
+    void on_btnDemanderIAStock_clicked();
+
     void changerPage(int index);
     void rafraichir();
-    void enregistrerProduit();
-    void modifierProduit();
-    void supprimerProduit();
-    void annulerEdition();
-    void exporterExcel();
-    void exporterCommandesExcel();
+    void afficherTableau();                     // Read
     void afficherNotifications();
-    void commanderSelection();
-    void toutSelectionner();
 
 private:
-    enum Etat { OK = 0, StockBas = 1, Rupture = 2, Expire = 3 };
-    enum Priorite { Aucune = 0, Preventive = 1, Urgente = 2, Critique = 3 };
-
     Ui::GPetManager *ui;
-    QVector<Produit> produits;
-    QVector<Commande> commandes;
-    QVector<Substitution> substitutions;
-    int indexRefAlternatives = -1;
-    int prochainNumero = 1001;
-    int indexEnEdition = -1;
-    QVector<int> indexAlternatives;
+    Produit Etmp;                    // objet temporaire pour appeler les méthodes du modèle (seule classe du module)
+
+    int idEnEdition = -1;            // produit chargé dans le formulaire (-1 = ajout)
+    QMap<int, QString> fournisseurs; // IDPRODUIT -> fournisseur (via les commandes)
+    QList<SuggestionIA> suggestionsIA;
+    QString besoinIA;
+    bool echecEnvoiAuto = false;     // évite de renvoyer en boucle après un échec
+    bool iaEnCours = false;          // une seule demande à l'IA à la fois
+
     QList<QPushButton*> boutonsNav;
     QLabel *badgeNotif = nullptr;
     QPointer<QFrame> toast;
     QTimer *timerToast = nullptr;
-
-    GraphiqueCourbes   *graphConso = nullptr;
-    GraphiqueCamembert *graphCategories = nullptr;
+    QTimer *timerSurveillance = nullptr;
+    // Graphiques dessinés (QPainter) dans des QLabel
+    QLabel *graphConso = nullptr;
+    QLabel *graphCategories = nullptr;
+    QStringList consoEtiquettes, consoNoms;
+    QList<QList<double>> consoValeurs;
+    QList<double> categoriesNombres;
 
     // Configuration
     void configurerNavigation();
     void configurerTableau();
     void configurerFormulaire();
-    void configurerReappro();
+    void configurerPageAlertes();
     void configurerGraphiques();
-    void chargerDonneesExemple();
+    void chargerParametres();
+    void chargerFournisseurs();
 
     // Affichage page Stock
-    void afficherTableau();
+    void decorerTableau();
     void mettreAJourCartes();
     void mettreAJourAlertes();
-    void mettreAJourAlternatives();
-    void mettreAJourGraphiqueConso();
-    void mettreAJourStatistiques();
-
-    // Affichage page Réapprovisionnement
-    void afficherSuggestions();
-    void afficherCommandes();
-    void afficherSubstitutions();
+    void chargerListeGraphique();
+    void mettreAJourGraphiques();
+    void dessinerGraphiques();
+    void genererFicheCommande();
 
     // Formulaire / CRUD
-    void chargerDansFormulaire(int index);
+    bool lireFormulaire(Produit &p, bool nouveau);
+    void chargerDansFormulaire(int id);
     void viderFormulaire();
     void mettreAJourModeFormulaire();
-    bool lireFormulaire(Produit &p, bool nouveau);
-    void sortieDeStock(int index);
+    void mettreAJourStatutFormulaire();
+    void supprimerProduit(int id);
+    void sortieDeStock(int id);
+    int idSelectionne() const;
 
-    // Métier : substitution par un produit alternatif
-    QVector<Alternative> chercherAlternatives(int indexProduit, int besoin) const;
-    void ouvrirSubstitution(int indexProduit, int quantiteDemandee, int alternativePreselectionnee = -1);
+    // Métier 1
+    void verifierStock(bool automatique);
+    bool envoyerAlerte(const QList<Produit> &produits, bool automatique);
+    void afficherSousSeuil();
+    void afficherHistorique();
+    ConfigEmail lireConfigEmail() const;
 
-    // Métier : réapprovisionnement intelligent
-    Etat etatProduit(const Produit &p) const;
-    QString libelleEtat(Etat e) const;
-    Analyse analyserProduit(int index) const;
-    QString libellePriorite(int priorite) const;
-    QString couleurPriorite(int priorite) const;
-    QString textePrevision(const Analyse &a) const;
-    QVector<int> indicesAReapprovisionner(bool inclureCommandes = false) const;
-    QSet<QString> nomsEnAlerte() const;
-    void signalerNouvellesAlertes(const QSet<QString> &avant);
-    bool commandeEnAttente(const QString &nomProduit) const;
-    int indiceProduit(const QString &nom) const;
-    bool creerCommande(int indexProduit, int quantite, bool silencieux = false);
-    void receptionnerCommande(int indexCommande);
-    void annulerCommande(int indexCommande);
+    // Métier 2
+    void demanderAlternatives(const QString &besoin, const QString &categorie, int idExclu);
+    void afficherSuggestionsIA(const QList<SuggestionIA> &suggestions, const QString &conseil,
+                               bool viaIA, const QString &avertissement);
 
-    // Notification "toast" en bas à droite
+    // Outils d'affichage
     void afficherToast(const QString &nomIcone, const QString &titre, const QString &message,
                        const QString &couleur, const QString &texteBouton = QString(),
                        std::function<void()> action = nullptr);
-
-    // Outils d'affichage
-    QWidget* creerBadge(const QString &texte, const QString &fond, const QString &couleur);
-    QWidget* creerActions(int index);
+    QWidget *creerBadge(const QString &texte, const QString &fond, const QString &couleur);
+    QWidget *creerActions(int id);
+    QPushButton *creerBoutonIcone(const QString &icone, const QString &infobulle);
+    static void couleursCategorie(const QString &categorie, QString &fond, QString &couleur);
+    static QString couleurStatut(const QString &statutBD);
     QIcon iconeCategorie(const QString &categorie) const;
     static QIcon icone(const QString &nom);
-    void ajusterHauteurTableau(QTableWidget *t, int lignes);
+    void preparerTableau(QAbstractItemView *vue);
+    void ajusterHauteur(QAbstractItemView *vue, int lignes, int hauteurLigne = 42);
 };
 
 #endif // GPETMANAGER_H

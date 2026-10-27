@@ -1104,15 +1104,15 @@ QPushButton:checked { background-color:#2A8C86; color:white; font-weight:bold; }
                       </widget>
                      </item>
                      <item>
-                      <widget class="QTableWidget" name="tableStock">
+                      <widget class="QTableView" name="tableStock">
                        <property name="styleSheet">
-                        <string>QTableWidget { background:white; border:1px solid #E0E8E8; border-radius:10px;
+                        <string>QTableView { background:white; border:1px solid #E0E8E8; border-radius:10px;
   gridline-color:#EEF2F2; font-size:12px; color:#1E3A3A; }
 QHeaderView::section { background:#F7FAFA; color:#1E3A3A; font-weight:bold; font-size:12px;
   border:none; border-bottom:1px solid #E0E8E8; padding-left:8px; }
-QTableWidget::item { padding-left:8px; }
-QTableWidget::item:selected { background:#E6F2F1; color:#1E3A3A; }
-QTableWidget::indicator { width:16px; height:16px; }</string>
+QTableView::item { padding-left:8px; }
+QTableView::item:selected { background:#E6F2F1; color:#1E3A3A; }
+QTableView::indicator { width:16px; height:16px; }</string>
                        </property>
                       </widget>
                      </item>
@@ -1149,13 +1149,13 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                           <property name="minimumSize">
                            <size>
                             <width>260</width>
-                            <height>195</height>
+                            <height>240</height>
                            </size>
                           </property>
                           <property name="maximumSize">
                            <size>
                             <width>16777215</width>
-                            <height>195</height>
+                            <height>240</height>
                            </size>
                           </property>
                           <property name="styleSheet">
@@ -1469,13 +1469,13 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                           <property name="minimumSize">
                            <size>
                             <width>260</width>
-                            <height>195</height>
+                            <height>240</height>
                            </size>
                           </property>
                           <property name="maximumSize">
                            <size>
                             <width>16777215</width>
-                            <height>195</height>
+                            <height>240</height>
                            </size>
                           </property>
                           <property name="styleSheet">
@@ -1503,7 +1503,7 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                               <string>color:#17363A; font-size:13px; font-weight:bold;</string>
                              </property>
                              <property name="text">
-                              <string>Alternatives suggérées</string>
+                              <string>Alternatives suggérées par l'IA</string>
                              </property>
                             </widget>
                            </item>
@@ -1517,7 +1517,33 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                              </property>
                             </widget>
                            </item>
-                           <item>
+                           <item><widget class="QWidget" name="ligneIAStock">
+ <layout class="QHBoxLayout" name="layout_ligneIA">
+  <property name="spacing"><number>6</number></property>
+  <property name="leftMargin"><number>0</number></property>
+  <property name="topMargin"><number>0</number></property>
+  <property name="rightMargin"><number>0</number></property>
+  <property name="bottomMargin"><number>0</number></property>
+  <item><widget class="QLineEdit" name="txtBesoinIAStock">
+   <property name="minimumSize"><size><width>0</width><height>32</height></size></property>
+   <property name="maximumSize"><size><width>16777215</width><height>32</height></size></property>
+   <property name="styleSheet"><string>QLineEdit { font-size:12px; }</string></property>
+   <property name="placeholderText"><string>Produit recherché (ex : vermifuge chat)</string></property>
+  </widget></item>
+  <item><widget class="QPushButton" name="btnDemanderIAStock">
+   <property name="minimumSize"><size><width>40</width><height>32</height></size></property>
+   <property name="maximumSize"><size><width>40</width><height>32</height></size></property>
+   <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
+   <property name="toolTip"><string>Demander des alternatives à l'IA</string></property>
+   <property name="styleSheet"><string>QPushButton { background-color:#2A8C86; border:none; border-radius:6px; }
+QPushButton:hover { background-color:#237872; }
+QPushButton:disabled { background-color:#B7D3D1; }</string></property>
+   <property name="text"><string /></property>
+   <property name="icon"><iconset resource="ressources.qrc">:/icones/ia_white.png<normaloff>:/icones/ia_white.png</normaloff></iconset></property>
+   <property name="iconSize"><size><width>20</width><height>20</height></size></property>
+  </widget></item>
+ </layout>
+</widget></item><item>
                             <widget class="QFrame" name="frameAlt1Stock">
                              <property name="minimumSize">
                               <size>
@@ -1539,7 +1565,7 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
 .QFrame:hover { background-color:#E6F2F1; border:1px solid #2A8C86; }</string>
                              </property>
                              <property name="toolTip">
-                              <string>Utiliser ce produit comme alternative</string>
+                              <string>Cliquez pour afficher ce produit dans le formulaire</string>
                              </property>
                              <layout class="QHBoxLayout" name="layoutAlt1">
                               <property name="spacing">
@@ -1677,7 +1703,7 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
 .QFrame:hover { background-color:#E6F2F1; border:1px solid #2A8C86; }</string>
                              </property>
                              <property name="toolTip">
-                              <string>Utiliser ce produit comme alternative</string>
+                              <string>Cliquez pour afficher ce produit dans le formulaire</string>
                              </property>
                              <layout class="QHBoxLayout" name="layoutAlt2">
                               <property name="spacing">
@@ -1799,7 +1825,7 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                               <string>color:#6B8080; font-size:10px;</string>
                              </property>
                              <property name="text">
-                              <string>Aucune alternative compatible (même usage et même espèce).</string>
+                              <string>Saisissez un besoin ou choisissez un produit indisponible.</string>
                              </property>
                              <property name="wordWrap">
                               <bool>true</bool>
@@ -1863,13 +1889,13 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                        <property name="minimumSize">
                         <size>
                          <width>290</width>
-                         <height>698</height>
+                         <height>640</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
                          <width>290</width>
-                         <height>698</height>
+                         <height>640</height>
                         </size>
                        </property>
                        <property name="styleSheet">
@@ -1907,11 +1933,69 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                          <string />
                         </property>
                        </widget>
-                       <widget class="QLabel" name="lblNomStock">
+                       <widget class="QLabel" name="lblIdStock">
                         <property name="geometry">
                          <rect>
                           <x>15</x>
                           <y>62</y>
+                          <width>126</width>
+                          <height>20</height>
+                         </rect>
+                        </property>
+                        <property name="styleSheet">
+                         <string>color:#17363A; font-size:13px;</string>
+                        </property>
+                        <property name="text">
+                         <string>ID produit &lt;span style="color:#E53935"&gt;*&lt;/span&gt;</string>
+                        </property>
+                        <property name="textFormat">
+                         <enum>Qt::RichText</enum>
+                        </property>
+                       </widget>
+                       <widget class="QSpinBox" name="spinIdStock">
+                        <property name="geometry">
+                         <rect>
+                          <x>15</x>
+                          <y>82</y>
+                          <width>126</width>
+                          <height>32</height>
+                         </rect>
+                        </property>
+                       <property name="toolTip"><string>Identifiant unique du produit (clé primaire IDPRODUIT)</string></property></widget>
+                       <widget class="QLabel" name="lblPrixStock">
+                        <property name="geometry">
+                         <rect>
+                          <x>149</x>
+                          <y>62</y>
+                          <width>126</width>
+                          <height>20</height>
+                         </rect>
+                        </property>
+                        <property name="styleSheet">
+                         <string>color:#17363A; font-size:13px;</string>
+                        </property>
+                        <property name="text">
+                         <string>Prix unitaire &lt;span style="color:#E53935"&gt;*&lt;/span&gt;</string>
+                        </property>
+                        <property name="textFormat">
+                         <enum>Qt::RichText</enum>
+                        </property>
+                       </widget>
+                       <widget class="QDoubleSpinBox" name="spinPrixStock">
+                        <property name="geometry">
+                         <rect>
+                          <x>149</x>
+                          <y>82</y>
+                          <width>126</width>
+                          <height>32</height>
+                         </rect>
+                        </property>
+                       </widget>
+                       <widget class="QLabel" name="lblNomStock">
+                        <property name="geometry">
+                         <rect>
+                          <x>15</x>
+                          <y>120</y>
                           <width>260</width>
                           <height>20</height>
                          </rect>
@@ -1930,7 +2014,7 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                         <property name="geometry">
                          <rect>
                           <x>15</x>
-                          <y>82</y>
+                          <y>140</y>
                           <width>260</width>
                           <height>32</height>
                          </rect>
@@ -1943,7 +2027,7 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                         <property name="geometry">
                          <rect>
                           <x>15</x>
-                          <y>120</y>
+                          <y>178</y>
                           <width>260</width>
                           <height>20</height>
                          </rect>
@@ -1962,72 +2046,8 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                         <property name="geometry">
                          <rect>
                           <x>15</x>
-                          <y>140</y>
+                          <y>198</y>
                           <width>260</width>
-                          <height>32</height>
-                         </rect>
-                        </property>
-                        <property name="cursor">
-                         <cursorShape>PointingHandCursor</cursorShape>
-                        </property>
-                       </widget>
-                       <widget class="QLabel" name="lblEspeceStock">
-                        <property name="geometry">
-                         <rect>
-                          <x>15</x>
-                          <y>178</y>
-                          <width>126</width>
-                          <height>20</height>
-                         </rect>
-                        </property>
-                        <property name="styleSheet">
-                         <string>color:#17363A; font-size:13px;</string>
-                        </property>
-                        <property name="text">
-                         <string>Espèce &lt;span style="color:#E53935"&gt;*&lt;/span&gt;</string>
-                        </property>
-                        <property name="textFormat">
-                         <enum>Qt::RichText</enum>
-                        </property>
-                       </widget>
-                       <widget class="QComboBox" name="cmbEspeceStock">
-                        <property name="geometry">
-                         <rect>
-                          <x>15</x>
-                          <y>198</y>
-                          <width>126</width>
-                          <height>32</height>
-                         </rect>
-                        </property>
-                        <property name="cursor">
-                         <cursorShape>PointingHandCursor</cursorShape>
-                        </property>
-                       </widget>
-                       <widget class="QLabel" name="lblUsageStock">
-                        <property name="geometry">
-                         <rect>
-                          <x>149</x>
-                          <y>178</y>
-                          <width>126</width>
-                          <height>20</height>
-                         </rect>
-                        </property>
-                        <property name="styleSheet">
-                         <string>color:#17363A; font-size:13px;</string>
-                        </property>
-                        <property name="text">
-                         <string>Usage &lt;span style="color:#E53935"&gt;*&lt;/span&gt;</string>
-                        </property>
-                        <property name="textFormat">
-                         <enum>Qt::RichText</enum>
-                        </property>
-                       </widget>
-                       <widget class="QComboBox" name="cmbUsageStock">
-                        <property name="geometry">
-                         <rect>
-                          <x>149</x>
-                          <y>198</y>
-                          <width>126</width>
                           <height>32</height>
                          </rect>
                         </property>
@@ -2040,7 +2060,7 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                          <rect>
                           <x>15</x>
                           <y>236</y>
-                          <width>260</width>
+                          <width>126</width>
                           <height>20</height>
                          </rect>
                         </property>
@@ -2059,7 +2079,7 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                          <rect>
                           <x>15</x>
                           <y>256</y>
-                          <width>260</width>
+                          <width>126</width>
                           <height>32</height>
                          </rect>
                         </property>
@@ -2067,9 +2087,9 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                        <widget class="QLabel" name="lblSeuilStock">
                         <property name="geometry">
                          <rect>
-                          <x>15</x>
-                          <y>294</y>
-                          <width>260</width>
+                          <x>149</x>
+                          <y>236</y>
+                          <width>126</width>
                           <height>20</height>
                          </rect>
                         </property>
@@ -2086,9 +2106,9 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                        <widget class="QSpinBox" name="spinSeuilStock">
                         <property name="geometry">
                          <rect>
-                          <x>15</x>
-                          <y>314</y>
-                          <width>260</width>
+                          <x>149</x>
+                          <y>256</y>
+                          <width>126</width>
                           <height>32</height>
                          </rect>
                         </property>
@@ -2097,7 +2117,7 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                         <property name="geometry">
                          <rect>
                           <x>15</x>
-                          <y>352</y>
+                          <y>294</y>
                           <width>260</width>
                           <height>20</height>
                          </rect>
@@ -2116,7 +2136,7 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                         <property name="geometry">
                          <rect>
                           <x>15</x>
-                          <y>372</y>
+                          <y>314</y>
                           <width>260</width>
                           <height>32</height>
                          </rect>
@@ -2125,7 +2145,39 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                          <cursorShape>PointingHandCursor</cursorShape>
                         </property>
                        </widget>
-                       <widget class="QLabel" name="lblFournisseurStock">
+                       <widget class="QLabel" name="lblEmplacementStock">
+                        <property name="geometry">
+                         <rect>
+                          <x>15</x>
+                          <y>352</y>
+                          <width>260</width>
+                          <height>20</height>
+                         </rect>
+                        </property>
+                        <property name="styleSheet">
+                         <string>color:#17363A; font-size:13px;</string>
+                        </property>
+                        <property name="text">
+                         <string>Emplacement &lt;span style="color:#E53935"&gt;*&lt;/span&gt;</string>
+                        </property>
+                        <property name="textFormat">
+                         <enum>Qt::RichText</enum>
+                        </property>
+                       </widget>
+                       <widget class="QLineEdit" name="txtEmplacementStock">
+                        <property name="geometry">
+                         <rect>
+                          <x>15</x>
+                          <y>372</y>
+                          <width>260</width>
+                          <height>32</height>
+                         </rect>
+                        </property>
+                        <property name="placeholderText">
+                         <string>Ex : Armoire A - Étagère 2</string>
+                        </property>
+                       </widget>
+                       <widget class="QLabel" name="lblStatutStock">
                         <property name="geometry">
                          <rect>
                           <x>15</x>
@@ -2138,13 +2190,13 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                          <string>color:#17363A; font-size:13px;</string>
                         </property>
                         <property name="text">
-                         <string>Fournisseur &lt;span style="color:#E53935"&gt;*&lt;/span&gt;</string>
+                         <string>Statut &lt;span style="color:#6B8080; font-size:11px"&gt;(calculé automatiquement)&lt;/span&gt;</string>
                         </property>
                         <property name="textFormat">
                          <enum>Qt::RichText</enum>
                         </property>
                        </widget>
-                       <widget class="QLineEdit" name="txtFournisseurStock">
+                       <widget class="QLineEdit" name="txtStatutStock">
                         <property name="geometry">
                          <rect>
                           <x>15</x>
@@ -2154,43 +2206,14 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                          </rect>
                         </property>
                         <property name="placeholderText">
-                         <string>Ex : Fournisseur ABC</string>
+                         <string>Calculé à l'enregistrement</string>
                         </property>
-                       </widget>
-                       <widget class="QLabel" name="lblPrixStock">
-                        <property name="geometry">
-                         <rect>
-                          <x>15</x>
-                          <y>468</y>
-                          <width>260</width>
-                          <height>20</height>
-                         </rect>
-                        </property>
-                        <property name="styleSheet">
-                         <string>color:#17363A; font-size:13px;</string>
-                        </property>
-                        <property name="text">
-                         <string>Prix unitaire (TND) &lt;span style="color:#E53935"&gt;*&lt;/span&gt;</string>
-                        </property>
-                        <property name="textFormat">
-                         <enum>Qt::RichText</enum>
-                        </property>
-                       </widget>
-                       <widget class="QDoubleSpinBox" name="spinPrixStock">
-                        <property name="geometry">
-                         <rect>
-                          <x>15</x>
-                          <y>488</y>
-                          <width>260</width>
-                          <height>32</height>
-                         </rect>
-                        </property>
-                       </widget>
+                       <property name="readOnly"><bool>true</bool></property><property name="focusPolicy"><enum>Qt::NoFocus</enum></property><property name="styleSheet"><string>QLineEdit { background:#F4F7F7; color:#17363A; font-weight:bold; }</string></property></widget>
                        <widget class="QPushButton" name="btnEnregistrerStock">
                         <property name="geometry">
                          <rect>
                           <x>15</x>
-                          <y>544</y>
+                          <y>486</y>
                           <width>260</width>
                           <height>40</height>
                          </rect>
@@ -2221,7 +2244,7 @@ QPushButton:disabled { background-color:#B7D3D1; color:white; }</string>
                         <property name="geometry">
                          <rect>
                           <x>15</x>
-                          <y>592</y>
+                          <y>534</y>
                           <width>126</width>
                           <height>40</height>
                          </rect>
@@ -2252,7 +2275,7 @@ QPushButton:disabled { color:#A9B8B8; border:1px solid #D5E0E0; background:#F4F7
                         <property name="geometry">
                          <rect>
                           <x>149</x>
-                          <y>592</y>
+                          <y>534</y>
                           <width>126</width>
                           <height>40</height>
                          </rect>
@@ -2286,7 +2309,7 @@ QPushButton:disabled { color:#A9B8B8; border:1px solid #D5E0E0; background:#F4F7
                         <property name="geometry">
                          <rect>
                           <x>15</x>
-                          <y>640</y>
+                          <y>582</y>
                           <width>260</width>
                           <height>40</height>
                          </rect>
@@ -2344,7 +2367,7 @@ QPushButton:hover { background-color:#FDECEC; }</string>
                          <bool>true</bool>
                         </property>
                         <property name="pixmap">
-                         <pixmap resource="ressources.qrc">:/icones/clipboard_teal.png</pixmap>
+                         <pixmap resource="ressources.qrc">:/icones/mail_teal.png</pixmap>
                         </property>
                        </widget>
                        <widget class="QLabel" name="lblExportTitreStock">
@@ -2360,7 +2383,7 @@ QPushButton:hover { background-color:#FDECEC; }</string>
                          <string>color:#17363A; font-size:12px; font-weight:bold;</string>
                         </property>
                         <property name="text">
-                         <string>Réapprovisionnement intelligent</string>
+                         <string>Réapprovisionnement</string>
                         </property>
                        </widget>
                        <widget class="QLabel" name="lblExportSousTitreStock">
@@ -2376,7 +2399,7 @@ QPushButton:hover { background-color:#FDECEC; }</string>
                          <string>color:#6B8080; font-size:10px;</string>
                         </property>
                         <property name="text">
-                         <string>Prévisions, commandes et réception.</string>
+                         <string>Alerte e-mail et fiche de commande Excel.</string>
                         </property>
                        </widget>
                        <widget class="QPushButton" name="btnOuvrirReapproStock">
@@ -2403,7 +2426,7 @@ QPushButton:disabled { background-color:#B7D3D1; color:white; }</string>
                          <string>Ouvrir le centre de réapprovisionnement</string>
                         </property>
                         <property name="icon">
-                         <iconset resource="ressources.qrc">:/icones/clipboard_white.png<normaloff>:/icones/clipboard_white.png</normaloff>
+                         <iconset resource="ressources.qrc">:/icones/mail_white.png<normaloff>:/icones/mail_white.png</normaloff>
                          </iconset>
                         </property>
                         <property name="iconSize">
@@ -2430,10 +2453,10 @@ QPushButton:disabled { background-color:#B7D3D1; color:white; }</string>
 QPushButton:hover { background-color:#256628; }</string>
                         </property>
                         <property name="text">
-                         <string>  Excel</string>
+                         <string>  Fiche Excel</string>
                         </property>
                         <property name="toolTip">
-                         <string>Télécharger les suggestions de commande en Excel</string>
+                         <string>Générer la fiche de commande de réapprovisionnement (Excel)</string>
                         </property>
                         <property name="icon">
                          <iconset resource="ressources.qrc">:/icones/download_white.png<normaloff>:/icones/download_white.png</normaloff>
@@ -2576,6 +2599,28 @@ QPushButton:hover { background-color:#256628; }</string>
                          </spacer>
                         </item>
                         <item>
+                         <widget class="QComboBox" name="cmbProduitGraphStock">
+                          <property name="minimumSize">
+                           <size>
+                            <width>230</width>
+                            <height>30</height>
+                           </size>
+                          </property>
+                          <property name="maximumSize">
+                           <size>
+                            <width>230</width>
+                            <height>30</height>
+                           </size>
+                          </property>
+                          <property name="cursor">
+                           <cursorShape>PointingHandCursor</cursorShape>
+                          </property>
+                          <property name="styleSheet">
+                           <string>font-size:11px;</string>
+                          </property>
+                         <property name="toolTip"><string>Choisir le produit dont on suit la consommation</string></property></widget>
+                        </item>
+                       <item>
                          <widget class="QComboBox" name="cmbPeriodeStock">
                           <property name="minimumSize">
                            <size>
@@ -2595,7 +2640,7 @@ QPushButton:hover { background-color:#256628; }</string>
                           <property name="styleSheet">
                            <string>font-size:11px;</string>
                           </property>
-                         </widget>
+                         <property name="toolTip"><string>Période affichée</string></property></widget>
                         </item>
                        </layout>
                       </widget>
@@ -2679,7 +2724,7 @@ QPushButton:hover { background-color:#256628; }</string>
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="lblSubstTitreStock">
+                <widget class="QLabel" name="lblDetailIATitreStock">
                  <property name="minimumSize">
                   <size>
                    <width>0</width>
@@ -2690,12 +2735,12 @@ QPushButton:hover { background-color:#256628; }</string>
                   <string>color:#17363A; font-size:18px; font-weight:bold;</string>
                  </property>
                  <property name="text">
-                  <string>Historique des substitutions</string>
+                  <string>Analyse détaillée de l'IA</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QFrame" name="frameSubstitutionsStock">
+                <widget class="QFrame" name="frameDetailIAStock">
                  <property name="styleSheet">
                   <string>.QFrame { background-color:white; border:1px solid #E0E8E8; border-radius:10px; }</string>
                  </property>
@@ -2716,20 +2761,20 @@ QPushButton:hover { background-color:#256628; }</string>
                    <number>16</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="lblSubstInfoStock">
+                   <widget class="QLabel" name="lblConseilIAStock">
                     <property name="styleSheet">
                      <string>color:#1E3A3A; font-size:12px;</string>
                     </property>
                     <property name="text">
-                     <string>Chaque substitution validée est enregistrée ici. La quantité remplacée est comptée dans la demande réelle du produit manquant, pour que le réapprovisionnement intelligent en tienne compte.</string>
+                     <string>Les alternatives proposées par l'IA s'affichent ici avec leurs justifications. La décision finale reste à l'utilisateur.</string>
                     </property>
                     <property name="wordWrap">
                      <bool>true</bool>
                     </property>
-                   </widget>
+                   <property name="textFormat"><enum>Qt::RichText</enum></property></widget>
                   </item>
                   <item>
-                   <widget class="QTableWidget" name="tableSubstitutionsStock">
+                   <widget class="QTableWidget" name="tableSuggestionsIAStock">
                     <property name="styleSheet">
                      <string>QTableWidget { background:white; border:1px solid #E0E8E8; border-radius:10px;
   gridline-color:#EEF2F2; font-size:12px; color:#1E3A3A; }
@@ -2742,12 +2787,12 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QLabel" name="lblAucuneSubstitutionStock">
+                   <widget class="QLabel" name="lblAucuneSuggestionIAStock">
                     <property name="styleSheet">
                      <string>color:#6B8080; font-size:12px;</string>
                     </property>
                     <property name="text">
-                     <string>Aucune substitution pour le moment.</string>
+                     <string>Aucune analyse pour le moment : saisissez un besoin dans le panneau « Alternatives suggérées par l'IA ».</string>
                     </property>
                    </widget>
                   </item>
@@ -3035,17 +3080,17 @@ QPushButton:disabled { color:#A9B8B8; border:1px solid #D5E0E0; background:#F4F7
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QLabel" name="lblDelaiStock">
+                   <widget class="QLabel" name="lblIntervalleStock">
                     <property name="styleSheet">
                      <string>color:#17363A; font-size:13px;</string>
                     </property>
                     <property name="text">
-                     <string>Délai de livraison :</string>
+                     <string>Contrôle automatique toutes les :</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QSpinBox" name="spinDelaiStock">
+                   <widget class="QSpinBox" name="spinIntervalleStock">
                     <property name="minimumSize">
                      <size>
                       <width>130</width>
@@ -3059,7 +3104,7 @@ QPushButton:disabled { color:#A9B8B8; border:1px solid #D5E0E0; background:#F4F7
                      </size>
                     </property>
                     <property name="toolTip">
-                     <string>Nombre de jours entre la commande et la livraison</string>
+                     <string>Fréquence de la surveillance automatique du stock</string>
                     </property>
                    </widget>
                   </item>
@@ -3080,17 +3125,17 @@ QPushButton:disabled { color:#A9B8B8; border:1px solid #D5E0E0; background:#F4F7
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QLabel" name="lblCouvertureStock">
+                   <widget class="QLabel" name="lblFacteurStock">
                     <property name="styleSheet">
                      <string>color:#17363A; font-size:13px;</string>
                     </property>
                     <property name="text">
-                     <string>Couverture souhaitée :</string>
+                     <string>Stock cible :</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QSpinBox" name="spinCouvertureStock">
+                   <widget class="QSpinBox" name="spinFacteurStock">
                     <property name="minimumSize">
                      <size>
                       <width>130</width>
@@ -3104,7 +3149,7 @@ QPushButton:disabled { color:#A9B8B8; border:1px solid #D5E0E0; background:#F4F7
                      </size>
                     </property>
                     <property name="toolTip">
-                     <string>Nombre de jours de consommation que la commande doit couvrir</string>
+                     <string>Quantité recommandée = stock cible × seuil minimal − quantité restante</string>
                     </property>
                    </widget>
                   </item>
@@ -3117,7 +3162,7 @@ QPushButton:disabled { color:#A9B8B8; border:1px solid #D5E0E0; background:#F4F7
                   <string>background:#E4F2F1; border:1px solid #CFE5E3; border-radius:10px; padding:12px; color:#1E3A3A; font-size:12px;</string>
                  </property>
                  <property name="text">
-                  <string>&lt;b&gt;Comment ça marche ?&lt;/b&gt; Pour chaque produit, le système calcule la consommation moyenne des 30 derniers jours, prévoit la date de rupture (en tenant compte de la date d'expiration) et la compare au délai de livraison. Il propose ensuite la quantité à commander pour couvrir le délai et la période souhaitée. &lt;b&gt;Critique&lt;/b&gt; : rupture avant la livraison possible · &lt;b&gt;Urgent&lt;/b&gt; : quantité ≤ seuil · &lt;b&gt;Préventif&lt;/b&gt; : rupture prévue dans moins d'une semaine après le délai. Un produit déjà commandé n'est jamais proposé deux fois.</string>
+                  <string>&lt;b&gt;Comment ça marche ?&lt;/b&gt; Le système surveille automatiquement la table STOCKS (au démarrage, après chaque ajout, modification ou sortie de stock, puis à intervalle régulier). Dès qu'un produit atteint ou passe sous son &lt;b&gt;seuil minimal&lt;/b&gt;, un e-mail est envoyé au &lt;b&gt;responsable du stock&lt;/b&gt; avec le produit concerné, la quantité restante et la &lt;b&gt;quantité recommandée à commander&lt;/b&gt;. Un produit déjà signalé n'est pas renvoyé tant qu'il n'est pas repassé au-dessus du seuil ; le bouton « Envoyer l'alerte e-mail » permet un envoi manuel à tout moment.</string>
                  </property>
                  <property name="textFormat">
                   <enum>Qt::RichText</enum>
@@ -3141,7 +3186,7 @@ QPushButton:disabled { color:#A9B8B8; border:1px solid #D5E0E0; background:#F4F7
                 </widget>
                </item>
                <item>
-                <widget class="QFrame" name="frameSuggestionsStock">
+                <widget class="QFrame" name="frameSousSeuilStock">
                  <property name="styleSheet">
                   <string>.QFrame { background-color:white; border:1px solid #E0E8E8; border-radius:10px; }</string>
                  </property>
@@ -3185,7 +3230,7 @@ QPushButton:disabled { color:#A9B8B8; border:1px solid #D5E0E0; background:#F4F7
                         <string>color:#17363A; font-size:15px; font-weight:bold;</string>
                        </property>
                        <property name="text">
-                        <string>Suggestions de réapprovisionnement</string>
+                        <string>Produits ayant atteint le seuil minimal</string>
                        </property>
                       </widget>
                      </item>
@@ -3203,7 +3248,7 @@ QPushButton:disabled { color:#A9B8B8; border:1px solid #D5E0E0; background:#F4F7
                       </spacer>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="btnToutSelectionnerStock">
+                      <widget class="QPushButton" name="btnVerifierStock">
                        <property name="minimumSize">
                         <size>
                          <width>165</width>
@@ -3225,10 +3270,10 @@ QPushButton:hover { background-color:#E6F2F1; }
 QPushButton:disabled { color:#A9B8B8; border:1px solid #D5E0E0; background:#F4F7F7; }</string>
                        </property>
                        <property name="text">
-                        <string>  Tout sélectionner</string>
+                        <string>  Vérifier maintenant</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="ressources.qrc">:/icones/check_teal.png<normaloff>:/icones/check_teal.png</normaloff>
+                        <iconset resource="ressources.qrc">:/icones/refresh_teal.png<normaloff>:/icones/refresh_teal.png</normaloff>
                         </iconset>
                        </property>
                        <property name="iconSize">
@@ -3240,7 +3285,7 @@ QPushButton:disabled { color:#A9B8B8; border:1px solid #D5E0E0; background:#F4F7
                       </widget>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="btnCommanderSelectionStock">
+                      <widget class="QPushButton" name="btnEnvoyerAlerteStock">
                        <property name="minimumSize">
                         <size>
                          <width>230</width>
@@ -3262,10 +3307,10 @@ QPushButton:hover { background-color:#237872; }
 QPushButton:disabled { background-color:#B7D3D1; color:white; }</string>
                        </property>
                        <property name="text">
-                        <string>  Commander la sélection</string>
+                        <string>  Envoyer l'alerte e-mail</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="ressources.qrc">:/icones/cart_white.png<normaloff>:/icones/cart_white.png</normaloff>
+                        <iconset resource="ressources.qrc">:/icones/mail_white.png<normaloff>:/icones/mail_white.png</normaloff>
                         </iconset>
                        </property>
                        <property name="iconSize">
@@ -3280,13 +3325,13 @@ QPushButton:disabled { background-color:#B7D3D1; color:white; }</string>
                       <widget class="QPushButton" name="btnExcelSuggestionsStock">
                        <property name="minimumSize">
                         <size>
-                         <width>110</width>
+                         <width>200</width>
                          <height>36</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>110</width>
+                         <width>200</width>
                          <height>36</height>
                         </size>
                        </property>
@@ -3298,7 +3343,7 @@ QPushButton:disabled { background-color:#B7D3D1; color:white; }</string>
 QPushButton:hover { background-color:#256628; }</string>
                        </property>
                        <property name="text">
-                        <string>  Excel</string>
+                        <string>  Fiche de commande</string>
                        </property>
                        <property name="icon">
                         <iconset resource="ressources.qrc">:/icones/download_white.png<normaloff>:/icones/download_white.png</normaloff>
@@ -3310,13 +3355,13 @@ QPushButton:hover { background-color:#256628; }</string>
                          <height>18</height>
                         </size>
                        </property>
-                      </widget>
+                      <property name="toolTip"><string>Générer la fiche de commande de réapprovisionnement (Excel)</string></property></widget>
                      </item>
                     </layout>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTableWidget" name="tableSuggestionsStock">
+                   <widget class="QTableWidget" name="tableSousSeuilStock">
                     <property name="styleSheet">
                      <string>QTableWidget { background:white; border:1px solid #E0E8E8; border-radius:10px;
   gridline-color:#EEF2F2; font-size:12px; color:#1E3A3A; }
@@ -3329,20 +3374,36 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QLabel" name="lblAucuneSuggestionStock">
+                   <widget class="QLabel" name="lblAucunSousSeuilStock">
                     <property name="styleSheet">
                      <string>color:#2E8B57; font-size:13px; font-weight:bold;</string>
                     </property>
                     <property name="text">
-                     <string>Aucun produit à réapprovisionner : le stock est sous contrôle.</string>
+                     <string>Aucun produit n'a atteint son seuil minimal : le stock est sous contrôle.</string>
                     </property>
                    </widget>
                   </item>
                  </layout>
                 </widget>
                </item>
-               <item>
-                <widget class="QFrame" name="frameCommandesStock">
+               <item><widget class="QFrame" name="frameConfigStock">
+<property name="styleSheet"><string>.QFrame { background-color:white; border:1px solid #E0E8E8; border-radius:10px; }</string></property>
+<layout class="QVBoxLayout" name="layoutConfig">
+<property name="spacing"><number>10</number></property>
+<property name="leftMargin"><number>16</number></property><property name="topMargin"><number>14</number></property><property name="rightMargin"><number>16</number></property><property name="bottomMargin"><number>16</number></property>
+<item><widget class="QLabel" name="lblConfigTitreStock"><property name="styleSheet"><string>color:#17363A; font-size:15px; font-weight:bold;</string></property><property name="text"><string>Paramètres des métiers</string></property></widget></item>
+<item><widget class="QWidget" name="grilleConfigStock"><layout class="QGridLayout" name="layout_grilleConfig" columnstretch="0,1,0,1"><property name="leftMargin"><number>0</number></property><property name="topMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property><property name="bottomMargin"><number>0</number></property>
+<property name="horizontalSpacing"><number>12</number></property><property name="verticalSpacing"><number>10</number></property><item row="0" column="0" colspan="4"><widget class="QLabel" name="lblSectionEmailStock"><property name="styleSheet"><string>color:#2A8C86; font-size:14px; font-weight:bold; padding-top:4px;</string></property><property name="text"><string>Alerte e-mail (serveur SMTP)</string></property></widget></item><item row="1" column="0" colspan="1"><widget class="QLabel" name="lblSmtpServeurStock"><property name="styleSheet"><string>color:#17363A; font-size:13px;</string></property><property name="text"><string>Serveur SMTP :</string></property></widget></item><item row="1" column="1" colspan="1"><widget class="QLineEdit" name="txtSmtpServeurStock"><property name="minimumSize"><size><width>0</width><height>34</height></size></property><property name="placeholderText"><string>smtp.gmail.com</string></property></widget></item><item row="1" column="2" colspan="1"><widget class="QLabel" name="lblSmtpPortStock"><property name="styleSheet"><string>color:#17363A; font-size:13px;</string></property><property name="text"><string>Port :</string></property></widget></item><item row="1" column="3" colspan="1"><widget class="QSpinBox" name="spinSmtpPortStock"><property name="minimumSize"><size><width>0</width><height>34</height></size></property><property name="toolTip"><string>465 = SSL direct, 587 = STARTTLS</string></property></widget></item><item row="2" column="0" colspan="1"><widget class="QLabel" name="lblSmtpUtilisateurStock"><property name="styleSheet"><string>color:#17363A; font-size:13px;</string></property><property name="text"><string>E-mail expéditeur :</string></property></widget></item><item row="2" column="1" colspan="1"><widget class="QLineEdit" name="txtSmtpUtilisateurStock"><property name="minimumSize"><size><width>0</width><height>34</height></size></property><property name="placeholderText"><string>exemple@gmail.com</string></property></widget></item><item row="2" column="2" colspan="1"><widget class="QLabel" name="lblSmtpMotDePasseStock"><property name="styleSheet"><string>color:#17363A; font-size:13px;</string></property><property name="text"><string>Mot de passe d'application :</string></property></widget></item><item row="2" column="3" colspan="1"><widget class="QLineEdit" name="txtSmtpMotDePasseStock"><property name="minimumSize"><size><width>0</width><height>34</height></size></property><property name="placeholderText"><string>16 caractères (Gmail)</string></property><property name="echoMode"><enum>QLineEdit::Password</enum></property></widget></item><item row="3" column="0" colspan="1"><widget class="QLabel" name="lblDestinataireStock"><property name="styleSheet"><string>color:#17363A; font-size:13px;</string></property><property name="text"><string>E-mail du responsable :</string></property></widget></item><item row="3" column="1" colspan="1"><widget class="QLineEdit" name="txtDestinataireStock"><property name="minimumSize"><size><width>0</width><height>34</height></size></property><property name="placeholderText"><string>responsable.stock@petmanager.tn</string></property></widget></item><item row="3" column="2" colspan="2"><widget class="QCheckBox" name="chkAlerteAutoStock"><property name="styleSheet"><string>color:#17363A; font-size:13px;</string></property><property name="text"><string>Envoi automatique des alertes activé</string></property></widget></item><item row="4" column="0" colspan="4"><widget class="QLabel" name="lblSectionIAStock"><property name="styleSheet"><string>color:#2A8C86; font-size:14px; font-weight:bold; padding-top:4px;</string></property><property name="text"><string>Intelligence artificielle (Google Gemini)</string></property></widget></item><item row="5" column="0" colspan="1"><widget class="QLabel" name="lblCleIAStock"><property name="styleSheet"><string>color:#17363A; font-size:13px;</string></property><property name="text"><string>Clé API :</string></property></widget></item><item row="5" column="1" colspan="1"><widget class="QLineEdit" name="txtCleIAStock"><property name="minimumSize"><size><width>0</width><height>34</height></size></property><property name="placeholderText"><string>Clé gratuite : aistudio.google.com</string></property><property name="echoMode"><enum>QLineEdit::Password</enum></property></widget></item><item row="5" column="2" colspan="1"><widget class="QLabel" name="lblModeleIAStock"><property name="styleSheet"><string>color:#17363A; font-size:13px;</string></property><property name="text"><string>Modèle :</string></property></widget></item><item row="5" column="3" colspan="1"><widget class="QLineEdit" name="txtModeleIAStock"><property name="minimumSize"><size><width>0</width><height>34</height></size></property><property name="placeholderText"><string>gemini-flash-latest</string></property></widget></item></layout></widget></item>
+<item><widget class="QWidget" name="ligneBoutonsConfigStock"><layout class="QHBoxLayout" name="layout_boutonsConfig"><property name="spacing"><number>10</number></property><property name="leftMargin"><number>0</number></property><property name="topMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property><property name="bottomMargin"><number>0</number></property>
+<item><widget class="QLabel" name="lblInfoConfigStock"><property name="styleSheet"><string>color:#6B8080; font-size:11px;</string></property><property name="wordWrap"><bool>true</bool></property><property name="text"><string>Gmail : activez la validation en 2 étapes puis créez un « mot de passe d'application ». Les paramètres sont enregistrés localement dans petmanager.ini.</string></property></widget></item>
+<item><widget class="QPushButton" name="btnTesterEmailStock"><property name="minimumSize"><size><width>170</width><height>36</height></size></property><property name="maximumSize"><size><width>170</width><height>36</height></size></property><property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property><property name="styleSheet"><string>QPushButton { background:white; color:#2A8C86; border:1px solid #2A8C86; border-radius:6px; font-size:14px; }
+QPushButton:hover { background-color:#E6F2F1; }
+QPushButton:disabled { color:#A9B8B8; border:1px solid #D5E0E0; background:#F4F7F7; }</string></property><property name="text"><string>  Tester l'e-mail</string></property><property name="icon"><iconset resource="ressources.qrc">:/icones/mail_teal.png<normaloff>:/icones/mail_teal.png</normaloff></iconset></property><property name="iconSize"><size><width>18</width><height>18</height></size></property></widget></item>
+<item><widget class="QPushButton" name="btnEnregistrerConfigStock"><property name="minimumSize"><size><width>150</width><height>36</height></size></property><property name="maximumSize"><size><width>150</width><height>36</height></size></property><property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property><property name="styleSheet"><string>QPushButton { background-color:#2A8C86; color:white; border:none; border-radius:6px; font-size:14px; font-weight:bold; }
+QPushButton:hover { background-color:#237872; }</string></property><property name="text"><string>  Enregistrer</string></property><property name="icon"><iconset resource="ressources.qrc">:/icones/save_white.png<normaloff>:/icones/save_white.png</normaloff></iconset></property><property name="iconSize"><size><width>18</width><height>18</height></size></property></widget></item>
+</layout></widget></item>
+</layout></widget></item><item>
+                <widget class="QFrame" name="frameHistoriqueStock">
                  <property name="styleSheet">
                   <string>.QFrame { background-color:white; border:1px solid #E0E8E8; border-radius:10px; }</string>
                  </property>
@@ -3381,12 +3442,12 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                       <number>0</number>
                      </property>
                      <item>
-                      <widget class="QLabel" name="lblCmdTitreStock">
+                      <widget class="QLabel" name="lblHistoriqueTitreStock">
                        <property name="styleSheet">
                         <string>color:#17363A; font-size:15px; font-weight:bold;</string>
                        </property>
                        <property name="text">
-                        <string>Commandes de réapprovisionnement</string>
+                        <string>Historique des alertes e-mail</string>
                        </property>
                       </widget>
                      </item>
@@ -3404,7 +3465,7 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                       </spacer>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="btnExcelCommandesStock">
+                      <widget class="QPushButton" name="btnViderHistoriqueStock">
                        <property name="minimumSize">
                         <size>
                          <width>110</width>
@@ -3421,14 +3482,14 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                         <cursorShape>PointingHandCursor</cursorShape>
                        </property>
                        <property name="styleSheet">
-                        <string>QPushButton { background-color:#2E7D32; color:white; border:none; border-radius:6px; font-size:14px; font-weight:bold; }
-QPushButton:hover { background-color:#256628; }</string>
+                        <string>QPushButton { background:white; color:#C62828; border:1px solid #E57373; border-radius:6px; font-size:14px; }
+QPushButton:hover { background-color:#FDECEC; }</string>
                        </property>
                        <property name="text">
-                        <string>  Excel</string>
+                        <string>  Vider</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="ressources.qrc">:/icones/download_white.png<normaloff>:/icones/download_white.png</normaloff>
+                        <iconset resource="ressources.qrc">:/icones/trash_red.png<normaloff>:/icones/trash_red.png</normaloff>
                         </iconset>
                        </property>
                        <property name="iconSize">
@@ -3443,7 +3504,7 @@ QPushButton:hover { background-color:#256628; }</string>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTableWidget" name="tableCommandesStock">
+                   <widget class="QTableWidget" name="tableHistoriqueStock">
                     <property name="styleSheet">
                      <string>QTableWidget { background:white; border:1px solid #E0E8E8; border-radius:10px;
   gridline-color:#EEF2F2; font-size:12px; color:#1E3A3A; }
@@ -3456,12 +3517,12 @@ QTableWidget::indicator { width:16px; height:16px; }</string>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QLabel" name="lblAucuneCommandeStock">
+                   <widget class="QLabel" name="lblAucuneAlerteStock">
                     <property name="styleSheet">
                      <string>color:#6B8080; font-size:12px;</string>
                     </property>
                     <property name="text">
-                     <string>Aucune commande pour le moment.</string>
+                     <string>Aucune alerte envoyée pour le moment.</string>
                     </property>
                    </widget>
                   </item>
