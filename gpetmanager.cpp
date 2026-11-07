@@ -64,7 +64,7 @@ static void largeursColonnes(QTableView *t, const QList<int> &largeurs)
 }
 
 // =====================================================================
-//                         CONSTRUCTEUR
+// === CONSTRUCTEUR & DESTRUCTEUR ======================================
 // =====================================================================
 
 GPetManager::GPetManager(QWidget *parent)
@@ -72,6 +72,7 @@ GPetManager::GPetManager(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // ---------------- MODULE STOCK : initialisation ----------------
     timerToast = new QTimer(this);
     timerToast->setSingleShot(true);
     connect(timerToast, &QTimer::timeout, this, [this]() { if (toast) toast->hide(); });
@@ -151,6 +152,16 @@ GPetManager::GPetManager(QWidget *parent)
         for (QLabel *lbl : carte->findChildren<QLabel*>())
             lbl->setAttribute(Qt::WA_TransparentForMouseEvents);
     }
+
+    // ---------------- MODULE ANIMAUX : initialisation ----------------
+
+    // ---------------- MODULE RENDEZ-VOUS : initialisation ----------------
+
+    // ---------------- MODULE COMMANDES : initialisation ----------------
+
+    // ---------------- MODULE FOURNISSEURS : initialisation ----------------
+
+    // ---------------- MODULE EMPLOYES : initialisation ----------------
 }
 
 // Contrôle automatique du stock au démarrage (métier 1)
@@ -185,8 +196,9 @@ bool GPetManager::eventFilter(QObject *objet, QEvent *evenement)
 }
 
 // =====================================================================
-//                         CONFIGURATION
+// === SLOTS GÉNÉRAUX (NAVIGATION ENTRE PAGES) =========================
 // =====================================================================
+// 💡 Navigation commune à tous les modules
 
 void GPetManager::configurerNavigation()
 {
@@ -221,6 +233,15 @@ void GPetManager::changerPage(int index)
     // La page des alertes fait partie du module Stock
     boutonsNav[index == PAGE_ALERTES ? PAGE_STOCK : index]->setChecked(true);
 }
+
+// =====================================================================
+// === MODULE STOCK ====================================================
+// =====================================================================
+// 💡 Étudiante responsable du module Stock (Chahed Matoussi) travaille ici uniquement
+
+// ---------------------------------------------------------------------
+//                         CONFIGURATION
+// ---------------------------------------------------------------------
 
 void GPetManager::preparerTableau(QAbstractItemView *vue)
 {
@@ -1601,3 +1622,28 @@ void GPetManager::on_btnExcelSuggestionsStock_clicked()
 {
     genererFicheCommande();
 }
+
+// =====================================================================
+// === MODULE ANIMAUX ==================================================
+// =====================================================================
+// 💡 Étudiant(e) responsable du module Animaux écrit ici
+
+// =====================================================================
+// === MODULE RENDEZ-VOUS ==============================================
+// =====================================================================
+// 💡 Étudiant(e) responsable du module Rendez-vous écrit ici
+
+// =====================================================================
+// === MODULE COMMANDES ================================================
+// =====================================================================
+// 💡 Étudiant(e) responsable du module Commandes écrit ici
+
+// =====================================================================
+// === MODULE FOURNISSEURS =============================================
+// =====================================================================
+// 💡 Étudiant(e) responsable du module Fournisseurs écrit ici
+
+// =====================================================================
+// === MODULE EMPLOYES =================================================
+// =====================================================================
+// 💡 Étudiant(e) responsable du module Employés écrit ici

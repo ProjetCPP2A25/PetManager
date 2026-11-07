@@ -37,6 +37,16 @@ protected:
     bool eventFilter(QObject *objet, QEvent *evenement) override;   // clic sur une carte IA
 
 private slots:
+    // =====================================================================
+    // === SLOTS GÉNÉRAUX (NAVIGATION ENTRE PAGES) =========================
+    // =====================================================================
+    // 💡 Navigation commune à tous les modules
+    void changerPage(int index);
+
+    // =====================================================================
+    // === MODULE STOCK ====================================================
+    // =====================================================================
+    // 💡 Étudiante responsable du module Stock (Chahed Matoussi) travaille ici uniquement
     // ---- CRUD (slots reliés automatiquement aux boutons du .ui) ----
     void on_btnEnregistrerStock_clicked();      // Ajouter  (Create)
     void on_btnModifierStock_clicked();         // Modifier (Update)
@@ -55,13 +65,42 @@ private slots:
     // ---- Métier 2 : alternatives proposées par l'IA ----
     void on_btnDemanderIAStock_clicked();
 
-    void changerPage(int index);
     void rafraichir();
     void afficherTableau();                     // Read
     void afficherNotifications();
 
+    // =====================================================================
+    // === MODULE ANIMAUX ==================================================
+    // =====================================================================
+    // 💡 Étudiant(e) responsable du module Animaux écrit ici ses slots
+
+    // =====================================================================
+    // === MODULE RENDEZ-VOUS ==============================================
+    // =====================================================================
+    // 💡 Étudiant(e) responsable du module Rendez-vous écrit ici ses slots
+
+    // =====================================================================
+    // === MODULE COMMANDES ================================================
+    // =====================================================================
+    // 💡 Étudiant(e) responsable du module Commandes écrit ici ses slots
+
+    // =====================================================================
+    // === MODULE FOURNISSEURS =============================================
+    // =====================================================================
+    // 💡 Étudiant(e) responsable du module Fournisseurs écrit ici ses slots
+
+    // =====================================================================
+    // === MODULE EMPLOYES =================================================
+    // =====================================================================
+    // 💡 Étudiant(e) responsable du module Employés écrit ici ses slots
+
 private:
     Ui::GPetManager *ui;
+
+    // =====================================================================
+    // === MODULE STOCK : attributs et méthodes privées ====================
+    // =====================================================================
+    // 💡 Module Stock (Chahed Matoussi)
     Produit Ptmp;                    // objet temporaire pour appeler les méthodes du modèle (seule classe du module)
 
     int idEnEdition = -1;            // produit chargé dans le formulaire (-1 = ajout)
@@ -134,6 +173,31 @@ private:
     static QIcon icone(const QString &nom);
     void preparerTableau(QAbstractItemView *vue);
     void ajusterHauteur(QAbstractItemView *vue, int lignes, int hauteurLigne = 42);
+
+    // =====================================================================
+    // === MODULE ANIMAUX : attributs et méthodes privées ==================
+    // =====================================================================
+    // 💡 Module Animaux (ex. objet temporaire de sa classe métier)
+
+    // =====================================================================
+    // === MODULE RENDEZ-VOUS : attributs et méthodes privées ==============
+    // =====================================================================
+    // 💡 Module Rendez-vous (ex. objet temporaire de sa classe métier)
+
+    // =====================================================================
+    // === MODULE COMMANDES : attributs et méthodes privées ================
+    // =====================================================================
+    // 💡 Module Commandes (ex. objet temporaire de sa classe métier)
+
+    // =====================================================================
+    // === MODULE FOURNISSEURS : attributs et méthodes privées =============
+    // =====================================================================
+    // 💡 Module Fournisseurs (ex. objet temporaire de sa classe métier)
+
+    // =====================================================================
+    // === MODULE EMPLOYES : attributs et méthodes privées =================
+    // =====================================================================
+    // 💡 Module Employés (ex. objet temporaire de sa classe métier)
 };
 
 #endif // GPETMANAGER_H
