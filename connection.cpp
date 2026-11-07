@@ -19,9 +19,9 @@ Connection& Connection::createInstance()
 
 bool Connection::createConnection()
 {
-    db.setDatabaseName("Source_Projet2A");   // source de données ODBC
-    db.setUserName("chahed");                // utilisateur Oracle
-    db.setPassword("esprit18");              // mot de passe Oracle
+    db.setDatabaseName("Source_Projet2A");   // source de données ODBC (commune au groupe)
+    db.setUserName("petmanager");            // utilisateur Oracle commun
+    db.setPassword("0000");   // mot de passe Oracle commun
 
     if (db.open()) {
         qDebug() << "Connexion établie";
