@@ -62,10 +62,9 @@ private slots:
 
 private:
     Ui::GPetManager *ui;
-    Produit Etmp;                    // objet temporaire pour appeler les méthodes du modèle (seule classe du module)
+    Produit Ptmp;                    // objet temporaire pour appeler les méthodes du modèle (seule classe du module)
 
     int idEnEdition = -1;            // produit chargé dans le formulaire (-1 = ajout)
-    QMap<int, QString> fournisseurs; // IDPRODUIT -> fournisseur (via les commandes)
     QList<SuggestionIA> suggestionsIA;
     QString besoinIA;
     bool echecEnvoiAuto = false;     // évite de renvoyer en boucle après un échec
@@ -90,7 +89,6 @@ private:
     void configurerPageAlertes();
     void configurerGraphiques();
     void chargerParametres();
-    void chargerFournisseurs();
 
     // Affichage page Stock
     void decorerTableau();

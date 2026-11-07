@@ -79,7 +79,7 @@ GPetManager::GPetManager(QWidget *parent)
     // Métier 1 : surveillance automatique à intervalle régulier
     timerSurveillance = new QTimer(this);
     connect(timerSurveillance, &QTimer::timeout, this, [this]() {
-        Etmp.actualiserStatuts();
+        Ptmp.actualiserStatuts();
         rafraichir();
         verifierStock(true);
     });
@@ -90,7 +90,6 @@ GPetManager::GPetManager(QWidget *parent)
     configurerPageAlertes();
     configurerGraphiques();
     chargerParametres();
-    chargerFournisseurs();
 
     // Panneau IA vide au démarrage
     ui->frameAlt1Stock->hide();
@@ -99,11 +98,11 @@ GPetManager::GPetManager(QWidget *parent)
                                                            : "Moteur local (aucune clé API configurée)");
     ui->lblAucuneSuggestionIAStock->show();
 
-    Etmp.actualiserStatuts();      // statuts à jour (produits expirés depuis hier...)
+    Ptmp.actualiserStatuts();      // statuts à jour (produits expirés depuis hier...)
     viderFormulaire();
 
-    // Appel de la méthode afficher() via l'attribut Etmp (Read)
-    ui->tableStock->setModel(Etmp.afficher());
+    // Appel de la méthode afficher() via l'attribut Ptmp (Read)
+    ui->tableStock->setModel(Ptmp.afficher());
     rafraichir();
 
     // Recherche (nom ou ID) et tri
@@ -303,13 +302,13 @@ void GPetManager::configurerPageAlertes()
 
     // Produits ayant atteint le seuil
     QTableWidget *s = ui->tableSousSeuilStock;
-    s->setColumnCount(10);
+    s->setColumnCount(9);
     s->setHorizontalHeaderLabels({"ID", "Produit", "Catégorie", "Quantité", "Seuil min.",
-                                  "Qté recommandée", "Montant estimé", "Fournisseur",
+                                  "Qté recommandée", "Montant estimé",
                                   "Dernière alerte", "Actions"});
     preparerTableau(s);
     s->setSelectionMode(QAbstractItemView::NoSelection);
-    largeursColonnes(s, {55, 0, 125, 85, 90, 135, 130, 140, 150, 80});
+    largeursColonnes(s, {55, 0, 125, 85, 90, 135, 130, 150, 80});
 
     // Historique des e-mails
     QTableWidget *h = ui->tableHistoriqueStock;
@@ -374,20 +373,12 @@ void GPetManager::chargerParametres()
     timerSurveillance->start(Produit::intervalleMinutes() * 60 * 1000);
 }
 
-void GPetManager::chargerFournisseurs()
-{
-    // Le fournisseur n'est pas un attribut de STOCK (MR commun) : il est retrouvé
-    // à partir des commandes (LIGNE_CMD -> COMMANDE -> FOURNISSEUR)
-    fournisseurs = Etmp.fournisseurParProduit();
-}
-
 // =====================================================================
 //                         AFFICHAGE (READ)
 // =====================================================================
 
 void GPetManager::rafraichir()
 {
-    fournisseurs = Etmp.fournisseurParProduit();   // des commandes ont pu être ajoutées
     afficherTableau();
     mettreAJourCartes();
     mettreAJourAlertes();
@@ -405,7 +396,7 @@ void GPetManager::afficherTableau()
     QAbstractItemModel *ancienModele = t->model();
     QItemSelectionModel *ancienneSelection = t->selectionModel();
 
-    QSqlQueryModel *model = Etmp.afficher(ui->txtRechercheStock->text(), ui->cmbTriStock->currentIndex());
+    QSqlQueryModel *model = Ptmp.afficher(ui->txtRechercheStock->text(), ui->cmbTriStock->currentIndex());
     while (model->canFetchMore()) model->fetchMore();     // toutes les lignes
     t->setModel(model);
     delete ancienneSelection;
@@ -451,19 +442,19 @@ void GPetManager::decorerTableau()
         ui->lblAffichageStock->setText("Les produits trouvés sont indisponibles" + lienIA);
     else
         ui->lblAffichageStock->setText(QString("Affichage de %1 sur %2 produits")
-                                           .arg(lignes).arg(Etmp.nombreProduits()));
+                                           .arg(lignes).arg(Ptmp.nombreProduits()));
 }
 
 void GPetManager::mettreAJourCartes()
 {
-    ui->lblValeurTotalStock->setText(QString::number(Etmp.nombreProduits()));
-    ui->lblValeurReapproStock->setText(QString::number(Etmp.nombreSousSeuil()));
-    ui->lblValeurStock->setText(QLocale(QLocale::French).toString(Etmp.valeurStock(), 'f', 0) + " TND");
+    ui->lblValeurTotalStock->setText(QString::number(Ptmp.nombreProduits()));
+    ui->lblValeurReapproStock->setText(QString::number(Ptmp.nombreSousSeuil()));
+    ui->lblValeurStock->setText(QLocale(QLocale::French).toString(Ptmp.valeurStock(), 'f', 0) + " TND");
 }
 
 void GPetManager::mettreAJourAlertes()
 {
-    const QList<Produit> liste = Etmp.listeSousSeuil();
+    const QList<Produit> liste = Ptmp.listeSousSeuil();
 
     ui->lblAlerteBadgeStock->setText(QString::number(liste.size()));
     badgeNotif->setText(QString::number(liste.size()));
@@ -505,7 +496,7 @@ void GPetManager::chargerListeGraphique()
     c->blockSignals(true);
     c->clear();
     c->addItem("3 produits les plus consommés", 0);
-    for (const Produit &p : Etmp.listeTous())
+    for (const Produit &p : Ptmp.listeTous())
         c->addItem(p.getNom(), p.getIdProduit());
     const int pos = c->findData(selection);
     c->setCurrentIndex(pos >= 0 ? pos : 0);
@@ -526,7 +517,7 @@ void GPetManager::mettreAJourGraphiques()
     QList<QPair<int, QString>> series;
     const int idChoisi = ui->cmbProduitGraphStock->currentData().toInt();
     if (idChoisi == 0)
-        series = Etmp.produitsLesPlusConsommes(debut, 3);
+        series = Ptmp.produitsLesPlusConsommes(debut, 3);
     else
         series.append(qMakePair(idChoisi, ui->cmbProduitGraphStock->currentText()));
 
@@ -534,7 +525,7 @@ void GPetManager::mettreAJourGraphiques()
     QList<QList<double>> valeurs;
     QString resume;
     for (const auto &serie : series) {
-        const QMap<QDate, int> conso = Etmp.consommationParJour(serie.first, debut);
+        const QMap<QDate, int> conso = Ptmp.consommationParJour(serie.first, debut);
         QList<double> points;
         int total = 0, pic = 0;
         QDate jourPic;
@@ -559,7 +550,7 @@ void GPetManager::mettreAJourGraphiques()
     graphConso->setToolTip(resume.trimmed());
 
     // 2) Répartition des produits par catégorie
-    const QMap<QString, int> parCategorie = Etmp.repartitionParCategorie();
+    const QMap<QString, int> parCategorie = Ptmp.repartitionParCategorie();
     const QStringList categories = Produit::categories();
     categoriesNombres.clear();
     for (const QString &c : categories) categoriesNombres << parCategorie.value(c, 0);
@@ -773,9 +764,9 @@ bool GPetManager::lireFormulaire(Produit &p, bool nouveau)
                 ui->dateExpirationStock->date(), ui->txtEmplacementStock->text());
 
     QStringList erreurs = p.controleSaisie(nouveau);
-    if (nouveau && Etmp.existe(id))
+    if (nouveau && Ptmp.existe(id))
         erreurs << QString("L'ID %1 est déjà utilisé par un autre produit.").arg(id);
-    if (!p.getNom().isEmpty() && Etmp.nomExiste(p.getNom(), nouveau ? -1 : id))
+    if (!p.getNom().isEmpty() && Ptmp.nomExiste(p.getNom(), nouveau ? -1 : id))
         erreurs << "Un produit portant ce nom existe déjà.";
 
     if (!erreurs.isEmpty()) {
@@ -855,7 +846,7 @@ void GPetManager::supprimerProduit(int id)
         != QMessageBox::Yes)
         return;
 
-    bool test = Etmp.supprimer(id);   // appel de la méthode supprimer() via l'attribut Etmp
+    bool test = Ptmp.supprimer(id);   // appel de la méthode supprimer() via l'attribut Ptmp
 
     if (test) {
         if (idEnEdition == id) viderFormulaire();
@@ -864,7 +855,7 @@ void GPetManager::supprimerProduit(int id)
                                  QObject::tr("Suppression effectuée."), QMessageBox::Ok);
     } else {
         QMessageBox::critical(nullptr, QObject::tr("Échec"),
-                              QObject::tr("Suppression non effectuée.\n") + Etmp.derniereErreur(),
+                              QObject::tr("Suppression non effectuée.\n") + Ptmp.derniereErreur(),
                               QMessageBox::Ok);
     }
 }
@@ -938,7 +929,7 @@ void GPetManager::mettreAJourStatutFormulaire()
 
 void GPetManager::viderFormulaire()
 {
-    ui->spinIdStock->setValue(Etmp.prochainId());
+    ui->spinIdStock->setValue(Ptmp.prochainId());
     ui->txtNomStock->clear();
     ui->cmbCategorieStock->setCurrentIndex(0);
     ui->spinQuantiteStock->setValue(0);
@@ -981,14 +972,14 @@ void GPetManager::sortieDeStock(int id)
         return;
     }
 
-    if (Etmp.retirerQuantite(id, q)) {
+    if (Ptmp.retirerQuantite(id, q)) {
         rafraichir();
         afficherToast("check_green", "Sortie de stock enregistrée",
                       QString("%1 unité(s) de « %2 » retirée(s) et ajoutée(s) à l'historique de consommation.")
                           .arg(q).arg(p.getNom()), "#2E8B57");
         verifierStock(true);      // métier 1 : le seuil est-il atteint ?
     } else {
-        QMessageBox::critical(this, "Échec", "Sortie de stock non effectuée.\n" + Etmp.derniereErreur());
+        QMessageBox::critical(this, "Échec", "Sortie de stock non effectuée.\n" + Ptmp.derniereErreur());
     }
 }
 
@@ -1000,7 +991,7 @@ void GPetManager::sortieDeStock(int id)
 // de stock et à intervalle régulier (timer).
 void GPetManager::verifierStock(bool automatique)
 {
-    const QList<Produit> sousSeuil = Etmp.listeSousSeuil();
+    const QList<Produit> sousSeuil = Ptmp.listeSousSeuil();
     Produit::actualiserSuivi(sousSeuil);
     const QList<Produit> nouveaux = Produit::produitsNonSignales(sousSeuil);
     afficherSousSeuil();
@@ -1034,7 +1025,7 @@ bool GPetManager::envoyerAlerte(const QList<Produit> &produits, bool automatique
 {
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QString erreur;
-    const bool ok = Produit::envoyerAlerte(produits, fournisseurs, automatique, erreur);
+    const bool ok = Produit::envoyerAlerte(produits, automatique, erreur);
     QApplication::restoreOverrideCursor();
 
     afficherSousSeuil();
@@ -1057,14 +1048,14 @@ bool GPetManager::envoyerAlerte(const QList<Produit> &produits, bool automatique
 
 void GPetManager::on_btnVerifierStock_clicked()
 {
-    Etmp.actualiserStatuts();
+    Ptmp.actualiserStatuts();
     rafraichir();
     verifierStock(false);
 }
 
 void GPetManager::on_btnEnvoyerAlerteStock_clicked()
 {
-    const QList<Produit> liste = Etmp.listeSousSeuil();
+    const QList<Produit> liste = Ptmp.listeSousSeuil();
     if (liste.isEmpty()) {
         QMessageBox::information(this, "Alerte e-mail", "Aucun produit n'a atteint son seuil minimal.");
         return;
@@ -1081,7 +1072,7 @@ void GPetManager::on_btnEnvoyerAlerteStock_clicked()
 
 void GPetManager::afficherSousSeuil()
 {
-    const QList<Produit> liste = Etmp.listeSousSeuil();
+    const QList<Produit> liste = Ptmp.listeSousSeuil();
     const int facteur = ui->spinFacteurStock->value();
     const QList<Produit> nonSignales = Produit::produitsNonSignales(liste);
 
@@ -1106,9 +1097,8 @@ void GPetManager::afficherSousSeuil()
         t->setCellWidget(l, 5, creerBadge(QString::number(qte) + " unités", "#E4F2F1", "#1F7A6E"));
         t->setItem(l, 6, new QTableWidgetItem(QLocale(QLocale::French).toString(qte * p.getPrixUnitaire(), 'f', 3)
                                               + " TND"));
-        t->setItem(l, 7, new QTableWidgetItem(fournisseurs.value(p.getIdProduit(), "Non renseigné")));
         const QDateTime derniere = Produit::derniereAlerte(p.getIdProduit());
-        t->setItem(l, 8, new QTableWidgetItem(derniere.isValid() ? derniere.toString("dd/MM/yyyy HH:mm")
+        t->setItem(l, 7, new QTableWidgetItem(derniere.isValid() ? derniere.toString("dd/MM/yyyy HH:mm")
                                                                  : QString("En attente")));
 
         QWidget *actions = new QWidget;
@@ -1127,7 +1117,7 @@ void GPetManager::afficherSousSeuil()
             changerPage(PAGE_STOCK);
             demanderAlternatives(nom, categorie, id);
         });
-        t->setCellWidget(l, 9, actions);
+        t->setCellWidget(l, 8, actions);
     }
     ajusterHauteur(t, liste.size());
     t->setVisible(!liste.isEmpty());
@@ -1270,7 +1260,7 @@ void GPetManager::demanderAlternatives(const QString &besoin, const QString &cat
     QString conseil, avertissement;
     bool viaIA = false;
     const QList<SuggestionIA> suggestions =
-        Etmp.suggererAlternatives(besoinIA, categorie, idExclu, conseil, viaIA, avertissement);
+        Ptmp.suggererAlternatives(besoinIA, categorie, idExclu, conseil, viaIA, avertissement);
     QApplication::restoreOverrideCursor();
     iaEnCours = false;
 
@@ -1390,7 +1380,7 @@ void GPetManager::afficherNotifications()
                        "QMenu::item:disabled{color:#6B8080;}"
                        "QMenu::separator{height:1px;background:#E0E8E8;margin:4px 8px;}");
 
-    const QList<Produit> liste = Etmp.listeSousSeuil();
+    const QList<Produit> liste = Ptmp.listeSousSeuil();
     if (liste.isEmpty())
         menu.addAction(icone("check_green"), "Aucune alerte : le stock est sous contrôle")->setEnabled(false);
 
@@ -1576,7 +1566,7 @@ QWidget *GPetManager::creerActions(int id)
 
 void GPetManager::genererFicheCommande()
 {
-    const QList<Produit> liste = Etmp.listeSousSeuil();   // produits à réapprovisionner
+    const QList<Produit> liste = Ptmp.listeSousSeuil();   // produits à réapprovisionner
     if (liste.isEmpty()) {
         QMessageBox::information(this, "Fiche de commande",
                                  "Aucun produit n'a atteint son seuil minimal : rien à commander.");
@@ -1592,7 +1582,7 @@ void GPetManager::genererFicheCommande()
     if (!chemin.endsWith(".xlsx", Qt::CaseInsensitive)) chemin += ".xlsx";
 
     QString erreur;
-    if (!Produit::genererFicheCommande(chemin, liste, fournisseurs, ui->spinFacteurStock->value(), numero, erreur)) {
+    if (!Produit::genererFicheCommande(chemin, liste, ui->spinFacteurStock->value(), numero, erreur)) {
         QMessageBox::critical(this, "Fiche de commande", "La fiche n'a pas pu être générée :\n" + erreur);
         return;
     }

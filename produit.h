@@ -119,7 +119,6 @@ public:
     double valeurStock();
     int nombreSousSeuil();
     QMap<QString, int> repartitionParCategorie();
-    QMap<int, QString> fournisseurParProduit();  // IDPRODUIT -> fournisseur (dernière commande)
     QList<Produit> listeTous();
     QMap<QDate, int> consommationParJour(int id, const QDate &debut);
     QList<QPair<int, QString>> produitsLesPlusConsommes(const QDate &debut, int nombre);
@@ -127,8 +126,7 @@ public:
     // ---------------- Métier basique : fiche de commande (Excel .xlsx) ----------------
     static QString numeroCommande();
     static bool genererFicheCommande(const QString &chemin, const QList<Produit> &produits,
-                                     const QMap<int, QString> &fournisseurs, int facteur,
-                                     const QString &numero, QString &erreurFiche);
+                                     int facteur, const QString &numero, QString &erreurFiche);
 
     // ---------------- Métier 1 : alerte de réapprovisionnement par e-mail ----------------
     QList<Produit> listeSousSeuil();
@@ -151,8 +149,7 @@ public:
     static QDateTime derniereAlerte(int idProduit);
 
     // Envoi + historique
-    static bool envoyerAlerte(const QList<Produit> &produits, const QMap<int, QString> &fournisseurs,
-                              bool automatique, QString &erreurEnvoi);
+    static bool envoyerAlerte(const QList<Produit> &produits, bool automatique, QString &erreurEnvoi);
     static bool envoyerTest(const ConfigEmail &config, QString &erreurEnvoi);
     static QList<EntreeHistorique> historiqueAlertes();
     static void viderHistoriqueAlertes();
@@ -176,8 +173,7 @@ private:
     static QString fichierParametres();
     static bool envoyerEmail(const ConfigEmail &config, const QString &sujet,
                              const QString &html, QString &erreurEnvoi);
-    static QString construireHtmlAlerte(const QList<Produit> &produits,
-                                        const QMap<int, QString> &fournisseurs);
+    static QString construireHtmlAlerte(const QList<Produit> &produits);
     static void ajouterHistorique(const EntreeHistorique &entree);
     static QString construirePromptIA(const QString &besoin, const QString &categorieBesoin,
                                       int idExclu, const QList<Produit> &catalogue);

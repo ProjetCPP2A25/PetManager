@@ -50,7 +50,7 @@ static QString messageErreur(const QSqlError &e)
     if (brut.contains("ORA-00001")) return "Cet identifiant ou ce nom de produit existe déjà.";
     if (brut.contains("ORA-02290")) return "Une valeur ne respecte pas les règles de la base "
                                            "(catégorie, quantité ≥ 0, seuil ≥ 0, prix > 0, statut).";
-    if (brut.contains("ORA-02292")) return "Ce produit figure dans au moins une commande (table LIGNE_CMD) : "
+    if (brut.contains("ORA-02292")) return "Ce produit est encore utilisé par une autre table : "
                                            "il ne peut pas être supprimé.";
     if (brut.contains("ORA-02291")) return "La valeur de clé étrangère n'existe pas dans la table liée.";
     if (brut.contains("ORA-01400")) return "Un champ obligatoire est vide.";
@@ -378,24 +378,6 @@ QMap<QString, int> Produit::repartitionParCategorie()
     if (query.exec())
         while (query.next())
             resultat[query.value(0).toString()] = query.value(1).toInt();
-    return resultat;
-}
-
-// Fournisseur de chaque produit, d'après le MR commun :
-// STOCK -> LIGNE_CMD -> COMMANDE -> FOURNISSEUR (fournisseur de la dernière commande)
-// Résultat : IDPRODUIT -> nom du fournisseur
-QMap<int, QString> Produit::fournisseurParProduit()
-{
-    QMap<int, QString> resultat;
-    QSqlQuery query;
-    query.prepare("SELECT l.IDPRODUIT, f.NOM "
-                  "FROM LIGNE_CMD l "
-                  "JOIN COMMANDE c ON c.IDCOMMANDE = l.IDCOMMANDE "
-                  "JOIN FOURNISSEUR f ON f.IDFOURNISSEUR = c.IDFOURNISSEUR "
-                  "ORDER BY c.DATECOMMANDE ASC, c.IDCOMMANDE ASC");
-    if (query.exec())
-        while (query.next())   // la commande la plus récente écrase les plus anciennes
-            resultat[query.value(0).toInt()] = query.value(1).toString();
     return resultat;
 }
 
@@ -822,12 +804,12 @@ QString Produit::numeroCommande()
     return "CMD-" + QDateTime::currentDateTime().toString("yyyyMMdd-HHmm");
 }
 
-// Mise en page : en-tête, un bloc par fournisseur, sous-totaux, total général, signatures.
+// Mise en page : en-tête, un bloc par catégorie, sous-totaux, total général, signatures.
+// (Le module Stock ne dépend que de la table STOCK : regroupement par catégorie.)
 // Colonnes : A Réf. | B Produit | C Catégorie | D Emplacement | E Stock |
 //            F Seuil | G Qté à commander | H Prix unitaire | I Montant
 bool Produit::genererFicheCommande(const QString &chemin, const QList<Produit> &produits,
-                                   const QMap<int, QString> &fournisseurs, int facteur,
-                                   const QString &numero, QString &erreurFiche)
+                                   int facteur, const QString &numero, QString &erreurFiche)
 {
     if (produits.isEmpty()) {
         erreurFiche = "Aucun produit n'a atteint son seuil minimal.";
@@ -872,25 +854,22 @@ bool Produit::genererFicheCommande(const QString &chemin, const QList<Produit> &
     xl.hauteurs[ligne] = 30;
     ++ligne;
 
-    // Regroupement par fournisseur (ordre alphabétique, « non renseigné » à la fin)
-    std::map<std::string, std::vector<Produit>> parFournisseur;
+    // Regroupement par catégorie (ordre de la liste des catégories)
+    std::map<std::string, std::vector<Produit>> parCategorie;
     for (const Produit &p : produits)
-        parFournisseur[fournisseurs.value(p.getIdProduit()).toStdString()].push_back(p);
+        parCategorie[p.getCategorie().toStdString()].push_back(p);
     std::vector<std::string> ordre;
-    for (const auto &g : parFournisseur) ordre.push_back(g.first);
-    std::stable_sort(ordre.begin(), ordre.end(), [](const std::string &a, const std::string &b) {
-        const bool aVide = a.empty(), bVide = b.empty();
-        if (aVide != bVide) return bVide;
-        return a < b;
-    });
+    for (const QString &cat : categories())
+        if (parCategorie.count(cat.toStdString())) ordre.push_back(cat.toStdString());
+    for (const auto &g : parCategorie)   // catégorie éventuelle hors liste
+        if (std::find(ordre.begin(), ordre.end(), g.first) == ordre.end()) ordre.push_back(g.first);
 
     std::vector<std::string> sousTotaux;
     double totalGeneral = 0;
     int totalQuantites = 0;
-    for (const std::string &nomFournisseur : ordre) {
-        const std::vector<Produit> &groupe = parFournisseur[nomFournisseur];
-        xlTexte(xl, ligne, 1, "Fournisseur : " + (nomFournisseur.empty() ? std::string("non renseigné")
-                                                                         : nomFournisseur), Section);
+    for (const std::string &nomCategorie : ordre) {
+        const std::vector<Produit> &groupe = parCategorie[nomCategorie];
+        xlTexte(xl, ligne, 1, "Catégorie : " + nomCategorie, Section);
         xlFusionner(xl, ligne, 1, ligne, derniereColonne, Section);
         xl.hauteurs[ligne] = 22;
         ++ligne;
@@ -914,8 +893,7 @@ bool Produit::genererFicheCommande(const QString &chemin, const QList<Produit> &
             xl.hauteurs[ligne] = 20;
             ++ligne;
         }
-        xlTexte(xl, ligne, 1, "Sous-total " + (nomFournisseur.empty() ? std::string("(fournisseur non renseigné)")
-                                                                      : nomFournisseur), SousTotalLibelle);
+        xlTexte(xl, ligne, 1, "Sous-total " + nomCategorie, SousTotalLibelle);
         xlFusionner(xl, ligne, 1, ligne, derniereColonne - 1, SousTotalLibelle);
         xlFormule(xl, ligne, derniereColonne,
                   "SUM(" + xlReference(debut, 9) + ":" + xlReference(ligne - 1, 9) + ")",
@@ -1092,7 +1070,7 @@ QDateTime Produit::derniereAlerte(int idProduit)
 
 // ---------------- Envoi de l'alerte ----------------
 
-QString Produit::construireHtmlAlerte(const QList<Produit> &produits, const QMap<int, QString> &fournisseurs)
+QString Produit::construireHtmlAlerte(const QList<Produit> &produits)
 {
     const int facteur = facteurStockCible();
     QString lignes;
@@ -1108,15 +1086,13 @@ QString Produit::construireHtmlAlerte(const QList<Produit> &produits, const QMap
                           "<td style='padding:8px;border-bottom:1px solid #E0E8E8;color:%5'><b>%6</b></td>"
                           "<td style='padding:8px;border-bottom:1px solid #E0E8E8'>%7</td>"
                           "<td style='padding:8px;border-bottom:1px solid #E0E8E8;color:#1F7A6E'><b>%8</b></td>"
-                          "<td style='padding:8px;border-bottom:1px solid #E0E8E8'>%9</td>"
                           "</tr>")
                       .arg(p.getIdProduit())
                       .arg(p.getNom().toHtmlEscaped(), p.getCategorie().toHtmlEscaped(),
                            p.getEmplacement().toHtmlEscaped(), couleur)
                       .arg(p.getQuantite())
                       .arg(p.getSeuilMin())
-                      .arg(qte)
-                      .arg(fournisseurs.value(p.getIdProduit(), "-").toHtmlEscaped());
+                      .arg(qte);
     }
 
     return QString(
@@ -1133,7 +1109,7 @@ QString Produit::construireHtmlAlerte(const QList<Produit> &produits, const QMap
         "<tr style='background:#F7FAFA;text-align:left'>"
         "<th style='padding:8px'>ID</th><th style='padding:8px'>Produit</th>"
         "<th style='padding:8px'>Qté restante</th><th style='padding:8px'>Seuil min.</th>"
-        "<th style='padding:8px'>Qté à commander</th><th style='padding:8px'>Fournisseur</th></tr>"
+        "<th style='padding:8px'>Qté à commander</th></tr>"
         "%2</table>"
         "<p style='margin-top:16px'>Montant estimé de la commande : <b>%3 TND</b><br>"
         "<span style='color:#6B8080;font-size:12px'>Quantité recommandée = %4 × seuil minimal − quantité restante.</span></p>"
@@ -1146,8 +1122,7 @@ QString Produit::construireHtmlAlerte(const QList<Produit> &produits, const QMap
         .arg(QDateTime::currentDateTime().toString("dd/MM/yyyy à HH:mm"));
 }
 
-bool Produit::envoyerAlerte(const QList<Produit> &produits, const QMap<int, QString> &fournisseurs,
-                            bool automatique, QString &erreurEnvoi)
+bool Produit::envoyerAlerte(const QList<Produit> &produits, bool automatique, QString &erreurEnvoi)
 {
     if (produits.isEmpty()) {
         erreurEnvoi = "Aucun produit n'a atteint son seuil minimal.";
@@ -1158,7 +1133,7 @@ bool Produit::envoyerAlerte(const QList<Produit> &produits, const QMap<int, QStr
         ? "[Pet Manager] Alerte réapprovisionnement : " + produits.first().getNom()
         : QString("[Pet Manager] Alerte réapprovisionnement : %1 produits sous le seuil").arg(produits.size());
 
-    const bool ok = envoyerEmail(config, sujet, construireHtmlAlerte(produits, fournisseurs), erreurEnvoi);
+    const bool ok = envoyerEmail(config, sujet, construireHtmlAlerte(produits), erreurEnvoi);
 
     QStringList noms;
     for (const Produit &p : produits) noms << p.getNom();
