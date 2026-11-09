@@ -1,0 +1,26 @@
+QT += core gui widgets sql
+
+CONFIG += c++17
+
+SOURCES += \
+    commande.cpp \
+    connexion.cpp \
+    main.cpp \
+    gpetmanager.cpp
+
+HEADERS += \
+    commande.h \
+    connexion.h \
+    gpetmanager.h \
+    images_integrees.h
+
+FORMS += \
+    gpetmanager.ui
+
+RESOURCES += \
+    ressources.qrc
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
