@@ -1,0 +1,3819 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="windowTitle">
+   <string>Pet Manager - Smart Pet Care Center</string>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1280</width>
+    <height>720</height>
+   </size>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="layout_main">
+    <item>
+     <widget class="QFrame" name="frame_sidebar">
+      <property name="maximumSize">
+       <size>
+        <width>230</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <layout class="QVBoxLayout" name="layout_sidebar">
+       <item>
+        <widget class="QLabel" name="label_logo" />
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_menu_accueil">
+         <property name="text">
+          <string> Accueil</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_menu_animaux">
+         <property name="text">
+          <string>🐾 Animaux</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_menu_rdv">
+         <property name="text">
+          <string>📅 Rendez-vous</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_menu_stock">
+         <property name="text">
+          <string>📦 Stock</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_menu_commandes">
+         <property name="text">
+          <string>🛒 Commandes</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_menu_fournisseurs">
+         <property name="text">
+          <string>🚚 Fournisseurs</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_menu_employes">
+         <property name="text">
+          <string> Employés</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_menu_parametres">
+         <property name="text">
+          <string>⚙️ Paramètres</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QStackedWidget" name="SWPetManager">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="pageFournisseurs">
+       <layout class="QHBoxLayout" name="layout_pageFournisseurs">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QFrame" name="frame_content">
+          <layout class="QVBoxLayout" name="layout_content">
+           <item>
+            <widget class="QFrame" name="frame_header">
+             <layout class="QHBoxLayout" name="layout_header">
+              <item>
+               <widget class="QLabel" name="label_title_icon">
+                <property name="text">
+                 <string>🚚</string>
+                </property>
+                <property name="styleSheet">
+                 <string>font-size: 28px;</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_page_title">
+                <property name="text">
+                 <string>Gestion des fournisseurs</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="hSpacer_header">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QFrame" name="frame_bell_container">
+                <property name="frameShape">
+                 <enum>QFrame::NoFrame</enum>
+                </property>
+                <layout class="QGridLayout" name="layout_bell_grid">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_bell">
+                   <property name="text">
+                    <string>🔔</string>
+                   </property>
+                   <property name="styleSheet">
+                    <string>font-size: 24px;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0" alignment="Qt::AlignTop|Qt::AlignRight">
+                  <widget class="QLabel" name="label_notif_badge">
+                   <property name="text">
+                    <string>0</string>
+                   </property>
+                   <property name="styleSheet">
+                    <string>background-color: #D9534F; color: white; border-radius: 9px; font-size: 10px; font-weight: bold; padding: 2px 5px; min-width: 18px; min-height: 18px; qproperty-alignment: AlignCenter;</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_avatar">
+                <property name="text">
+                 <string>👤</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+                <property name="styleSheet">
+                 <string>font-size: 24px; color: #2A8C82; border: 2px solid #2A8C82; border-radius: 22px; min-width: 44px; min-height: 44px;</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="layout_user">
+                <item>
+                 <widget class="QLabel" name="label_user_name">
+                  <property name="text">
+                   <string>Dr. Sami Ben Ali</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_user_role">
+                  <property name="text">
+                   <string>Médecin Vétérinaire</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="frame_kpis">
+             <layout class="QHBoxLayout" name="layout_kpis">
+              <item>
+               <widget class="QFrame" name="card_kpi1">
+                <layout class="QHBoxLayout" name="layout_kpi1">
+                 <item>
+                  <widget class="QLabel" name="label_kpi1_icon">
+                   <property name="text">
+                    <string>🚚</string>
+                   </property>
+                   <property name="styleSheet">
+                    <string>font-size: 32px;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="layout_kpi1_txt">
+                   <item>
+                    <widget class="QLabel" name="label_kpi1_title">
+                     <property name="text">
+                      <string>Total fournisseurs</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignLeft</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_kpi1_value">
+                     <property name="text">
+                      <string>0</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignLeft</set>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="card_kpi2">
+                <layout class="QHBoxLayout" name="layout_kpi2">
+                 <item>
+                  <widget class="QLabel" name="label_kpi2_icon">
+                   <property name="text">
+                    <string>✅</string>
+                   </property>
+                   <property name="styleSheet">
+                    <string>font-size: 32px;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="layout_kpi2_txt">
+                   <item>
+                    <widget class="QLabel" name="label_kpi2_title">
+                     <property name="text">
+                      <string>Fournisseurs actifs</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignLeft</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_kpi2_value">
+                     <property name="text">
+                      <string>0</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignLeft</set>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="card_kpi3">
+                <layout class="QHBoxLayout" name="layout_kpi3">
+                 <item>
+                  <widget class="QLabel" name="label_kpi3_icon">
+                   <property name="text">
+                    <string>⭐</string>
+                   </property>
+                   <property name="styleSheet">
+                    <string>font-size: 32px;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="layout_kpi3_txt">
+                   <item>
+                    <widget class="QLabel" name="label_kpi3_title">
+                     <property name="text">
+                      <string>Fiabilité moyenne</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignLeft</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_kpi3_value">
+                     <property name="text">
+                      <string>—</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignLeft</set>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="frame_toolbar">
+             <layout class="QHBoxLayout" name="layout_toolbar">
+              <item>
+               <widget class="QLineEdit" name="lineEdit_recherche">
+                <property name="placeholderText">
+                 <string>Rechercher un fournisseur par nom...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="comboBox_tri">
+                <item>
+                 <property name="text">
+                  <string>Aucun tri</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Nom (A → Z)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Nom (Z → A)</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="frame_table">
+             <layout class="QVBoxLayout" name="layout_table">
+              <item>
+               <widget class="QTableWidget" name="tableWidget_fournisseurs" />
+              </item>
+              <item>
+               <widget class="QLabel" name="label_table_footer">
+                <property name="text">
+                 <string>Affichage de 0 sur 0 fournisseurs</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="frame_bottom">
+             <layout class="QHBoxLayout" name="layout_bottom">
+              <item>
+               <widget class="QFrame" name="card_chart">
+                <layout class="QVBoxLayout" name="layout_card_chart">
+                 <item>
+                  <layout class="QHBoxLayout" name="layout_chart_head">
+                   <item>
+                    <widget class="QLabel" name="label_chart_title">
+                     <property name="text">
+                      <string> Statistiques</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QComboBox" name="comboBox_chart">
+                     <item>
+                      <property name="text">
+                       <string>Nombre par type</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Répartition par statut</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="frame_chart">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>180</height>
+                    </size>
+                   </property>
+                   <layout class="QVBoxLayout" name="layout_chart_container" />
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="card_alerts">
+                <layout class="QVBoxLayout" name="layout_card_alerts">
+                 <item>
+                  <layout class="QHBoxLayout" name="layout_alerts_head">
+                   <item>
+                    <widget class="QLabel" name="label_alerts_title">
+                     <property name="text">
+                      <string>⚠️ Alertes contrat</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_alerts_badge">
+                     <property name="text">
+                      <string>0</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QListWidget" name="listWidget_alertes" />
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="card_suggestions">
+                <layout class="QVBoxLayout" name="layout_card_sugg">
+                 <item>
+                  <layout class="QHBoxLayout" name="layout_sugg_head">
+                   <item>
+                    <widget class="QLabel" name="label_sugg_title">
+                     <property name="text">
+                      <string>💡 Recommandations</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QComboBox" name="comboBox_rec_type">
+                     <item>
+                      <property name="text">
+                       <string>Tous les types</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Alimentation</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Médicaments</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Équipement</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QListWidget" name="listWidget_suggestions" />
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frame_right">
+          <property name="minimumSize">
+           <size>
+            <width>360</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>360</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <layout class="QVBoxLayout" name="layout_right">
+           <property name="leftMargin">
+            <number>12</number>
+           </property>
+           <property name="topMargin">
+            <number>12</number>
+           </property>
+           <property name="rightMargin">
+            <number>12</number>
+           </property>
+           <property name="bottomMargin">
+            <number>12</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label_form_title">
+             <property name="text">
+              <string>+  Ajouter un fournisseur</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QScrollArea" name="scrollArea_form">
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <widget class="QWidget" name="scrollAreaWidgetContents">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>320</width>
+                <height>600</height>
+               </rect>
+              </property>
+              <layout class="QVBoxLayout" name="layout_form">
+               <property name="spacing">
+                <number>4</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="label_nom">
+                 <property name="text">
+                  <string>Nom *</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEdit_nom">
+                 <property name="placeholderText">
+                  <string>Ex : Ben Ali Distribution</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_contact">
+                 <property name="text">
+                  <string>Contact</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEdit_contact">
+                 <property name="placeholderText">
+                  <string>Ex : Mohamed Ben Ali</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="layout_tel_email">
+                 <item>
+                  <layout class="QVBoxLayout" name="layout_tel">
+                   <item>
+                    <widget class="QLabel" name="label_tel">
+                     <property name="text">
+                      <string>Téléphone *</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="lineEdit_tel">
+                     <property name="placeholderText">
+                      <string>Ex : 22 123 456</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="layout_email">
+                   <item>
+                    <widget class="QLabel" name="label_email">
+                     <property name="text">
+                      <string>Email *</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="lineEdit_email">
+                     <property name="placeholderText">
+                      <string>Ex : contact@fournisseur.tn</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_adresse">
+                 <property name="text">
+                  <string>Adresse</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEdit_adresse">
+                 <property name="placeholderText">
+                  <string>Ex : 12 av. Habib Bourguiba, Tunis</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="layout_type_status">
+                 <item>
+                  <layout class="QVBoxLayout" name="layout_type">
+                   <item>
+                    <widget class="QLabel" name="label_type">
+                     <property name="text">
+                      <string>Type de produit *</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QComboBox" name="comboBox_type">
+                     <item>
+                      <property name="text">
+                       <string>Alimentation</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Accessoires</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Soins et hygiène</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Médicaments</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Équipement</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="layout_status">
+                   <item>
+                    <widget class="QLabel" name="label_status">
+                     <property name="text">
+                      <string>Statut *</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QComboBox" name="comboBox_status">
+                     <item>
+                      <property name="text">
+                       <string>Actif</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Suspendu</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Inactif</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="layout_quantite_prix">
+                 <item>
+                  <layout class="QVBoxLayout" name="layout_quantite">
+                   <item>
+                    <widget class="QLabel" name="label_quantite">
+                     <property name="text">
+                      <string>Quantité *</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QSpinBox" name="spinBox_quantite">
+                     <property name="maximum">
+                      <number>999999</number>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="layout_prix">
+                   <item>
+                    <widget class="QLabel" name="label_prix">
+                     <property name="text">
+                      <string>Prix unitaire (TND) *</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QDoubleSpinBox" name="doubleSpinBox_prix">
+                     <property name="suffix">
+                      <string> TND</string>
+                     </property>
+                     <property name="decimals">
+                      <number>3</number>
+                     </property>
+                     <property name="maximum">
+                      <number>999999</number>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_date">
+                 <property name="text">
+                  <string>Date de contrat *</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QDateEdit" name="dateEdit_contrat">
+                 <property name="calendarPopup">
+                  <bool>true</bool>
+                 </property>
+                 <property name="displayFormat">
+                  <string>dd/MM/yyyy</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btn_enregistrer">
+             <property name="text">
+              <string>💾 Enregistrer</string>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>36</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="layout_mod_ann">
+             <item>
+              <widget class="QPushButton" name="btn_modifier">
+               <property name="text">
+                <string>✏️ Modifier</string>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>36</height>
+                </size>
+               </property>
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_annuler">
+               <property name="text">
+                <string>❌ Annuler</string>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>36</height>
+                </size>
+               </property>
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btn_supprimer">
+             <property name="text">
+              <string>🗑 Supprimer</string>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>36</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="card_export">
+             <layout class="QVBoxLayout" name="layout_card_export">
+              <item>
+               <widget class="QLabel" name="label_export_title">
+                <property name="text">
+                 <string>📤 Export</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_export_desc">
+                <property name="text">
+                 <string>Générez la liste complète pour l'archivage.</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="layout_export_btns">
+                <item>
+                 <widget class="QPushButton" name="btn_export_pdf">
+                  <property name="text">
+                   <string>📄 Exporter PDF</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btn_export_excel">
+                  <property name="text">
+                   <string>📊 Exporter Excel</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageStock">
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string>#pageStock { background-color:#F4F8F8; }
+#contenuStock { background-color:#F4F8F8; }
+
+/* ----- Champs de saisie (style commun à toute l'application) ----- */
+QLineEdit, QComboBox, QSpinBox, QDoubleSpinBox, QDateEdit {
+  border:1px solid #D5E0E0; border-radius:6px; padding:0 10px;
+  background:white; color:#1E3A3A; font-size:13px; min-height:30px; }
+QLineEdit:focus, QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus, QDateEdit:focus {
+  border:1px solid #2A8C86; }
+QComboBox::drop-down, QDateEdit::drop-down {
+  subcontrol-origin:padding; subcontrol-position:center right; width:30px; border:none; }
+QComboBox::down-arrow, QDateEdit::down-arrow {
+  image:url(:/icones/fleche_bas.png); width:12px; height:12px; }
+QComboBox QAbstractItemView {
+  background:white; color:#1E3A3A; border:1px solid #D5E0E0; outline:0; padding:4px;
+  selection-background-color:#E6F2F1; selection-color:#1E3A3A; }
+QComboBox QAbstractItemView::item {
+  min-height:30px; padding-left:8px; color:#1E3A3A; background:white; }
+QComboBox QAbstractItemView::item:hover, QComboBox QAbstractItemView::item:selected {
+  background:#E6F2F1; color:#1E3A3A; }
+QSpinBox::up-button, QDoubleSpinBox::up-button {
+  subcontrol-origin:border; subcontrol-position:top right; width:28px;
+  border:none; border-left:1px solid #E0E8E8; border-top-right-radius:6px; }
+QSpinBox::down-button, QDoubleSpinBox::down-button {
+  subcontrol-origin:border; subcontrol-position:bottom right; width:28px;
+  border:none; border-left:1px solid #E0E8E8; border-bottom-right-radius:6px; }
+QSpinBox::up-button:hover, QDoubleSpinBox::up-button:hover,
+QSpinBox::down-button:hover, QDoubleSpinBox::down-button:hover { background:#E6F2F1; }
+QSpinBox::up-arrow, QDoubleSpinBox::up-arrow { image:url(:/icones/fleche_haut.png); width:10px; height:10px; }
+QSpinBox::down-arrow, QDoubleSpinBox::down-arrow { image:url(:/icones/fleche_bas.png); width:10px; height:10px; }
+
+/* ----- Barre de défilement ----- */
+QScrollArea { background:transparent; border:none; }
+QScrollBar:vertical { background:transparent; width:10px; margin:0; }
+QScrollBar::handle:vertical { background:#C5D6D5; border-radius:5px; min-height:40px; }
+QScrollBar::handle:vertical:hover { background:#2A8C86; }
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height:0; }
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background:none; }
+QScrollBar:horizontal { background:transparent; height:10px; margin:0; }
+QScrollBar::handle:horizontal { background:#C5D6D5; border-radius:5px; min-width:40px; }
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal { width:0; }
+
+QToolTip { background:white; color:#1E3A3A; border:1px solid #D5E0E0; padding:4px; }</string>
+       </property>
+       <layout class="QVBoxLayout" name="layoutModuleStock">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QFrame" name="frameHeader">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>80</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>80</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string>.QFrame { background-color:#F4F8F8; border:none; border-bottom:1px solid #E0E8E8; }</string>
+          </property>
+          <layout class="QHBoxLayout" name="layoutHeader">
+           <property name="spacing">
+            <number>10</number>
+           </property>
+           <property name="leftMargin">
+            <number>20</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>25</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lblIconeTitre">
+             <property name="minimumSize">
+              <size>
+               <width>34</width>
+               <height>34</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>34</width>
+               <height>34</height>
+              </size>
+             </property>
+             <property name="text">
+              <string />
+             </property>
+             <property name="scaledContents">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lblTitre">
+             <property name="styleSheet">
+              <string>color:#17363A; font-size:26px; font-weight:bold;</string>
+             </property>
+             <property name="text">
+              <string>Gestion de stock</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="espaceHeader">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnNotif">
+             <property name="minimumSize">
+              <size>
+               <width>40</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="styleSheet">
+              <string>QPushButton{border:none;background:transparent;font-size:22px;} QPushButton:hover{background:#E6F2F1;border-radius:8px;}</string>
+             </property>
+             <property name="text">
+              <string />
+             </property>
+             <property name="toolTip">
+              <string>Notifications du stock</string>
+             </property>
+             <property name="icon">
+              <iconset resource="ressources.qrc">:/icones/bell_teal.png<normaloff>:/icones/bell_teal.png</normaloff>
+              </iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="espaceAvatar">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>10</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="lblAvatar">
+             <property name="minimumSize">
+              <size>
+               <width>44</width>
+               <height>44</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>44</width>
+               <height>44</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string>border:2px solid #2A8C86; border-radius:22px; background:white;</string>
+             </property>
+             <property name="text">
+              <string />
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QWidget" name="widgetUtilisateur">
+             <property name="minimumSize">
+              <size>
+               <width>150</width>
+               <height>44</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>150</width>
+               <height>44</height>
+              </size>
+             </property>
+             <widget class="QLabel" name="lblNomMedecin">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>2</y>
+                <width>150</width>
+                <height>20</height>
+               </rect>
+              </property>
+              <property name="styleSheet">
+               <string>color:#17363A; font-size:13px; font-weight:bold;</string>
+              </property>
+              <property name="text">
+               <string>Dr. Sami Ben Ali</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lblRole">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>22</y>
+                <width>150</width>
+                <height>18</height>
+               </rect>
+              </property>
+              <property name="styleSheet">
+               <string>color:#6B8080; font-size:10px;</string>
+              </property>
+              <property name="text">
+               <string>Médecin Vétérinaire</string>
+              </property>
+             </widget>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QStackedWidget" name="stackStock">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="pageGestionStock">
+           <layout class="QVBoxLayout" name="layoutPageStock">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QScrollArea" name="scrollStock">
+              <property name="frameShape">
+               <enum>QFrame::NoFrame</enum>
+              </property>
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="contenuStock">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>1100</width>
+                 <height>1200</height>
+                </rect>
+               </property>
+               <layout class="QVBoxLayout" name="layoutContenu">
+                <property name="spacing">
+                 <number>18</number>
+                </property>
+                <property name="leftMargin">
+                 <number>20</number>
+                </property>
+                <property name="topMargin">
+                 <number>16</number>
+                </property>
+                <property name="rightMargin">
+                 <number>20</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>25</number>
+                </property>
+                <item>
+                 <widget class="QWidget" name="zoneHautStock">
+                  <layout class="QHBoxLayout" name="layout_zoneHaut">
+                   <property name="spacing">
+                    <number>18</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QWidget" name="colonneGaucheStock">
+                     <layout class="QVBoxLayout" name="layout_colonneGauche">
+                      <property name="spacing">
+                       <number>14</number>
+                      </property>
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <item>
+                       <widget class="QWidget" name="ligneCartesStock">
+                        <layout class="QHBoxLayout" name="layout_ligneCartes">
+                         <property name="spacing">
+                          <number>14</number>
+                         </property>
+                         <property name="leftMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>0</number>
+                         </property>
+                         <item>
+                          <widget class="QFrame" name="frameCarte1Stock">
+                           <property name="minimumSize">
+                            <size>
+                             <width>190</width>
+                             <height>82</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>16777215</width>
+                             <height>82</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string>.QFrame { background-color:#E4F2F1; border:1px solid #CFE5E3; border-radius:10px; }</string>
+                           </property>
+                           <widget class="QLabel" name="lblCarte1IconeStock">
+                            <property name="geometry">
+                             <rect>
+                              <x>18</x>
+                              <y>25</y>
+                              <width>32</width>
+                              <height>32</height>
+                             </rect>
+                            </property>
+                            <property name="scaledContents">
+                             <bool>true</bool>
+                            </property>
+                            <property name="pixmap">
+                             <pixmap resource="ressources.qrc">:/icones/box_teal.png</pixmap>
+                            </property>
+                           </widget>
+                           <widget class="QLabel" name="lblCarte1TitreStock">
+                            <property name="geometry">
+                             <rect>
+                              <x>64</x>
+                              <y>12</y>
+                              <width>220</width>
+                              <height>22</height>
+                             </rect>
+                            </property>
+                            <property name="styleSheet">
+                             <string>color:#1E3A3A; font-size:12px;</string>
+                            </property>
+                            <property name="text">
+                             <string>Total des produits</string>
+                            </property>
+                           </widget>
+                           <widget class="QLabel" name="lblValeurTotalStock">
+                            <property name="geometry">
+                             <rect>
+                              <x>64</x>
+                              <y>34</y>
+                              <width>220</width>
+                              <height>36</height>
+                             </rect>
+                            </property>
+                            <property name="styleSheet">
+                             <string>color:#17363A; font-size:24px; font-weight:bold;</string>
+                            </property>
+                            <property name="text">
+                             <string>0</string>
+                            </property>
+                           </widget>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QFrame" name="frameCarte2Stock">
+                           <property name="minimumSize">
+                            <size>
+                             <width>190</width>
+                             <height>82</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>16777215</width>
+                             <height>82</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string>.QFrame { background-color:#E4F2F1; border:1px solid #CFE5E3; border-radius:10px; }</string>
+                           </property>
+                           <widget class="QLabel" name="lblCarte2IconeStock">
+                            <property name="geometry">
+                             <rect>
+                              <x>18</x>
+                              <y>25</y>
+                              <width>32</width>
+                              <height>32</height>
+                             </rect>
+                            </property>
+                            <property name="scaledContents">
+                             <bool>true</bool>
+                            </property>
+                            <property name="pixmap">
+                             <pixmap resource="ressources.qrc">:/icones/warning_red.png</pixmap>
+                            </property>
+                           </widget>
+                           <widget class="QLabel" name="lblCarte2TitreStock">
+                            <property name="geometry">
+                             <rect>
+                              <x>64</x>
+                              <y>12</y>
+                              <width>220</width>
+                              <height>22</height>
+                             </rect>
+                            </property>
+                            <property name="styleSheet">
+                             <string>color:#1E3A3A; font-size:12px;</string>
+                            </property>
+                            <property name="text">
+                             <string>À réapprovisionner</string>
+                            </property>
+                           </widget>
+                           <widget class="QLabel" name="lblValeurReapproStock">
+                            <property name="geometry">
+                             <rect>
+                              <x>64</x>
+                              <y>34</y>
+                              <width>220</width>
+                              <height>36</height>
+                             </rect>
+                            </property>
+                            <property name="styleSheet">
+                             <string>color:#D32F2F; font-size:24px; font-weight:bold;</string>
+                            </property>
+                            <property name="text">
+                             <string>0</string>
+                            </property>
+                           </widget>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QFrame" name="frameCarte3Stock">
+                           <property name="minimumSize">
+                            <size>
+                             <width>190</width>
+                             <height>82</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>16777215</width>
+                             <height>82</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string>.QFrame { background-color:#E4F2F1; border:1px solid #CFE5E3; border-radius:10px; }</string>
+                           </property>
+                           <widget class="QLabel" name="lblCarte3IconeStock">
+                            <property name="geometry">
+                             <rect>
+                              <x>18</x>
+                              <y>25</y>
+                              <width>32</width>
+                              <height>32</height>
+                             </rect>
+                            </property>
+                            <property name="scaledContents">
+                             <bool>true</bool>
+                            </property>
+                            <property name="pixmap">
+                             <pixmap resource="ressources.qrc">:/icones/coins_orange.png</pixmap>
+                            </property>
+                           </widget>
+                           <widget class="QLabel" name="lblCarte3TitreStock">
+                            <property name="geometry">
+                             <rect>
+                              <x>64</x>
+                              <y>12</y>
+                              <width>220</width>
+                              <height>22</height>
+                             </rect>
+                            </property>
+                            <property name="styleSheet">
+                             <string>color:#1E3A3A; font-size:12px;</string>
+                            </property>
+                            <property name="text">
+                             <string>Valeur du stock</string>
+                            </property>
+                           </widget>
+                           <widget class="QLabel" name="lblValeurStock">
+                            <property name="geometry">
+                             <rect>
+                              <x>64</x>
+                              <y>34</y>
+                              <width>220</width>
+                              <height>36</height>
+                             </rect>
+                            </property>
+                            <property name="styleSheet">
+                             <string>color:#17363A; font-size:24px; font-weight:bold;</string>
+                            </property>
+                            <property name="text">
+                             <string>0 TND</string>
+                            </property>
+                           </widget>
+                          </widget>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QWidget" name="ligneRechercheStock">
+                        <layout class="QHBoxLayout" name="layout_ligneRecherche">
+                         <property name="spacing">
+                          <number>14</number>
+                         </property>
+                         <property name="leftMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>0</number>
+                         </property>
+                         <item>
+                          <widget class="QLineEdit" name="txtRechercheStock">
+                           <property name="minimumSize">
+                            <size>
+                             <width>200</width>
+                             <height>42</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>16777215</width>
+                             <height>42</height>
+                            </size>
+                           </property>
+                           <property name="placeholderText">
+                            <string>Rechercher un produit par nom...</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QComboBox" name="cmbTriStock">
+                           <property name="minimumSize">
+                            <size>
+                             <width>330</width>
+                             <height>42</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>330</width>
+                             <height>42</height>
+                            </size>
+                           </property>
+                           <property name="cursor">
+                            <cursorShape>PointingHandCursor</cursorShape>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QTableWidget" name="tableStock">
+                        <property name="styleSheet">
+                         <string>QTableWidget { background:white; border:1px solid #E0E8E8; border-radius:10px;
+  gridline-color:#EEF2F2; font-size:12px; color:#1E3A3A; }
+QHeaderView::section { background:#F7FAFA; color:#1E3A3A; font-weight:bold; font-size:12px;
+  border:none; border-bottom:1px solid #E0E8E8; padding-left:8px; }
+QTableWidget::item { padding-left:8px; }
+QTableWidget::item:selected { background:#E6F2F1; color:#1E3A3A; }
+QTableWidget::indicator { width:16px; height:16px; }</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="lblAffichageStock">
+                        <property name="styleSheet">
+                         <string>color:#6B8080; font-size:10px;</string>
+                        </property>
+                        <property name="text">
+                         <string />
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QWidget" name="ligneBlocsStock">
+                        <layout class="QHBoxLayout" name="layout_ligneBlocs" stretch="1,1">
+                         <property name="spacing">
+                          <number>14</number>
+                         </property>
+                         <property name="leftMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>0</number>
+                         </property>
+                         <item>
+                          <widget class="QFrame" name="frameAlertesStock">
+                           <property name="minimumSize">
+                            <size>
+                             <width>260</width>
+                             <height>195</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>16777215</width>
+                             <height>195</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string>.QFrame { background-color:white; border:1px solid #E0E8E8; border-radius:10px; }</string>
+                           </property>
+                           <layout class="QVBoxLayout" name="layoutAlertes">
+                            <property name="spacing">
+                             <number>8</number>
+                            </property>
+                            <property name="leftMargin">
+                             <number>14</number>
+                            </property>
+                            <property name="topMargin">
+                             <number>12</number>
+                            </property>
+                            <property name="rightMargin">
+                             <number>14</number>
+                            </property>
+                            <property name="bottomMargin">
+                             <number>10</number>
+                            </property>
+                            <item>
+                             <widget class="QWidget" name="enteteAlertesStock">
+                              <layout class="QHBoxLayout" name="layout_enteteAlertes">
+                               <property name="spacing">
+                                <number>8</number>
+                               </property>
+                               <property name="leftMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>0</number>
+                               </property>
+                               <item>
+                                <widget class="QLabel" name="lblAlerteTitreStock">
+                                 <property name="styleSheet">
+                                  <string>color:#17363A; font-size:13px; font-weight:bold;</string>
+                                 </property>
+                                 <property name="text">
+                                  <string>À réapprovisionner</string>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <spacer name="espaceAlertes">
+                                 <property name="orientation">
+                                  <enum>Qt::Horizontal</enum>
+                                 </property>
+                                 <property name="sizeHint" stdset="0">
+                                  <size>
+                                   <width>40</width>
+                                   <height>20</height>
+                                  </size>
+                                 </property>
+                                </spacer>
+                               </item>
+                               <item>
+                                <widget class="QLabel" name="lblAlerteBadgeStock">
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>22</width>
+                                   <height>22</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>22</width>
+                                   <height>22</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string>background:#E53935;color:white;border-radius:11px;font-size:10px;font-weight:bold;</string>
+                                 </property>
+                                 <property name="text">
+                                  <string>0</string>
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignCenter</set>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QWidget" name="ligneAlerte1Stock">
+                              <layout class="QHBoxLayout" name="layout_ligneAlerte1">
+                               <property name="spacing">
+                                <number>8</number>
+                               </property>
+                               <property name="leftMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>0</number>
+                               </property>
+                               <item>
+                                <widget class="QLabel" name="lblAlerte1Stock">
+                                 <property name="styleSheet">
+                                  <string>color:#1E3A3A; font-size:12px;</string>
+                                 </property>
+                                 <property name="text">
+                                  <string />
+                                 </property>
+                                 <property name="textFormat">
+                                  <enum>Qt::RichText</enum>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QLabel" name="lblQte1Stock">
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>0</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>16777215</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string>color:#6B8080; font-size:10px;</string>
+                                 </property>
+                                 <property name="text">
+                                  <string />
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignRight|Qt::AlignVCenter</set>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QWidget" name="ligneAlerte2Stock">
+                              <layout class="QHBoxLayout" name="layout_ligneAlerte2">
+                               <property name="spacing">
+                                <number>8</number>
+                               </property>
+                               <property name="leftMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>0</number>
+                               </property>
+                               <item>
+                                <widget class="QLabel" name="lblAlerte2Stock">
+                                 <property name="styleSheet">
+                                  <string>color:#1E3A3A; font-size:12px;</string>
+                                 </property>
+                                 <property name="text">
+                                  <string />
+                                 </property>
+                                 <property name="textFormat">
+                                  <enum>Qt::RichText</enum>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QLabel" name="lblQte2Stock">
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>0</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>16777215</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string>color:#6B8080; font-size:10px;</string>
+                                 </property>
+                                 <property name="text">
+                                  <string />
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignRight|Qt::AlignVCenter</set>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QWidget" name="ligneAlerte3Stock">
+                              <layout class="QHBoxLayout" name="layout_ligneAlerte3">
+                               <property name="spacing">
+                                <number>8</number>
+                               </property>
+                               <property name="leftMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>0</number>
+                               </property>
+                               <item>
+                                <widget class="QLabel" name="lblAlerte3Stock">
+                                 <property name="styleSheet">
+                                  <string>color:#1E3A3A; font-size:12px;</string>
+                                 </property>
+                                 <property name="text">
+                                  <string />
+                                 </property>
+                                 <property name="textFormat">
+                                  <enum>Qt::RichText</enum>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QLabel" name="lblQte3Stock">
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>0</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>16777215</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string>color:#6B8080; font-size:10px;</string>
+                                 </property>
+                                 <property name="text">
+                                  <string />
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignRight|Qt::AlignVCenter</set>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                            <item>
+                             <spacer name="espaceBasAlertes">
+                              <property name="orientation">
+                               <enum>Qt::Vertical</enum>
+                              </property>
+                              <property name="sizeHint" stdset="0">
+                               <size>
+                                <width>40</width>
+                                <height>20</height>
+                               </size>
+                              </property>
+                             </spacer>
+                            </item>
+                            <item>
+                             <widget class="QPushButton" name="btnVoirToutStock">
+                              <property name="minimumSize">
+                               <size>
+                                <width>120</width>
+                                <height>24</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>120</width>
+                                <height>24</height>
+                               </size>
+                              </property>
+                              <property name="cursor">
+                               <cursorShape>PointingHandCursor</cursorShape>
+                              </property>
+                              <property name="styleSheet">
+                               <string>QPushButton{border:none;background:transparent;color:#2A8C86;font-size:11px;font-weight:bold;text-align:left;}QPushButton:hover{text-decoration:underline;}</string>
+                              </property>
+                              <property name="text">
+                               <string>Voir tout →</string>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QFrame" name="frameAlternatifsStock">
+                           <property name="minimumSize">
+                            <size>
+                             <width>260</width>
+                             <height>195</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>16777215</width>
+                             <height>195</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string>.QFrame { background-color:white; border:1px solid #E0E8E8; border-radius:10px; }</string>
+                           </property>
+                           <layout class="QVBoxLayout" name="layoutAlternatifs">
+                            <property name="spacing">
+                             <number>6</number>
+                            </property>
+                            <property name="leftMargin">
+                             <number>12</number>
+                            </property>
+                            <property name="topMargin">
+                             <number>10</number>
+                            </property>
+                            <property name="rightMargin">
+                             <number>12</number>
+                            </property>
+                            <property name="bottomMargin">
+                             <number>10</number>
+                            </property>
+                            <item>
+                             <widget class="QLabel" name="lblAltTitreStock">
+                              <property name="styleSheet">
+                               <string>color:#17363A; font-size:13px; font-weight:bold;</string>
+                              </property>
+                              <property name="text">
+                               <string>Alternatives suggérées</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QLabel" name="lblAltPourStock">
+                              <property name="styleSheet">
+                               <string>color:#6B8080; font-size:10px;</string>
+                              </property>
+                              <property name="text">
+                               <string />
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QFrame" name="frameAlt1Stock">
+                              <property name="minimumSize">
+                               <size>
+                                <width>0</width>
+                                <height>58</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>16777215</width>
+                                <height>58</height>
+                               </size>
+                              </property>
+                              <property name="cursor">
+                               <cursorShape>PointingHandCursor</cursorShape>
+                              </property>
+                              <property name="styleSheet">
+                               <string>.QFrame { background-color:#FAFCFC; border:1px solid #E0E8E8; border-radius:8px; }
+.QFrame:hover { background-color:#E6F2F1; border:1px solid #2A8C86; }</string>
+                              </property>
+                              <property name="toolTip">
+                               <string>Utiliser ce produit comme alternative</string>
+                              </property>
+                              <layout class="QHBoxLayout" name="layoutAlt1">
+                               <property name="spacing">
+                                <number>8</number>
+                               </property>
+                               <property name="leftMargin">
+                                <number>8</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>4</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>10</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>4</number>
+                               </property>
+                               <item>
+                                <widget class="QLabel" name="lblAltIcone1Stock">
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>34</width>
+                                   <height>0</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>34</width>
+                                   <height>16777215</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string>font-size:24px;</string>
+                                 </property>
+                                 <property name="text">
+                                  <string />
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QWidget" name="textesAlt1Stock">
+                                 <layout class="QVBoxLayout" name="layout_textesAlt1">
+                                  <property name="spacing">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="leftMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="topMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="rightMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="bottomMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <item>
+                                   <widget class="QLabel" name="lblAltNom1Stock">
+                                    <property name="styleSheet">
+                                     <string>color:#17363A;font-size:11px;font-weight:bold;</string>
+                                    </property>
+                                    <property name="text">
+                                     <string />
+                                    </property>
+                                   </widget>
+                                  </item>
+                                  <item>
+                                   <widget class="QLabel" name="lblAltCat1Stock">
+                                    <property name="styleSheet">
+                                     <string>color:#6B8080; font-size:10px;</string>
+                                    </property>
+                                    <property name="text">
+                                     <string />
+                                    </property>
+                                   </widget>
+                                  </item>
+                                  <item>
+                                   <widget class="QLabel" name="lblAltQte1Stock">
+                                    <property name="styleSheet">
+                                     <string>color:#6B8080; font-size:10px;</string>
+                                    </property>
+                                    <property name="text">
+                                     <string />
+                                    </property>
+                                   </widget>
+                                  </item>
+                                 </layout>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QLabel" name="lblAltFleche1Stock">
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>12</width>
+                                   <height>0</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>12</width>
+                                   <height>16777215</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string>color:#6B8080;font-size:18px;</string>
+                                 </property>
+                                 <property name="text">
+                                  <string>›</string>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QFrame" name="frameAlt2Stock">
+                              <property name="minimumSize">
+                               <size>
+                                <width>0</width>
+                                <height>58</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>16777215</width>
+                                <height>58</height>
+                               </size>
+                              </property>
+                              <property name="cursor">
+                               <cursorShape>PointingHandCursor</cursorShape>
+                              </property>
+                              <property name="styleSheet">
+                               <string>.QFrame { background-color:#FAFCFC; border:1px solid #E0E8E8; border-radius:8px; }
+.QFrame:hover { background-color:#E6F2F1; border:1px solid #2A8C86; }</string>
+                              </property>
+                              <property name="toolTip">
+                               <string>Utiliser ce produit comme alternative</string>
+                              </property>
+                              <layout class="QHBoxLayout" name="layoutAlt2">
+                               <property name="spacing">
+                                <number>8</number>
+                               </property>
+                               <property name="leftMargin">
+                                <number>8</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>4</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>10</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>4</number>
+                               </property>
+                               <item>
+                                <widget class="QLabel" name="lblAltIcone2Stock">
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>34</width>
+                                   <height>0</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>34</width>
+                                   <height>16777215</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string>font-size:24px;</string>
+                                 </property>
+                                 <property name="text">
+                                  <string />
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QWidget" name="textesAlt2Stock">
+                                 <layout class="QVBoxLayout" name="layout_textesAlt2">
+                                  <property name="spacing">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="leftMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="topMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="rightMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="bottomMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <item>
+                                   <widget class="QLabel" name="lblAltNom2Stock">
+                                    <property name="styleSheet">
+                                     <string>color:#17363A;font-size:11px;font-weight:bold;</string>
+                                    </property>
+                                    <property name="text">
+                                     <string />
+                                    </property>
+                                   </widget>
+                                  </item>
+                                  <item>
+                                   <widget class="QLabel" name="lblAltCat2Stock">
+                                    <property name="styleSheet">
+                                     <string>color:#6B8080; font-size:10px;</string>
+                                    </property>
+                                    <property name="text">
+                                     <string />
+                                    </property>
+                                   </widget>
+                                  </item>
+                                  <item>
+                                   <widget class="QLabel" name="lblAltQte2Stock">
+                                    <property name="styleSheet">
+                                     <string>color:#6B8080; font-size:10px;</string>
+                                    </property>
+                                    <property name="text">
+                                     <string />
+                                    </property>
+                                   </widget>
+                                  </item>
+                                 </layout>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QLabel" name="lblAltFleche2Stock">
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>12</width>
+                                   <height>0</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>12</width>
+                                   <height>16777215</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string>color:#6B8080;font-size:18px;</string>
+                                 </property>
+                                 <property name="text">
+                                  <string>›</string>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QLabel" name="lblAucuneAltStock">
+                              <property name="styleSheet">
+                               <string>color:#6B8080; font-size:10px;</string>
+                              </property>
+                              <property name="text">
+                               <string>Aucune alternative compatible (même usage et même espèce).</string>
+                              </property>
+                              <property name="wordWrap">
+                               <bool>true</bool>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <spacer name="espaceBasAlternatifs">
+                              <property name="orientation">
+                               <enum>Qt::Vertical</enum>
+                              </property>
+                              <property name="sizeHint" stdset="0">
+                               <size>
+                                <width>40</width>
+                                <height>20</height>
+                               </size>
+                              </property>
+                             </spacer>
+                            </item>
+                           </layout>
+                          </widget>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QWidget" name="colonneDroiteStock">
+                     <property name="minimumSize">
+                      <size>
+                       <width>290</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>290</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <layout class="QVBoxLayout" name="layout_colonneDroite">
+                      <property name="spacing">
+                       <number>14</number>
+                      </property>
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <item>
+                       <widget class="QFrame" name="frameFormulaireStock">
+                        <property name="minimumSize">
+                         <size>
+                          <width>290</width>
+                          <height>698</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>290</width>
+                          <height>698</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string>.QFrame { background-color:white; border:1px solid #E0E8E8; border-radius:10px; }</string>
+                        </property>
+                        <widget class="QLabel" name="lblFormTitreStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>14</y>
+                           <width>260</width>
+                           <height>26</height>
+                          </rect>
+                         </property>
+                         <property name="styleSheet">
+                          <string>color:#17363A;font-size:15px;font-weight:bold;</string>
+                         </property>
+                         <property name="text">
+                          <string>Ajouter un produit</string>
+                         </property>
+                        </widget>
+                        <widget class="QLabel" name="lblSeparateurStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>0</x>
+                           <y>50</y>
+                           <width>290</width>
+                           <height>1</height>
+                          </rect>
+                         </property>
+                         <property name="styleSheet">
+                          <string>background:#E0E8E8;</string>
+                         </property>
+                         <property name="text">
+                          <string />
+                         </property>
+                        </widget>
+                        <widget class="QLabel" name="lblNomStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>62</y>
+                           <width>260</width>
+                           <height>20</height>
+                          </rect>
+                         </property>
+                         <property name="styleSheet">
+                          <string>color:#17363A; font-size:13px;</string>
+                         </property>
+                         <property name="text">
+                          <string>Nom du produit &lt;span style="color:#E53935"&gt;*&lt;/span&gt;</string>
+                         </property>
+                         <property name="textFormat">
+                          <enum>Qt::RichText</enum>
+                         </property>
+                        </widget>
+                        <widget class="QLineEdit" name="txtNomStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>82</y>
+                           <width>260</width>
+                           <height>32</height>
+                          </rect>
+                         </property>
+                         <property name="placeholderText">
+                          <string>Ex : Croquettes premium chien</string>
+                         </property>
+                        </widget>
+                        <widget class="QLabel" name="lblCategorieStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>120</y>
+                           <width>260</width>
+                           <height>20</height>
+                          </rect>
+                         </property>
+                         <property name="styleSheet">
+                          <string>color:#17363A; font-size:13px;</string>
+                         </property>
+                         <property name="text">
+                          <string>Catégorie &lt;span style="color:#E53935"&gt;*&lt;/span&gt;</string>
+                         </property>
+                         <property name="textFormat">
+                          <enum>Qt::RichText</enum>
+                         </property>
+                        </widget>
+                        <widget class="QComboBox" name="cmbCategorieStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>140</y>
+                           <width>260</width>
+                           <height>32</height>
+                          </rect>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                        </widget>
+                        <widget class="QLabel" name="lblEspeceStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>178</y>
+                           <width>126</width>
+                           <height>20</height>
+                          </rect>
+                         </property>
+                         <property name="styleSheet">
+                          <string>color:#17363A; font-size:13px;</string>
+                         </property>
+                         <property name="text">
+                          <string>Espèce &lt;span style="color:#E53935"&gt;*&lt;/span&gt;</string>
+                         </property>
+                         <property name="textFormat">
+                          <enum>Qt::RichText</enum>
+                         </property>
+                        </widget>
+                        <widget class="QComboBox" name="cmbEspeceStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>198</y>
+                           <width>126</width>
+                           <height>32</height>
+                          </rect>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                        </widget>
+                        <widget class="QLabel" name="lblUsageStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>149</x>
+                           <y>178</y>
+                           <width>126</width>
+                           <height>20</height>
+                          </rect>
+                         </property>
+                         <property name="styleSheet">
+                          <string>color:#17363A; font-size:13px;</string>
+                         </property>
+                         <property name="text">
+                          <string>Usage &lt;span style="color:#E53935"&gt;*&lt;/span&gt;</string>
+                         </property>
+                         <property name="textFormat">
+                          <enum>Qt::RichText</enum>
+                         </property>
+                        </widget>
+                        <widget class="QComboBox" name="cmbUsageStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>149</x>
+                           <y>198</y>
+                           <width>126</width>
+                           <height>32</height>
+                          </rect>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                        </widget>
+                        <widget class="QLabel" name="lblQuantiteStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>236</y>
+                           <width>260</width>
+                           <height>20</height>
+                          </rect>
+                         </property>
+                         <property name="styleSheet">
+                          <string>color:#17363A; font-size:13px;</string>
+                         </property>
+                         <property name="text">
+                          <string>Quantité &lt;span style="color:#E53935"&gt;*&lt;/span&gt;</string>
+                         </property>
+                         <property name="textFormat">
+                          <enum>Qt::RichText</enum>
+                         </property>
+                        </widget>
+                        <widget class="QSpinBox" name="spinQuantiteStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>256</y>
+                           <width>260</width>
+                           <height>32</height>
+                          </rect>
+                         </property>
+                        </widget>
+                        <widget class="QLabel" name="lblSeuilStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>294</y>
+                           <width>260</width>
+                           <height>20</height>
+                          </rect>
+                         </property>
+                         <property name="styleSheet">
+                          <string>color:#17363A; font-size:13px;</string>
+                         </property>
+                         <property name="text">
+                          <string>Seuil minimal &lt;span style="color:#E53935"&gt;*&lt;/span&gt;</string>
+                         </property>
+                         <property name="textFormat">
+                          <enum>Qt::RichText</enum>
+                         </property>
+                        </widget>
+                        <widget class="QSpinBox" name="spinSeuilStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>314</y>
+                           <width>260</width>
+                           <height>32</height>
+                          </rect>
+                         </property>
+                        </widget>
+                        <widget class="QLabel" name="lblDateStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>352</y>
+                           <width>260</width>
+                           <height>20</height>
+                          </rect>
+                         </property>
+                         <property name="styleSheet">
+                          <string>color:#17363A; font-size:13px;</string>
+                         </property>
+                         <property name="text">
+                          <string>Date d'expiration &lt;span style="color:#E53935"&gt;*&lt;/span&gt;</string>
+                         </property>
+                         <property name="textFormat">
+                          <enum>Qt::RichText</enum>
+                         </property>
+                        </widget>
+                        <widget class="QDateEdit" name="dateExpirationStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>372</y>
+                           <width>260</width>
+                           <height>32</height>
+                          </rect>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                        </widget>
+                        <widget class="QLabel" name="lblFournisseurStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>410</y>
+                           <width>260</width>
+                           <height>20</height>
+                          </rect>
+                         </property>
+                         <property name="styleSheet">
+                          <string>color:#17363A; font-size:13px;</string>
+                         </property>
+                         <property name="text">
+                          <string>Fournisseur &lt;span style="color:#E53935"&gt;*&lt;/span&gt;</string>
+                         </property>
+                         <property name="textFormat">
+                          <enum>Qt::RichText</enum>
+                         </property>
+                        </widget>
+                        <widget class="QLineEdit" name="txtFournisseurStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>430</y>
+                           <width>260</width>
+                           <height>32</height>
+                          </rect>
+                         </property>
+                         <property name="placeholderText">
+                          <string>Ex : Fournisseur ABC</string>
+                         </property>
+                        </widget>
+                        <widget class="QLabel" name="lblPrixStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>468</y>
+                           <width>260</width>
+                           <height>20</height>
+                          </rect>
+                         </property>
+                         <property name="styleSheet">
+                          <string>color:#17363A; font-size:13px;</string>
+                         </property>
+                         <property name="text">
+                          <string>Prix unitaire (TND) &lt;span style="color:#E53935"&gt;*&lt;/span&gt;</string>
+                         </property>
+                         <property name="textFormat">
+                          <enum>Qt::RichText</enum>
+                         </property>
+                        </widget>
+                        <widget class="QDoubleSpinBox" name="spinPrixStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>488</y>
+                           <width>260</width>
+                           <height>32</height>
+                          </rect>
+                         </property>
+                        </widget>
+                        <widget class="QPushButton" name="btnEnregistrerStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>544</y>
+                           <width>260</width>
+                           <height>40</height>
+                          </rect>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                         <property name="styleSheet">
+                          <string>QPushButton { background-color:#2A8C86; color:white; border:none; border-radius:6px; font-size:14px; font-weight:bold; }
+QPushButton:hover { background-color:#237872; }
+QPushButton:disabled { background-color:#B7D3D1; color:white; }</string>
+                         </property>
+                         <property name="text">
+                          <string>  Enregistrer</string>
+                         </property>
+                         <property name="icon">
+                          <iconset resource="ressources.qrc">:/icones/save_white.png<normaloff>:/icones/save_white.png</normaloff>
+                          </iconset>
+                         </property>
+                         <property name="iconSize">
+                          <size>
+                           <width>18</width>
+                           <height>18</height>
+                          </size>
+                         </property>
+                        </widget>
+                        <widget class="QPushButton" name="btnModifierStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>592</y>
+                           <width>126</width>
+                           <height>40</height>
+                          </rect>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                         <property name="styleSheet">
+                          <string>QPushButton { background:white; color:#2A8C86; border:1px solid #2A8C86; border-radius:6px; font-size:14px; }
+QPushButton:hover { background-color:#E6F2F1; }
+QPushButton:disabled { color:#A9B8B8; border:1px solid #D5E0E0; background:#F4F7F7; }</string>
+                         </property>
+                         <property name="text">
+                          <string>  Modifier</string>
+                         </property>
+                         <property name="icon">
+                          <iconset resource="ressources.qrc">:/icones/pencil_teal.png<normaloff>:/icones/pencil_teal.png</normaloff>
+                          </iconset>
+                         </property>
+                         <property name="iconSize">
+                          <size>
+                           <width>18</width>
+                           <height>18</height>
+                          </size>
+                         </property>
+                        </widget>
+                        <widget class="QPushButton" name="btnAnnulerStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>149</x>
+                           <y>592</y>
+                           <width>126</width>
+                           <height>40</height>
+                          </rect>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                         <property name="styleSheet">
+                          <string>QPushButton { background:white; color:#5F7373; border:1px solid #B9C9C9; border-radius:6px; font-size:14px; }
+QPushButton:hover { background-color:#F0F4F4; }
+QPushButton:disabled { color:#A9B8B8; border:1px solid #D5E0E0; background:#F4F7F7; }</string>
+                         </property>
+                         <property name="text">
+                          <string>  Annuler</string>
+                         </property>
+                         <property name="toolTip">
+                          <string>Annuler la modification et vider le formulaire</string>
+                         </property>
+                         <property name="icon">
+                          <iconset resource="ressources.qrc">:/icones/croix_grey.png<normaloff>:/icones/croix_grey.png</normaloff>
+                          </iconset>
+                         </property>
+                         <property name="iconSize">
+                          <size>
+                           <width>14</width>
+                           <height>14</height>
+                          </size>
+                         </property>
+                        </widget>
+                        <widget class="QPushButton" name="btnSupprimerStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>15</x>
+                           <y>640</y>
+                           <width>260</width>
+                           <height>40</height>
+                          </rect>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                         <property name="styleSheet">
+                          <string>QPushButton { background:white; color:#D32F2F; border:1px solid #E57373; border-radius:6px; font-size:14px; }
+QPushButton:hover { background-color:#FDECEC; }</string>
+                         </property>
+                         <property name="text">
+                          <string>  Supprimer</string>
+                         </property>
+                         <property name="icon">
+                          <iconset resource="ressources.qrc">:/icones/trash_red.png<normaloff>:/icones/trash_red.png</normaloff>
+                          </iconset>
+                         </property>
+                         <property name="iconSize">
+                          <size>
+                           <width>18</width>
+                           <height>18</height>
+                          </size>
+                         </property>
+                        </widget>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QFrame" name="frameExportStock">
+                        <property name="minimumSize">
+                         <size>
+                          <width>290</width>
+                          <height>104</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>290</width>
+                          <height>104</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string>.QFrame { background-color:#E4F2F1; border:1px solid #CFE5E3; border-radius:10px; }</string>
+                        </property>
+                        <widget class="QLabel" name="lblExportIconeStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>12</x>
+                           <y>12</y>
+                           <width>26</width>
+                           <height>26</height>
+                          </rect>
+                         </property>
+                         <property name="scaledContents">
+                          <bool>true</bool>
+                         </property>
+                         <property name="pixmap">
+                          <pixmap resource="ressources.qrc">:/icones/clipboard_teal.png</pixmap>
+                         </property>
+                        </widget>
+                        <widget class="QLabel" name="lblExportTitreStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>46</x>
+                           <y>8</y>
+                           <width>235</width>
+                           <height>20</height>
+                          </rect>
+                         </property>
+                         <property name="styleSheet">
+                          <string>color:#17363A; font-size:12px; font-weight:bold;</string>
+                         </property>
+                         <property name="text">
+                          <string>Réapprovisionnement intelligent</string>
+                         </property>
+                        </widget>
+                        <widget class="QLabel" name="lblExportSousTitreStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>46</x>
+                           <y>28</y>
+                           <width>235</width>
+                           <height>18</height>
+                          </rect>
+                         </property>
+                         <property name="styleSheet">
+                          <string>color:#6B8080; font-size:10px;</string>
+                         </property>
+                         <property name="text">
+                          <string>Prévisions, commandes et réception.</string>
+                         </property>
+                        </widget>
+                        <widget class="QPushButton" name="btnOuvrirReapproStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>12</x>
+                           <y>58</y>
+                           <width>130</width>
+                           <height>34</height>
+                          </rect>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                         <property name="styleSheet">
+                          <string>QPushButton { background-color:#2A8C86; color:white; border:none; border-radius:6px; font-size:14px; font-weight:bold; }
+QPushButton:hover { background-color:#237872; }
+QPushButton:disabled { background-color:#B7D3D1; color:white; }</string>
+                         </property>
+                         <property name="text">
+                          <string>  Ouvrir</string>
+                         </property>
+                         <property name="toolTip">
+                          <string>Ouvrir le centre de réapprovisionnement</string>
+                         </property>
+                         <property name="icon">
+                          <iconset resource="ressources.qrc">:/icones/clipboard_white.png<normaloff>:/icones/clipboard_white.png</normaloff>
+                          </iconset>
+                         </property>
+                         <property name="iconSize">
+                          <size>
+                           <width>18</width>
+                           <height>18</height>
+                          </size>
+                         </property>
+                        </widget>
+                        <widget class="QPushButton" name="btnExcelStock">
+                         <property name="geometry">
+                          <rect>
+                           <x>148</x>
+                           <y>58</y>
+                           <width>130</width>
+                           <height>34</height>
+                          </rect>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                         <property name="styleSheet">
+                          <string>QPushButton { background-color:#2E7D32; color:white; border:none; border-radius:6px; font-size:14px; font-weight:bold; }
+QPushButton:hover { background-color:#256628; }</string>
+                         </property>
+                         <property name="text">
+                          <string>  Excel</string>
+                         </property>
+                         <property name="toolTip">
+                          <string>Télécharger les suggestions de commande en Excel</string>
+                         </property>
+                         <property name="icon">
+                          <iconset resource="ressources.qrc">:/icones/download_white.png<normaloff>:/icones/download_white.png</normaloff>
+                          </iconset>
+                         </property>
+                         <property name="iconSize">
+                          <size>
+                           <width>18</width>
+                           <height>18</height>
+                          </size>
+                         </property>
+                        </widget>
+                       </widget>
+                      </item>
+                      <item>
+                       <spacer name="espaceColonneDroite">
+                        <property name="orientation">
+                         <enum>Qt::Vertical</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>40</width>
+                          <height>20</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="lblStatsTitreStock">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string>color:#17363A; font-size:18px; font-weight:bold;</string>
+                  </property>
+                  <property name="text">
+                   <string>Statistiques du stock</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QWidget" name="ligneStatsStock">
+                  <layout class="QHBoxLayout" name="layout_ligneStats" stretch="3,2">
+                   <property name="spacing">
+                    <number>14</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QFrame" name="frameGraphiqueStock">
+                     <property name="minimumSize">
+                      <size>
+                       <width>400</width>
+                       <height>300</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>300</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string>.QFrame { background-color:white; border:1px solid #E0E8E8; border-radius:10px; }</string>
+                     </property>
+                     <layout class="QVBoxLayout" name="layoutGraphique">
+                      <property name="spacing">
+                       <number>6</number>
+                      </property>
+                      <property name="leftMargin">
+                       <number>14</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>10</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>14</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>10</number>
+                      </property>
+                      <item>
+                       <widget class="QWidget" name="enteteGraphiqueStock">
+                        <layout class="QHBoxLayout" name="layout_enteteGraphique">
+                         <property name="spacing">
+                          <number>8</number>
+                         </property>
+                         <property name="leftMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>0</number>
+                         </property>
+                         <item>
+                          <widget class="QLabel" name="lblGraphTitreStock">
+                           <property name="styleSheet">
+                            <string>color:#17363A; font-size:13px; font-weight:bold;</string>
+                           </property>
+                           <property name="text">
+                            <string>Évolution de la consommation</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <spacer name="espaceGraphique">
+                           <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>40</width>
+                             <height>20</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                         <item>
+                          <widget class="QComboBox" name="cmbPeriodeStock">
+                           <property name="minimumSize">
+                            <size>
+                             <width>150</width>
+                             <height>30</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>150</width>
+                             <height>30</height>
+                            </size>
+                           </property>
+                           <property name="cursor">
+                            <cursorShape>PointingHandCursor</cursorShape>
+                           </property>
+                           <property name="styleSheet">
+                            <string>font-size:11px;</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QWidget" name="widgetGraphiqueStock">
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>230</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QFrame" name="frameStat1Stock">
+                     <property name="minimumSize">
+                      <size>
+                       <width>320</width>
+                       <height>300</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>300</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string>.QFrame { background-color:white; border:1px solid #E0E8E8; border-radius:10px; }</string>
+                     </property>
+                     <layout class="QVBoxLayout" name="layout_frameStat1">
+                      <property name="spacing">
+                       <number>6</number>
+                      </property>
+                      <property name="leftMargin">
+                       <number>14</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>10</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>14</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>10</number>
+                      </property>
+                      <item>
+                       <widget class="QLabel" name="lblStat1TitreStock">
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>30</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string>color:#17363A; font-size:13px; font-weight:bold;</string>
+                        </property>
+                        <property name="text">
+                         <string>Répartition des produits par catégorie</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QWidget" name="widgetCamembertStock">
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>230</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="lblSubstTitreStock">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string>color:#17363A; font-size:18px; font-weight:bold;</string>
+                  </property>
+                  <property name="text">
+                   <string>Historique des substitutions</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="frameSubstitutionsStock">
+                  <property name="styleSheet">
+                   <string>.QFrame { background-color:white; border:1px solid #E0E8E8; border-radius:10px; }</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="layoutSubstitutions">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>16</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>14</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>16</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>16</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="lblSubstInfoStock">
+                     <property name="styleSheet">
+                      <string>color:#1E3A3A; font-size:12px;</string>
+                     </property>
+                     <property name="text">
+                      <string>Chaque substitution validée est enregistrée ici. La quantité remplacée est comptée dans la demande réelle du produit manquant, pour que le réapprovisionnement intelligent en tienne compte.</string>
+                     </property>
+                     <property name="wordWrap">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QTableWidget" name="tableSubstitutionsStock">
+                     <property name="styleSheet">
+                      <string>QTableWidget { background:white; border:1px solid #E0E8E8; border-radius:10px;
+  gridline-color:#EEF2F2; font-size:12px; color:#1E3A3A; }
+QHeaderView::section { background:#F7FAFA; color:#1E3A3A; font-weight:bold; font-size:12px;
+  border:none; border-bottom:1px solid #E0E8E8; padding-left:8px; }
+QTableWidget::item { padding-left:8px; }
+QTableWidget::item:selected { background:#E6F2F1; color:#1E3A3A; }
+QTableWidget::indicator { width:16px; height:16px; }</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="lblAucuneSubstitutionStock">
+                     <property name="styleSheet">
+                      <string>color:#6B8080; font-size:12px;</string>
+                     </property>
+                     <property name="text">
+                      <string>Aucune substitution pour le moment.</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="espaceBas">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="pageReappro">
+           <layout class="QVBoxLayout" name="layoutPageReappro">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QScrollArea" name="scrollReappro">
+              <property name="frameShape">
+               <enum>QFrame::NoFrame</enum>
+              </property>
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="contenuReappro">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>1100</width>
+                 <height>900</height>
+                </rect>
+               </property>
+               <property name="styleSheet">
+                <string>#contenuReappro { background-color:#F4F8F8; }</string>
+               </property>
+               <layout class="QVBoxLayout" name="layoutContenuReappro">
+                <property name="spacing">
+                 <number>16</number>
+                </property>
+                <property name="leftMargin">
+                 <number>20</number>
+                </property>
+                <property name="topMargin">
+                 <number>16</number>
+                </property>
+                <property name="rightMargin">
+                 <number>20</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>25</number>
+                </property>
+                <item>
+                 <widget class="QWidget" name="barreReappro">
+                  <layout class="QHBoxLayout" name="layout_barreReappro">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QPushButton" name="btnRetourStock">
+                     <property name="minimumSize">
+                      <size>
+                       <width>170</width>
+                       <height>38</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>170</width>
+                       <height>38</height>
+                      </size>
+                     </property>
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
+                     <property name="styleSheet">
+                      <string>QPushButton { background:white; color:#2A8C86; border:1px solid #2A8C86; border-radius:6px; font-size:14px; }
+QPushButton:hover { background-color:#E6F2F1; }
+QPushButton:disabled { color:#A9B8B8; border:1px solid #D5E0E0; background:#F4F7F7; }</string>
+                     </property>
+                     <property name="text">
+                      <string>  Retour au stock</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="ressources.qrc">:/icones/fleche_gauche_teal.png<normaloff>:/icones/fleche_gauche_teal.png</normaloff>
+                      </iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>18</width>
+                       <height>18</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="espaceBarreReappro">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="lblDelaiStock">
+                     <property name="styleSheet">
+                      <string>color:#17363A; font-size:13px;</string>
+                     </property>
+                     <property name="text">
+                      <string>Délai de livraison :</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QSpinBox" name="spinDelaiStock">
+                     <property name="minimumSize">
+                      <size>
+                       <width>130</width>
+                       <height>38</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>130</width>
+                       <height>38</height>
+                      </size>
+                     </property>
+                     <property name="toolTip">
+                      <string>Nombre de jours entre la commande et la livraison</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="espaceParam">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeType">
+                      <enum>QSizePolicy::Fixed</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>14</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="lblCouvertureStock">
+                     <property name="styleSheet">
+                      <string>color:#17363A; font-size:13px;</string>
+                     </property>
+                     <property name="text">
+                      <string>Couverture souhaitée :</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QSpinBox" name="spinCouvertureStock">
+                     <property name="minimumSize">
+                      <size>
+                       <width>130</width>
+                       <height>38</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>130</width>
+                       <height>38</height>
+                      </size>
+                     </property>
+                     <property name="toolTip">
+                      <string>Nombre de jours de consommation que la commande doit couvrir</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="lblExplicationStock">
+                  <property name="styleSheet">
+                   <string>background:#E4F2F1; border:1px solid #CFE5E3; border-radius:10px; padding:12px; color:#1E3A3A; font-size:12px;</string>
+                  </property>
+                  <property name="text">
+                   <string>&lt;b&gt;Comment ça marche ?&lt;/b&gt; Pour chaque produit, le système calcule la consommation moyenne des 30 derniers jours, prévoit la date de rupture (en tenant compte de la date d'expiration) et la compare au délai de livraison. Il propose ensuite la quantité à commander pour couvrir le délai et la période souhaitée. &lt;b&gt;Critique&lt;/b&gt; : rupture avant la livraison possible · &lt;b&gt;Urgent&lt;/b&gt; : quantité ≤ seuil · &lt;b&gt;Préventif&lt;/b&gt; : rupture prévue dans moins d'une semaine après le délai. Un produit déjà commandé n'est jamais proposé deux fois.</string>
+                  </property>
+                  <property name="textFormat">
+                   <enum>Qt::RichText</enum>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="lblCompteursStock">
+                  <property name="styleSheet">
+                   <string>font-size:13px; color:#1E3A3A;</string>
+                  </property>
+                  <property name="text">
+                   <string />
+                  </property>
+                  <property name="textFormat">
+                   <enum>Qt::RichText</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="frameSuggestionsStock">
+                  <property name="styleSheet">
+                   <string>.QFrame { background-color:white; border:1px solid #E0E8E8; border-radius:10px; }</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="layoutSuggestions">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>16</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>14</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>16</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>16</number>
+                   </property>
+                   <item>
+                    <widget class="QWidget" name="enteteSuggestionsStock">
+                     <layout class="QHBoxLayout" name="layout_enteteSuggestions">
+                      <property name="spacing">
+                       <number>10</number>
+                      </property>
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <item>
+                       <widget class="QLabel" name="lblSuggTitreStock">
+                        <property name="styleSheet">
+                         <string>color:#17363A; font-size:15px; font-weight:bold;</string>
+                        </property>
+                        <property name="text">
+                         <string>Suggestions de réapprovisionnement</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <spacer name="espaceSugg">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>40</width>
+                          <height>20</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="btnToutSelectionnerStock">
+                        <property name="minimumSize">
+                         <size>
+                          <width>165</width>
+                          <height>36</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>165</width>
+                          <height>36</height>
+                         </size>
+                        </property>
+                        <property name="cursor">
+                         <cursorShape>PointingHandCursor</cursorShape>
+                        </property>
+                        <property name="styleSheet">
+                         <string>QPushButton { background:white; color:#2A8C86; border:1px solid #2A8C86; border-radius:6px; font-size:14px; }
+QPushButton:hover { background-color:#E6F2F1; }
+QPushButton:disabled { color:#A9B8B8; border:1px solid #D5E0E0; background:#F4F7F7; }</string>
+                        </property>
+                        <property name="text">
+                         <string>  Tout sélectionner</string>
+                        </property>
+                        <property name="icon">
+                         <iconset resource="ressources.qrc">:/icones/check_teal.png<normaloff>:/icones/check_teal.png</normaloff>
+                         </iconset>
+                        </property>
+                        <property name="iconSize">
+                         <size>
+                          <width>16</width>
+                          <height>16</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="btnCommanderSelectionStock">
+                        <property name="minimumSize">
+                         <size>
+                          <width>230</width>
+                          <height>36</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>230</width>
+                          <height>36</height>
+                         </size>
+                        </property>
+                        <property name="cursor">
+                         <cursorShape>PointingHandCursor</cursorShape>
+                        </property>
+                        <property name="styleSheet">
+                         <string>QPushButton { background-color:#2A8C86; color:white; border:none; border-radius:6px; font-size:14px; font-weight:bold; }
+QPushButton:hover { background-color:#237872; }
+QPushButton:disabled { background-color:#B7D3D1; color:white; }</string>
+                        </property>
+                        <property name="text">
+                         <string>  Commander la sélection</string>
+                        </property>
+                        <property name="icon">
+                         <iconset resource="ressources.qrc">:/icones/cart_white.png<normaloff>:/icones/cart_white.png</normaloff>
+                         </iconset>
+                        </property>
+                        <property name="iconSize">
+                         <size>
+                          <width>18</width>
+                          <height>18</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="btnExcelSuggestionsStock">
+                        <property name="minimumSize">
+                         <size>
+                          <width>110</width>
+                          <height>36</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>110</width>
+                          <height>36</height>
+                         </size>
+                        </property>
+                        <property name="cursor">
+                         <cursorShape>PointingHandCursor</cursorShape>
+                        </property>
+                        <property name="styleSheet">
+                         <string>QPushButton { background-color:#2E7D32; color:white; border:none; border-radius:6px; font-size:14px; font-weight:bold; }
+QPushButton:hover { background-color:#256628; }</string>
+                        </property>
+                        <property name="text">
+                         <string>  Excel</string>
+                        </property>
+                        <property name="icon">
+                         <iconset resource="ressources.qrc">:/icones/download_white.png<normaloff>:/icones/download_white.png</normaloff>
+                         </iconset>
+                        </property>
+                        <property name="iconSize">
+                         <size>
+                          <width>18</width>
+                          <height>18</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QTableWidget" name="tableSuggestionsStock">
+                     <property name="styleSheet">
+                      <string>QTableWidget { background:white; border:1px solid #E0E8E8; border-radius:10px;
+  gridline-color:#EEF2F2; font-size:12px; color:#1E3A3A; }
+QHeaderView::section { background:#F7FAFA; color:#1E3A3A; font-weight:bold; font-size:12px;
+  border:none; border-bottom:1px solid #E0E8E8; padding-left:8px; }
+QTableWidget::item { padding-left:8px; }
+QTableWidget::item:selected { background:#E6F2F1; color:#1E3A3A; }
+QTableWidget::indicator { width:16px; height:16px; }</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="lblAucuneSuggestionStock">
+                     <property name="styleSheet">
+                      <string>color:#2E8B57; font-size:13px; font-weight:bold;</string>
+                     </property>
+                     <property name="text">
+                      <string>Aucun produit à réapprovisionner : le stock est sous contrôle.</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="frameCommandesStock">
+                  <property name="styleSheet">
+                   <string>.QFrame { background-color:white; border:1px solid #E0E8E8; border-radius:10px; }</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="layoutCommandes">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>16</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>14</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>16</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>16</number>
+                   </property>
+                   <item>
+                    <widget class="QWidget" name="enteteCommandesStock">
+                     <layout class="QHBoxLayout" name="layout_enteteCommandes">
+                      <property name="spacing">
+                       <number>10</number>
+                      </property>
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <item>
+                       <widget class="QLabel" name="lblCmdTitreStock">
+                        <property name="styleSheet">
+                         <string>color:#17363A; font-size:15px; font-weight:bold;</string>
+                        </property>
+                        <property name="text">
+                         <string>Commandes de réapprovisionnement</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <spacer name="espaceCmd">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>40</width>
+                          <height>20</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="btnExcelCommandesStock">
+                        <property name="minimumSize">
+                         <size>
+                          <width>110</width>
+                          <height>36</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>110</width>
+                          <height>36</height>
+                         </size>
+                        </property>
+                        <property name="cursor">
+                         <cursorShape>PointingHandCursor</cursorShape>
+                        </property>
+                        <property name="styleSheet">
+                         <string>QPushButton { background-color:#2E7D32; color:white; border:none; border-radius:6px; font-size:14px; font-weight:bold; }
+QPushButton:hover { background-color:#256628; }</string>
+                        </property>
+                        <property name="text">
+                         <string>  Excel</string>
+                        </property>
+                        <property name="icon">
+                         <iconset resource="ressources.qrc">:/icones/download_white.png<normaloff>:/icones/download_white.png</normaloff>
+                         </iconset>
+                        </property>
+                        <property name="iconSize">
+                         <size>
+                          <width>18</width>
+                          <height>18</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QTableWidget" name="tableCommandesStock">
+                     <property name="styleSheet">
+                      <string>QTableWidget { background:white; border:1px solid #E0E8E8; border-radius:10px;
+  gridline-color:#EEF2F2; font-size:12px; color:#1E3A3A; }
+QHeaderView::section { background:#F7FAFA; color:#1E3A3A; font-weight:bold; font-size:12px;
+  border:none; border-bottom:1px solid #E0E8E8; padding-left:8px; }
+QTableWidget::item { padding-left:8px; }
+QTableWidget::item:selected { background:#E6F2F1; color:#1E3A3A; }
+QTableWidget::indicator { width:16px; height:16px; }</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="lblAucuneCommandeStock">
+                     <property name="styleSheet">
+                      <string>color:#6B8080; font-size:12px;</string>
+                     </property>
+                     <property name="text">
+                      <string>Aucune commande pour le moment.</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="espaceBasReappro">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar" />
+  <widget class="QStatusBar" name="statusbar" />
+ </widget>
+ <resources>
+  <include location="ressources.qrc" />
+ </resources>
+ <connections />
+</ui>

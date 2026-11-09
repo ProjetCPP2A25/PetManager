@@ -1,0 +1,99 @@
+/* Fix 2: Selected row readable */
+QTableWidget::item:selected { background-color: #E6F4F2; color: #2D3436; }
+QTableWidget { outline: 0; }
+
+/* Fix 4: Alert Badge Style */
+#label_alerts_badge {
+    background-color: #D9534F;
+    color: #FFFFFF;
+    border-radius: 9px;
+    font-size: 10px;
+    font-weight: bold;
+    min-width: 18px;
+    max-width: 18px;
+    min-height: 18px;
+    max-height: 18px;
+    padding: 0;
+    qproperty-alignment: AlignCenter;
+    margin-left: 8px;
+}
+
+/* Global */
+* { font-family: "Segoe UI", "Arial", sans-serif; font-size: 14px; color: #2D3436; }
+QMainWindow { background-color: #F4F8F8; }
+
+QScrollBar:vertical { border: none; background: transparent; width: 8px; margin: 0; }
+QScrollBar::handle:vertical { background: #C0C0C0; border-radius: 4px; min-height: 20px; }
+QScrollBar::handle:vertical:hover { background: #A0A0A0; }
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: transparent; }
+
+QWidget#frame_right { background-color: #F4F8F8; }
+QLabel { background: transparent; border: none; }
+
+QLineEdit, QComboBox, QSpinBox, QDoubleSpinBox, QDateEdit {
+    background-color: #FFFFFF;
+    border: 1px solid #DADDDC;
+    border-radius: 6px;
+    padding: 0 10px;
+    font-size: 13px;
+    selection-background-color: #2A8C82;
+}
+
+QLineEdit:focus, QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus, QDateEdit:focus { border: 2px solid #2A8C82; }
+
+QComboBox QAbstractItemView { background-color: #FFFFFF; color: #2D3436; selection-background-color: #E6F4F2; border: 1px solid #DADDDC; outline: none; }
+QComboBox::drop-down { subcontrol-origin: padding; subcontrol-position: top right; width: 28px; border: none; }
+QComboBox::down-arrow { image: url(:/resources/icons/chevron-down.svg); width: 12px; height: 12px; margin-right: 6px; }
+QDateEdit::drop-down { subcontrol-origin: padding; subcontrol-position: top right; width: 28px; border: none; }
+QDateEdit::down-arrow { image: url(:/resources/icons/chevron-down.svg); width: 12px; height: 12px; margin-right: 6px; }
+QSpinBox::up-button, QDoubleSpinBox::up-button, QSpinBox::down-button, QDoubleSpinBox::down-button { width: 16px; border: none; background: transparent; }
+
+QCalendarWidget { background-color: #FFFFFF; color: #2D3436; }
+QToolTip { background-color: #FFFFFF; color: #2D3436; border: 1px solid #DADDDC; }
+
+#frame_sidebar { background-color: #FFFFFF; border-right: 1px solid #EAEAEA; }
+#label_logo { margin: 16px 0; }
+#frame_sidebar QPushButton { background: transparent; border: none; border-radius: 8px; padding: 10px 14px; text-align: left; color: #2D3436; font-weight: normal; margin: 2px 8px; }
+#frame_sidebar QPushButton:hover { background-color: #E6F2F1; }
+#frame_sidebar QPushButton:checked { background-color: #2A8C82; color: #FFFFFF; font-weight: bold; }
+
+#frame_header { border-bottom: 1px solid #EAEAEA; padding-bottom: 12px; margin-bottom: 12px; }
+#label_page_title { font-size: 22px; font-weight: bold; }
+
+#label_avatar { background-color: #FFFFFF; color: #2A8C82; border: 2px solid #2A8C82; border-radius: 22px; min-width: 44px; min-height: 44px; font-size: 22px; qproperty-alignment: AlignCenter; margin-right: 8px; }
+#label_user_name { font-weight: bold; font-size: 14px; }
+#label_user_role { color: #7B8A8A; font-size: 12px; }
+
+#card_kpi1, #card_kpi2, #card_kpi3 { background-color: transparent; border: 1px solid #2A8C82; border-radius: 12px; min-height: 95px; }
+#label_kpi1_icon, #label_kpi2_icon, #label_kpi3_icon { font-size: 28px; min-width: 48px; min-height: 48px; qproperty-alignment: AlignCenter; }
+#label_kpi1_title, #label_kpi2_title, #label_kpi3_title { color: #4E6B68; font-size: 12px; qproperty-alignment: AlignLeft; }
+#label_kpi1_value, #label_kpi2_value, #label_kpi3_value { font-size: 28px; font-weight: bold; color: #2A8C82; qproperty-alignment: AlignLeft; }
+
+#frame_table, #card_chart, #card_alerts, #card_suggestions, #card_export, #frame_form_fields { background-color: #FFFFFF; border: 1px solid #E3E8E7; border-radius: 12px; }
+QScrollArea, QScrollArea > QWidget > QWidget { background-color: transparent; border: none; }
+
+QTableWidget { background-color: #FFFFFF; border: none; border-radius: 12px; gridline-color: transparent; selection-background-color: #E6F4F2; }
+QTableWidget::item { padding: 8px 12px; border-bottom: 1px solid #EDF1F0; }
+QHeaderView::section { background-color: #FFFFFF; border: none; border-bottom: 2px solid #2A8C82; font-weight: bold; padding: 10px 8px; color: #2D3436; text-align: left; }
+#label_table_footer { color: #7B8A8A; font-size: 12px; margin-top: 8px; }
+
+#label_form_title { font-size: 16px; font-weight: bold; color: #2A8C82; border-bottom: 1px solid #EAEAEA; padding-bottom: 8px; margin-bottom: 12px; }
+#frame_right QLabel { font-size: 12px; font-weight: bold; color: #4E6B68; background: transparent; }
+
+#btn_enregistrer, #btn_modifier, #btn_annuler, #btn_supprimer { min-height: 36px; border-radius: 8px; border: 1.5px solid transparent; font-weight: bold; }
+#btn_enregistrer { background-color: #2A8C82; color: #FFFFFF; border: none; }
+#btn_modifier { color: #2A8C82; border: 1.5px solid #2A8C82; }
+#btn_modifier:enabled { background-color: #FFFFFF; }
+#btn_modifier:disabled { color: #B0B0B0; border: 1.5px solid #D0D0D0; background-color: #F0F0F0; }
+#btn_annuler { color: #7B8A8A; border: 1.5px solid #DADDDC; }
+#btn_annuler:enabled { background-color: #FFFFFF; }
+#btn_annuler:disabled { color: #B0B0B0; border: 1.5px solid #D0D0D0; background-color: #F0F0F0; }
+#btn_supprimer { color: #D9534F; border: 1.5px solid #D9534F; }
+
+#btn_export_pdf, #btn_export_excel { background-color: #FFFFFF; border: 1px solid #DADDDC; border-radius: 8px; min-height: 32px; font-weight: normal; color: #2D3436; }
+
+QListWidget { background-color: transparent; border: none; }
+#label_chart_title, #label_alerts_title, #label_sugg_title { font-size: 15px; font-weight: bold; background: transparent; }
+#label_export_title { font-size: 14px; font-weight: bold; background: transparent; }
+#label_export_desc { font-size: 12px; font-weight: normal; color: #7B8A8A; background: transparent; }
