@@ -1,0 +1,938 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui version="4.0">
+ <class>RendezVousVue</class>
+ <widget class="QMainWindow" name="RendezVousVue">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1366</width>
+    <height>768</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1000</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Pet Manager - Smart Pet Care Center</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="ressources.qrc">:/icones/logo.png<normaloff>:/icones/logo.png</normaloff>
+   </iconset>
+  </property>
+  <property name="font">
+   <font>
+    <family>Segoe UI</family>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string>#centralwidget { background-color:#F4F8F8; }
+
+/* ----- Champs de saisie (style commun à toute l'application) ----- */
+QLineEdit, QComboBox, QSpinBox, QDoubleSpinBox, QDateEdit {
+  border:1px solid #D5E0E0; border-radius:6px; padding:0 10px;
+  background:white; color:#1E3A3A; font-size:13px; min-height:30px; }
+QLineEdit:focus, QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus, QDateEdit:focus {
+  border:1px solid #2A8C86; }
+QComboBox::drop-down, QDateEdit::drop-down {
+  subcontrol-origin:padding; subcontrol-position:center right; width:30px; border:none; }
+QComboBox::down-arrow, QDateEdit::down-arrow {
+  image:url(:/icones/fleche_bas.png); width:12px; height:12px; }
+QComboBox QAbstractItemView {
+  background:white; color:#1E3A3A; border:1px solid #D5E0E0; outline:0; padding:4px;
+  selection-background-color:#E6F2F1; selection-color:#1E3A3A; }
+QComboBox QAbstractItemView::item {
+  min-height:30px; padding-left:8px; color:#1E3A3A; background:white; }
+QComboBox QAbstractItemView::item:hover, QComboBox QAbstractItemView::item:selected {
+  background:#E6F2F1; color:#1E3A3A; }
+QSpinBox::up-button, QDoubleSpinBox::up-button {
+  subcontrol-origin:border; subcontrol-position:top right; width:28px;
+  border:none; border-left:1px solid #E0E8E8; border-top-right-radius:6px; }
+QSpinBox::down-button, QDoubleSpinBox::down-button {
+  subcontrol-origin:border; subcontrol-position:bottom right; width:28px;
+  border:none; border-left:1px solid #E0E8E8; border-bottom-right-radius:6px; }
+QSpinBox::up-button:hover, QDoubleSpinBox::up-button:hover,
+QSpinBox::down-button:hover, QDoubleSpinBox::down-button:hover { background:#E6F2F1; }
+QSpinBox::up-arrow, QDoubleSpinBox::up-arrow { image:url(:/icones/fleche_haut.png); width:10px; height:10px; }
+QSpinBox::down-arrow, QDoubleSpinBox::down-arrow { image:url(:/icones/fleche_bas.png); width:10px; height:10px; }
+
+/* ----- Barre de défilement ----- */
+QScrollArea { background:transparent; border:none; }
+QScrollBar:vertical { background:transparent; width:10px; margin:0; }
+QScrollBar::handle:vertical { background:#C5D6D5; border-radius:5px; min-height:40px; }
+QScrollBar::handle:vertical:hover { background:#2A8C86; }
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height:0; }
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background:none; }
+QScrollBar:horizontal { background:transparent; height:10px; margin:0; }
+QScrollBar::handle:horizontal { background:#C5D6D5; border-radius:5px; min-width:40px; }
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal { width:0; }
+
+/* ----- Page Commandes ----- */
+QFrame#frameFormCommande, QFrame#frameDetailsCommande { background:white; border:1px solid #E0E8E8; border-radius:10px; }
+QLabel#lblTitreFormCommande, QLabel#lblTitreDetailsCommande {
+  background:#2A8C86; color:white; font-weight:bold; font-size:14px; padding:11px 18px;
+  border:none; border-top-left-radius:10px; border-top-right-radius:10px; }
+QLabel#lblChamp0Commande, QLabel#lblChamp1Commande, QLabel#lblChamp2Commande,
+QLabel#lblChamp3Commande, QLabel#lblChamp4Commande { color:#6B8080; font-size:12px; border:none; background:transparent; }
+QLabel#lblDetCle0Commande, QLabel#lblDetCle1Commande, QLabel#lblDetCle2Commande, QLabel#lblDetCle3Commande,
+QLabel#lblDetCle4Commande, QLabel#lblDetCle5Commande, QLabel#lblDetCle6Commande { color:#6B8080; font-size:13px; border:none; background:transparent; }
+QLabel#lblDetVal0Commande, QLabel#lblDetVal1Commande, QLabel#lblDetVal2Commande,
+QLabel#lblDetVal4Commande, QLabel#lblDetVal5Commande, QLabel#lblDetVal6Commande { color:#17363A; font-size:13px; font-weight:bold; border:none; background:transparent; }
+QLabel#lblStatutCommande, QLabel#lblTriCommande { color:#1E3A3A; font-size:13px; }
+QPushButton#btnAjouterCommande, QPushButton#btnEnregistrerCommande, QPushButton#btnExporterCommande {
+  background:#2A8C86; color:white; border:none; border-radius:8px; font-weight:bold; font-size:13px; padding:0 18px; }
+QPushButton#btnAjouterCommande:hover, QPushButton#btnEnregistrerCommande:hover, QPushButton#btnExporterCommande:hover { background:#1F6F6B; }
+QPushButton#btnAnnulerCommande { background:white; color:#2A8C86; border:1px solid #2A8C86; border-radius:8px; font-weight:bold; font-size:13px; }
+QPushButton#btnAnnulerCommande:hover { background:#E6F2F1; }
+QTableView#tableCommande { background:white; color:#1E3A3A; font-size:13px; border:1px solid #E0E8E8; border-radius:10px;
+  selection-background-color:#E6F2F1; selection-color:#1E3A3A; }
+QTableView#tableCommande QHeaderView::section { background:white; color:#17363A; font-weight:bold; padding:10px 8px; border:none; border-bottom:1px solid #E0E8E8; }
+QCalendarWidget QWidget { background-color:white; color:#1E3A3A; }
+QCalendarWidget QToolButton { color:#17363A; background-color:white; font-weight:bold; }
+QCalendarWidget QAbstractItemView:enabled { background-color:white; color:#1E3A3A; selection-background-color:#2A8C86; selection-color:white; }
+QCalendarWidget QAbstractItemView:disabled { color:#9BB0B0; }
+QMessageBox { background-color:white; }
+QMessageBox QLabel { color:#1E3A3A; }
+QMessageBox QPushButton { background-color:#2A8C86; color:white; border:none; border-radius:6px; padding:6px 18px; min-width:70px; font-weight:bold; }
+QMessageBox QPushButton:hover { background-color:#1F6F6B; }
+
+QToolTip { background:white; color:#1E3A3A; border:1px solid #D5E0E0; padding:4px; }</string>
+   </property>
+   <layout class="QHBoxLayout" name="layoutPrincipal">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QFrame" name="frameSidebar">
+      <property name="minimumSize">
+       <size>
+        <width>215</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>215</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string>.QFrame { background-color:white; border:none; border-right:1px solid #E0E8E8; }
+QPushButton { text-align:left; padding-left:15px; border:none; border-radius:8px;
+  color:#1E3A3A; font-size:14px; background:transparent; }
+QPushButton:hover { background-color:#E6F2F1; }
+QPushButton:checked { background-color:#2A8C86; color:white; font-weight:bold; }</string>
+      </property>
+      <widget class="QLabel" name="lblLogo">
+       <property name="geometry">
+        <rect>
+         <x>42</x>
+         <y>10</y>
+         <width>130</width>
+         <height>130</height>
+        </rect>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+       <property name="toolTip">
+        <string>Pet Manager - Smart Pet Care Center</string>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="ressources.qrc">:/icones/logo.png</pixmap>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btnAccueil">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>156</y>
+         <width>195</width>
+         <height>42</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>   Accueil</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <property name="icon">
+        <iconset resource="ressources.qrc">:/icones/home_dark.png<normaloff>:/icones/home_dark.png</normaloff>
+         <normalon>:/icones/home_white.png</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btnAnimaux">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>202</y>
+         <width>195</width>
+         <height>42</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>   Animaux</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <property name="icon">
+        <iconset resource="ressources.qrc">:/icones/paw_dark.png<normaloff>:/icones/paw_dark.png</normaloff>
+         <normalon>:/icones/paw_white.png</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btnRendezVous">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>248</y>
+         <width>195</width>
+         <height>42</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>   Rendez-vous</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <property name="icon">
+        <iconset resource="ressources.qrc">:/icones/calendar_dark.png<normaloff>:/icones/calendar_dark.png</normaloff>
+         <normalon>:/icones/calendar_white.png</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      <property name="checked"><bool>true</bool></property></widget>
+      <widget class="QPushButton" name="btnStock">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>294</y>
+         <width>195</width>
+         <height>42</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>   Stock</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <property name="icon">
+        <iconset resource="ressources.qrc">:/icones/box_dark.png<normaloff>:/icones/box_dark.png</normaloff>
+         <normalon>:/icones/box_white.png</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btnCommandes">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>340</y>
+         <width>195</width>
+         <height>42</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>   Commandes</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <property name="icon">
+        <iconset resource="ressources.qrc">:/icones/cart_dark.png<normaloff>:/icones/cart_dark.png</normaloff>
+         <normalon>:/icones/cart_white.png</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btnFournisseurs">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>386</y>
+         <width>195</width>
+         <height>42</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>   Fournisseurs</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <property name="icon">
+        <iconset resource="ressources.qrc">:/icones/truck_dark.png<normaloff>:/icones/truck_dark.png</normaloff>
+         <normalon>:/icones/truck_white.png</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btnEmployes">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>432</y>
+         <width>195</width>
+         <height>42</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>   Employés</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <property name="icon">
+        <iconset resource="ressources.qrc">:/icones/users_dark.png<normaloff>:/icones/users_dark.png</normaloff>
+         <normalon>:/icones/users_white.png</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btnParametres">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>478</y>
+         <width>195</width>
+         <height>42</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>   Paramètres</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <property name="icon">
+        <iconset resource="ressources.qrc">:/icones/gear_dark.png<normaloff>:/icones/gear_dark.png</normaloff>
+         <normalon>:/icones/gear_white.png</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="zoneDroite">
+      <layout class="QVBoxLayout" name="layoutDroite">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="frameHeader">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>80</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>80</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string>.QFrame { background-color:#F4F8F8; border:none; border-bottom:1px solid #E0E8E8; }</string>
+         </property>
+         <layout class="QHBoxLayout" name="layoutHeader">
+          <property name="spacing">
+           <number>10</number>
+          </property>
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>25</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="lblIconeTitre">
+            <property name="minimumSize">
+             <size>
+              <width>34</width>
+              <height>34</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>34</width>
+              <height>34</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="lblTitre">
+            <property name="styleSheet">
+             <string>color:#17363A; font-size:26px; font-weight:bold;</string>
+            </property>
+            <property name="text">
+             <string>Gestion des Rendez-vous</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="espaceHeader">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnNotif">
+            <property name="minimumSize">
+             <size>
+              <width>40</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>40</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string>QPushButton{border:none;background:transparent;font-size:22px;} QPushButton:hover{background:#E6F2F1;border-radius:8px;}</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="toolTip">
+             <string>Notifications du stock</string>
+            </property>
+            <property name="icon">
+             <iconset resource="ressources.qrc">:/icones/bell_teal.png<normaloff>:/icones/bell_teal.png</normaloff>
+             </iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="espaceAvatar">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>10</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="lblAvatar">
+            <property name="minimumSize">
+             <size>
+              <width>44</width>
+              <height>44</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>44</width>
+              <height>44</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string>border:2px solid #2A8C86; border-radius:22px; background:white;</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QStackedWidget" name="SWModules">
+         <property name="currentIndex">
+          <number>2</number>
+         </property>
+         <widget class="QWidget" name="pageAccueil">
+          <layout class="QVBoxLayout" name="layout_pageAccueil">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>30</number>
+           </property>
+           <property name="topMargin">
+            <number>30</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+           <property name="bottomMargin">
+            <number>30</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lbl_pageAccueil">
+             <property name="text">
+              <string>&lt;p&gt;&lt;img src=":/icones/home_teal.png" width="80" height="80"&gt;&lt;/p&gt;&lt;p style="font-size:24px; font-weight:bold; color:#17363A"&gt;Accueil&lt;/p&gt;&lt;p style="font-size:13px; color:#6B8080"&gt;Cette page sera développée dans le module « Accueil ».&lt;/p&gt;</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::RichText</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="pageAnimaux">
+          <layout class="QVBoxLayout" name="layout_pageAnimaux">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>30</number>
+           </property>
+           <property name="topMargin">
+            <number>30</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+           <property name="bottomMargin">
+            <number>30</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lbl_pageAnimaux">
+             <property name="text">
+              <string>&lt;p&gt;&lt;img src=":/icones/paw_teal.png" width="80" height="80"&gt;&lt;/p&gt;&lt;p style="font-size:24px; font-weight:bold; color:#17363A"&gt;Animaux&lt;/p&gt;&lt;p style="font-size:13px; color:#6B8080"&gt;Cette page sera développée dans le module « Animaux ».&lt;/p&gt;</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::RichText</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="pageRendezVous"><property name="styleSheet"><string notr="true">QWidget#pageRendezVous { background-color: #F4F8F8; }
+QLabel { background: transparent; color: #1E3A3A; }
+
+/* champs de saisie */
+QLineEdit, QComboBox, QDateEdit, QTimeEdit {
+    border: 1px solid #D5E0E0; border-radius: 6px; padding: 0 10px;
+    background: white; color: #1E3A3A; font-size: 13px; min-height: 30px; }
+QLineEdit:focus, QComboBox:focus, QDateEdit:focus, QTimeEdit:focus { border: 1px solid #2A8C86; }
+QComboBox::drop-down, QDateEdit::drop-down {
+    subcontrol-origin: padding; subcontrol-position: center right; width: 30px; border: none; }
+QComboBox::down-arrow, QDateEdit::down-arrow {
+    image: url(:/icones/fleche_bas.png); width: 12px; height: 12px; }
+QTimeEdit::up-button { subcontrol-origin: border; subcontrol-position: top right; width: 24px; border: none; }
+QTimeEdit::down-button { subcontrol-origin: border; subcontrol-position: bottom right; width: 24px; border: none; }
+QTimeEdit::up-arrow { image: url(:/icones/fleche_haut.png); width: 10px; height: 10px; }
+QTimeEdit::down-arrow { image: url(:/icones/fleche_bas.png); width: 10px; height: 10px; }
+QComboBox QAbstractItemView {
+    background: white; color: #1E3A3A; border: 1px solid #D5E0E0; outline: 0; padding: 4px;
+    selection-background-color: #E6F2F1; selection-color: #1E3A3A; }
+QComboBox QAbstractItemView::item { min-height: 30px; padding-left: 8px; color: #1E3A3A; background: white; }
+QComboBox QAbstractItemView::item:hover, QComboBox QAbstractItemView::item:selected {
+    background: #E6F2F1; color: #1E3A3A; }
+QCalendarWidget QWidget { background-color: white; color: #1E3A3A; }
+QCalendarWidget QToolButton { color: #17363A; background-color: white; font-weight: bold; }
+QCalendarWidget QAbstractItemView:enabled {
+    background-color: white; color: #1E3A3A; selection-background-color: #2A8C86; selection-color: white; }
+QCalendarWidget QAbstractItemView:disabled { color: #9BB0B0; }
+
+/* cadres : formulaire et détails */
+QFrame#frameFormRdv, QFrame#frameDetailsRdv {
+    background: white; border: 1px solid #E0E8E8; border-radius: 10px; }
+QLabel#lblTitreFormRdv, QLabel#lblTitreDetailsRdv {
+    background: #2A8C86; color: white; font-weight: bold; font-size: 14px; padding: 11px 18px;
+    border: none; border-top-left-radius: 10px; border-top-right-radius: 10px; }
+QLabel#lblChamp0Rdv, QLabel#lblChamp1Rdv, QLabel#lblChamp2Rdv,
+QLabel#lblChamp3Rdv, QLabel#lblChamp4Rdv, QLabel#lblChamp5Rdv {
+    color: #6B8080; font-size: 12px; border: none; background: transparent; }
+QLabel#lblDetCle0Rdv, QLabel#lblDetCle1Rdv, QLabel#lblDetCle2Rdv, QLabel#lblDetCle3Rdv,
+QLabel#lblDetCle4Rdv, QLabel#lblDetCle5Rdv, QLabel#lblDetCle6Rdv {
+    color: #6B8080; font-size: 13px; border: none; background: transparent; }
+QLabel#lblDetVal0Rdv, QLabel#lblDetVal1Rdv, QLabel#lblDetVal2Rdv,
+QLabel#lblDetVal4Rdv, QLabel#lblDetVal5Rdv, QLabel#lblDetVal6Rdv {
+    color: #17363A; font-size: 13px; font-weight: bold; border: none; background: transparent; }
+
+/* boutons */
+QPushButton#btnAjouterRdv, QPushButton#btnEnregistrerRdv, QPushButton#btnExporterRdv {
+    background: #2A8C86; color: white; border: none; border-radius: 8px;
+    font-weight: bold; font-size: 13px; padding: 0 18px; }
+QPushButton#btnAjouterRdv:hover, QPushButton#btnEnregistrerRdv:hover,
+QPushButton#btnExporterRdv:hover { background: #1F6F6B; }
+QPushButton#btnAnnulerRdv {
+    background: white; color: #2A8C86; border: 1px solid #2A8C86; border-radius: 8px;
+    font-weight: bold; font-size: 13px; }
+QPushButton#btnAnnulerRdv:hover { background: #E6F2F1; }
+
+/* tableau */
+QTableView#tableRdv {
+    background: white; color: #1E3A3A; font-size: 13px; border: 1px solid #E0E8E8;
+    border-radius: 10px; selection-background-color: #E6F2F1; selection-color: #1E3A3A; }
+QTableView#tableRdv QHeaderView::section {
+    background: white; color: #17363A; font-weight: bold; padding: 10px 8px;
+    border: none; border-bottom: 1px solid #E0E8E8; }
+QTableView#tableRdv QTableCornerButton::section { background: white; border: none; }
+QScrollBar:vertical { background: transparent; width: 10px; margin: 0; }
+QScrollBar::handle:vertical { background: #C5D6D5; border-radius: 5px; min-height: 40px; }
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: none; }
+</string></property><layout class="QVBoxLayout" name="layoutPageRdv"><property name="spacing"><number>16</number></property><property name="leftMargin"><number>30</number></property><property name="topMargin"><number>24</number></property><property name="rightMargin"><number>30</number></property><property name="bottomMargin"><number>24</number></property><item><layout class="QHBoxLayout" name="layoutOutilsRdv"><property name="spacing"><number>12</number></property><item><widget class="QLineEdit" name="txtRechercheRdv"><property name="minimumSize"><size><width>170</width><height>36</height></size></property><property name="maximumSize"><size><width>300</width><height>36</height></size></property><property name="placeholderText"><string>Rechercher par ID ...</string></property></widget></item><item><widget class="QLabel" name="lblStatutRdv"><property name="text"><string>Statut :</string></property></widget></item><item><widget class="QComboBox" name="cmbStatutRdv"><property name="minimumSize"><size><width>120</width><height>36</height></size></property></widget></item><item><widget class="QLabel" name="lblTriRdv"><property name="text"><string>Trier par :</string></property></widget></item><item><widget class="QComboBox" name="cmbTriRdv"><property name="minimumSize"><size><width>170</width><height>36</height></size></property></widget></item><item><spacer name="spacerOutilsRdv"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item><item><widget class="QPushButton" name="btnAjouterRdv"><property name="minimumSize"><size><width>110</width><height>38</height></size></property><property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property><property name="text"><string>+ Ajouter</string></property></widget></item></layout></item><item><layout class="QHBoxLayout" name="layoutCorpsRdv" stretch="1,0"><property name="spacing"><number>20</number></property><property name="leftMargin"><number>0</number></property><property name="topMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property><property name="bottomMargin"><number>0</number></property><item><layout class="QVBoxLayout" name="layoutGaucheRdv" stretch="1,0"><property name="spacing"><number>16</number></property><property name="leftMargin"><number>0</number></property><property name="topMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property><property name="bottomMargin"><number>0</number></property><item><widget class="QTableView" name="tableRdv"><property name="editTriggers"><set>QAbstractItemView::NoEditTriggers</set></property><property name="selectionMode"><enum>QAbstractItemView::SingleSelection</enum></property><property name="selectionBehavior"><enum>QAbstractItemView::SelectRows</enum></property><property name="showGrid"><bool>false</bool></property><attribute name="horizontalHeaderStretchLastSection"><bool>true</bool></attribute><attribute name="verticalHeaderVisible"><bool>false</bool></attribute></widget></item><item><widget class="QFrame" name="frameDetailsRdv"><property name="minimumSize"><size><width>0</width><height>230</height></size></property><property name="maximumSize"><size><width>16777215</width><height>230</height></size></property><layout class="QVBoxLayout" name="layoutFrameDetailsRdv"><property name="spacing"><number>0</number></property><property name="leftMargin"><number>0</number></property><property name="topMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property><property name="bottomMargin"><number>0</number></property><item><widget class="QLabel" name="lblTitreDetailsRdv"><property name="text"><string>Détails du rendez-vous</string></property><property name="minimumSize"><size><width>0</width><height>46</height></size></property><property name="maximumSize"><size><width>16777215</width><height>46</height></size></property></widget></item><item><layout class="QGridLayout" name="layoutDetailsRdv"><property name="leftMargin"><number>20</number></property><property name="topMargin"><number>14</number></property><property name="rightMargin"><number>20</number></property><property name="bottomMargin"><number>14</number></property><property name="horizontalSpacing"><number>14</number></property><property name="verticalSpacing"><number>10</number></property><item row="0" column="0"><widget class="QLabel" name="lblDetCle0Rdv"><property name="text"><string>ID</string></property></widget></item><item row="0" column="1"><widget class="QLabel" name="lblDetVal0Rdv"><property name="text"><string/></property></widget></item><item row="1" column="0"><widget class="QLabel" name="lblDetCle1Rdv"><property name="text"><string>Date</string></property></widget></item><item row="1" column="1"><widget class="QLabel" name="lblDetVal1Rdv"><property name="text"><string/></property></widget></item><item row="2" column="0"><widget class="QLabel" name="lblDetCle2Rdv"><property name="text"><string>Heure</string></property></widget></item><item row="2" column="1"><widget class="QLabel" name="lblDetVal2Rdv"><property name="text"><string/></property></widget></item><item row="3" column="0"><widget class="QLabel" name="lblDetCle3Rdv"><property name="text"><string>Statut</string></property></widget></item><item row="3" column="1"><widget class="QLabel" name="lblDetVal3Rdv"><property name="text"><string/></property><property name="maximumSize"><size><width>130</width><height>26</height></size></property></widget></item><item row="0" column="3"><widget class="QLabel" name="lblDetCle4Rdv"><property name="text"><string>ID Animal</string></property></widget></item><item row="0" column="4"><widget class="QLabel" name="lblDetVal4Rdv"><property name="text"><string/></property></widget></item><item row="1" column="3"><widget class="QLabel" name="lblDetCle5Rdv"><property name="text"><string>Animal</string></property></widget></item><item row="1" column="4"><widget class="QLabel" name="lblDetVal5Rdv"><property name="text"><string/></property></widget></item><item row="2" column="3"><widget class="QLabel" name="lblDetCle6Rdv"><property name="text"><string>Motif</string></property></widget></item><item row="2" column="4"><widget class="QLabel" name="lblDetVal6Rdv"><property name="text"><string/></property></widget></item><item row="0" column="2"><spacer name="spacerDetRdv"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeType"><enum>QSizePolicy::Fixed</enum></property><property name="sizeHint" stdset="0"><size><width>120</width><height>20</height></size></property></spacer></item><item row="0" column="5"><spacer name="spacerFinDetRdv"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item><item row="3" column="3" colspan="2"><widget class="QPushButton" name="btnExporterRdv"><property name="maximumSize"><size><width>150</width><height>36</height></size></property><property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property><property name="text"><string>Exporter</string></property></widget></item></layout></item></layout></widget></item></layout></item><item><layout class="QVBoxLayout" name="layoutDroiteRdv"><property name="spacing"><number>0</number></property><property name="leftMargin"><number>0</number></property><property name="topMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property><property name="bottomMargin"><number>0</number></property><item><widget class="QFrame" name="frameFormRdv"><property name="minimumSize"><size><width>320</width><height>0</height></size></property><property name="maximumSize"><size><width>320</width><height>16777215</height></size></property><layout class="QVBoxLayout" name="layoutFrameFormRdv"><property name="spacing"><number>0</number></property><property name="leftMargin"><number>0</number></property><property name="topMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property><property name="bottomMargin"><number>0</number></property><item><widget class="QLabel" name="lblTitreFormRdv"><property name="text"><string>Ajouter un rendez-vous</string></property><property name="minimumSize"><size><width>0</width><height>46</height></size></property><property name="maximumSize"><size><width>16777215</width><height>46</height></size></property></widget></item><item><layout class="QVBoxLayout" name="layoutChampsRdv"><property name="spacing"><number>6</number></property><property name="leftMargin"><number>20</number></property><property name="topMargin"><number>14</number></property><property name="rightMargin"><number>20</number></property><property name="bottomMargin"><number>18</number></property><item><widget class="QLabel" name="lblChamp0Rdv"><property name="text"><string>ID du rendez-vous</string></property></widget></item><item><widget class="QLineEdit" name="txtIdRdv"><property name="placeholderText"><string>Entrer l'ID du rendez-vous</string></property></widget></item><item><widget class="QLabel" name="lblChamp1Rdv"><property name="text"><string>Date</string></property></widget></item><item><widget class="QDateEdit" name="dateRdv"><property name="calendarPopup"><bool>true</bool></property></widget></item><item><widget class="QLabel" name="lblChamp2Rdv"><property name="text"><string>Heure</string></property></widget></item><item><widget class="QTimeEdit" name="timeRdv"/></item><item><widget class="QLabel" name="lblChamp3Rdv"><property name="text"><string>ID Animal</string></property></widget></item><item><widget class="QLineEdit" name="txtAnimalRdv"><property name="placeholderText"><string>Entrer l'ID de l'animal</string></property></widget></item><item><widget class="QLabel" name="lblChamp4Rdv"><property name="text"><string>Motif</string></property></widget></item><item><widget class="QComboBox" name="cmbMotifRdv"/></item><item><widget class="QLabel" name="lblChamp5Rdv"><property name="text"><string>Statut</string></property></widget></item><item><widget class="QComboBox" name="cmbStatutFormRdv"/></item><item><spacer name="spacerFormRdv"><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeHint" stdset="0"><size><width>20</width><height>10</height></size></property></spacer></item><item><layout class="QHBoxLayout" name="layoutBoutonsFormRdv"><property name="spacing"><number>10</number></property><item><widget class="QPushButton" name="btnAnnulerRdv"><property name="minimumSize"><size><width>0</width><height>38</height></size></property><property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property><property name="text"><string>Annuler</string></property></widget></item><item><widget class="QPushButton" name="btnEnregistrerRdv"><property name="minimumSize"><size><width>0</width><height>38</height></size></property><property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property><property name="text"><string>Enregistrer</string></property></widget></item></layout></item></layout></item></layout></widget></item><item><spacer name="spacerDroiteRdv"><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeHint" stdset="0"><size><width>20</width><height>40</height></size></property></spacer></item></layout></item></layout></item></layout></widget><widget class="QWidget" name="pageStock">
+          <layout class="QVBoxLayout" name="layout_pageStock">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>30</number>
+           </property>
+           <property name="topMargin">
+            <number>30</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+           <property name="bottomMargin">
+            <number>30</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lbl_pageStock">
+             <property name="text">
+              <string>&lt;p&gt;&lt;img src=":/icones/box_teal.png" width="80" height="80"&gt;&lt;/p&gt;&lt;p style="font-size:24px; font-weight:bold; color:#17363A"&gt;Stock&lt;/p&gt;&lt;p style="font-size:13px; color:#6B8080"&gt;Cette page sera développée dans le module « Stock ».&lt;/p&gt;</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::RichText</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget><widget class="QWidget" name="pageCommandes">
+          <layout class="QVBoxLayout" name="layout_pageCommandes">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>30</number>
+           </property>
+           <property name="topMargin">
+            <number>30</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+           <property name="bottomMargin">
+            <number>30</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lbl_pageCommandes">
+             <property name="text">
+              <string>&lt;p&gt;&lt;img src=":/icones/cart_teal.png" width="80" height="80"&gt;&lt;/p&gt;&lt;p style="font-size:24px; font-weight:bold; color:#17363A"&gt;Commandes&lt;/p&gt;&lt;p style="font-size:13px; color:#6B8080"&gt;Cette page sera développée dans le module « Commandes ».&lt;/p&gt;</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::RichText</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget><widget class="QWidget" name="pageFournisseurs">
+          <layout class="QVBoxLayout" name="layout_pageFournisseurs">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>30</number>
+           </property>
+           <property name="topMargin">
+            <number>30</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+           <property name="bottomMargin">
+            <number>30</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lbl_pageFournisseurs">
+             <property name="text">
+              <string>&lt;p&gt;&lt;img src=":/icones/truck_teal.png" width="80" height="80"&gt;&lt;/p&gt;&lt;p style="font-size:24px; font-weight:bold; color:#17363A"&gt;Fournisseurs&lt;/p&gt;&lt;p style="font-size:13px; color:#6B8080"&gt;Cette page sera développée dans le module « Fournisseurs ».&lt;/p&gt;</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::RichText</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="pageEmployes">
+          <layout class="QVBoxLayout" name="layout_pageEmployes">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>30</number>
+           </property>
+           <property name="topMargin">
+            <number>30</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+           <property name="bottomMargin">
+            <number>30</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lbl_pageEmployes">
+             <property name="text">
+              <string>&lt;p&gt;&lt;img src=":/icones/users_teal.png" width="80" height="80"&gt;&lt;/p&gt;&lt;p style="font-size:24px; font-weight:bold; color:#17363A"&gt;Employés&lt;/p&gt;&lt;p style="font-size:13px; color:#6B8080"&gt;Cette page sera développée dans le module « Employés ».&lt;/p&gt;</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::RichText</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="pageParametres">
+          <layout class="QVBoxLayout" name="layout_pageParametres">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>30</number>
+           </property>
+           <property name="topMargin">
+            <number>30</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+           <property name="bottomMargin">
+            <number>30</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lbl_pageParametres">
+             <property name="text">
+              <string>&lt;p&gt;&lt;img src=":/icones/gear_teal.png" width="80" height="80"&gt;&lt;/p&gt;&lt;p style="font-size:24px; font-weight:bold; color:#17363A"&gt;Paramètres&lt;/p&gt;&lt;p style="font-size:13px; color:#6B8080"&gt;Cette page sera développée dans le module « Paramètres ».&lt;/p&gt;</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::RichText</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ <property name="styleSheet"><string notr="true">QMessageBox { background-color: white; }
+QMessageBox QLabel { color: #1E3A3A; }
+QMessageBox QPushButton { background-color: #2A8C86; color: white; border: none; border-radius: 6px;
+                          padding: 6px 18px; min-width: 70px; font-weight: bold; }
+QMessageBox QPushButton:hover { background-color: #1F6F6B; }
+</string></property></widget>
+ <resources>
+  <include location="ressources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
