@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icones/logo.png</file>
+        <file>icones/pen.png</file>
+        <file>icones/delete.png</file>
+        <file>icones/search_grey.png</file>
+        <file>icones/fleche_bas.png</file>
+        <file>icones/fleche_haut.png</file>
+    </qresource>
+</RCC>
