@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>styles/theme.qss</file>
+        <file>resources/images/logo.png</file>
+        <file>resources/icons/chevron-down.svg</file>
+        <file>resources/icons/eye.svg</file>
+        <file>resources/icons/pencil.svg</file>
+        <file>resources/icons/trash.svg</file>
+        <file>resources/icons/person.svg</file>
+        <file>resources/icons/truck.svg</file>
+        <file>resources/icons/warning.svg</file>
+        <file>resources/icons/bell.svg</file>
+    </qresource>
+</RCC>

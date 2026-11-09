@@ -1,4 +1,37 @@
+HEAD
 build/
 qtcreator/
 *.pro.user*/
 .qtcreator/
+
+# Fichiers générés par Qt / qmake (chacun a les siens, NE PAS les partager)
+*.user
+*.user.*
+*.pro.user*
+.qtcreator/
+_qmake.stash
+Makefile
+Makefile.Debug
+Makefile.Release
+.qmake.stash
+ui_*.h
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+*.o
+*.obj
+*.exe
+*.pdb
+
+# Dossiers de compilation
+build/
+build-*/
+debug/
+release/
+Debug/
+Release/
+
+# Base de données locale
+*.db
+*.sqlite
+origin/integration
