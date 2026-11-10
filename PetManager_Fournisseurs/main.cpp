@@ -1,10 +1,11 @@
 #include "mainwindow.h"
-#include "databasemanager.h"
+#include "connection.h"
 #include "customdialog.h"
 #include <QApplication>
 #include <QStyleFactory>
 #include <QPalette>
 #include <QFile>  // <-- ADDED THIS LINE
+#include <QMessageBox>
 
 int main(int argc, char *argv[])
 {
@@ -27,8 +28,9 @@ int main(int argc, char *argv[])
     palette.setColor(QPalette::HighlightedText, QColor("#FFFFFF"));
     a.setPalette(palette);
 
-    if (!DatabaseManager::instance().open()) {
-        CustomDialog::error(nullptr, "Erreur", "Impossible d'ouvrir la base de données.\nL'application va se fermer.");
+    Connection& c = Connection::createInstance();
+    if (!c.createConnection()) {
+        QMessageBox::critical(nullptr, "Erreur BD", "Impossible de se connecter à Oracle.\nVérifiez que le service Oracle est bien lancé.");
         return 1;
     }
 

@@ -5,6 +5,7 @@ CONFIG += c++17
 msvc: QMAKE_CXXFLAGS += /utf-8
 
 SOURCES += \
+    connection.cpp \
     customdialog.cpp \
     databasemanager.cpp \
     fournisseur.cpp \
@@ -18,6 +19,7 @@ SOURCES += \
     graphiques.cpp
 
 HEADERS += \
+    connection.h \
     customdialog.h \
     databasemanager.h \
     fournisseur.h \

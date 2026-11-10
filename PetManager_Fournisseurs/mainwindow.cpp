@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "fournisseurdao.h"
+#include "fournisseur.h"
 #include "mockcommandesprovider.h"
 #include "supplierrecommender.h"
 #include "badgedelegate.h"
@@ -36,6 +36,7 @@
 #include <QDateEdit>
 #include <QLabel>
 #include <QDebug>
+#include <QSqlQuery>
 
 // --- Module Stock ---
 #include <QVBoxLayout>
@@ -298,7 +299,7 @@ void MainWindow::viderFormulaire() {
 }
 
 void MainWindow::chargerFormulaire(int id, bool readOnly) {
-    Fournisseur f = FournisseurDAO::obtenirParId(id);
+    Fournisseur f = Fournisseur::obtenirParId(id);
     if (f.idFournisseur() == 0) return;
     m_currentId = id;
     ui->lineEdit_nom->setText(f.nom()); ui->lineEdit_contact->setText(f.contact());
@@ -375,8 +376,8 @@ void MainWindow::on_btn_modifier_clicked() {
     QDate dateContrat = ui->dateEdit_contrat->date();
     int quantite = ui->spinBox_quantite->value(); double prix = ui->doubleSpinBox_prix->value();
 
-    Fournisseur f(m_currentId, nom, contact, tel, email, adresse, typeProduit, status, dateContrat, prix, quantite);
-    if (FournisseurDAO::modifier(f)) { showMessageBox("Succès", "Fournisseur mis à jour.", QMessageBox::Information); viderFormulaire(); chargerTableau(); }
+    Fournisseur f(m_currentId, nom, contact, tel, email, adresse, typeProduit, status, dateContrat, 0.0, 0);
+    if (f.modifier()) { showMessageBox("Succès", "Fournisseur mis à jour.", QMessageBox::Information); viderFormulaire(); chargerTableau(); }
     else { showMessageBox("Erreur", "Impossible de mettre à jour.", QMessageBox::Critical); }
 }
 
@@ -396,14 +397,15 @@ void MainWindow::on_btn_enregistrer_clicked() {
     QDate dateContrat = ui->dateEdit_contrat->date();
     int quantite = ui->spinBox_quantite->value(); double prix = ui->doubleSpinBox_prix->value();
 
-    Fournisseur f(0, nom, contact, tel, email, adresse, typeProduit, status, dateContrat, prix, quantite);
-    if (FournisseurDAO::inserer(f)) { showMessageBox("Succès", "Fournisseur ajouté.", QMessageBox::Information); viderFormulaire(); chargerTableau(); }
+    Fournisseur f(0, nom, contact, tel, email, adresse, typeProduit, status, dateContrat, 0.0, 0);
+    if (f.ajouter()) { showMessageBox("Succès", "Fournisseur ajouté.", QMessageBox::Information); viderFormulaire(); chargerTableau(); }
     else { showMessageBox("Erreur", "Impossible d'enregistrer.", QMessageBox::Critical); }
 }
 
 void MainWindow::supprimerFournisseur(int id) {
     if (showConfirmBox("Voulez-vous vraiment supprimer ce fournisseur ?")) {
-        if (FournisseurDAO::supprimer(id)) { if (m_currentId == id) viderFormulaire(); chargerTableau(); }
+        Fournisseur f;
+        if (f.supprimer(id)) { if (m_currentId == id) viderFormulaire(); chargerTableau(); }
         else { showMessageBox("Erreur", "Impossible de supprimer.", QMessageBox::Critical); }
     }
 }
@@ -423,7 +425,25 @@ void MainWindow::appliquerFiltreEtTri() {
 }
 
 void MainWindow::chargerTableau() {
-    m_fournisseurs = FournisseurDAO::obtenirTous();
+    m_fournisseurs.clear();
+    // Simple QSqlQuery SELECT strictly for reading all suppliers to populate the QList
+    QSqlQuery query("SELECT IDFOURNISSEUR, NOM, CONTACT, TELEPHONE, EMAIL, ADRESSE, TYPEPRODUIT, STATUT, DATECONTRAT FROM FOURNISSEUR");
+    while (query.next()) {
+        Fournisseur f(
+            query.value("IDFOURNISSEUR").toInt(),
+            query.value("NOM").toString(),
+            query.value("CONTACT").toString(),
+            query.value("TELEPHONE").toString(),
+            query.value("EMAIL").toString(),
+            query.value("ADRESSE").toString(),
+            query.value("TYPEPRODUIT").toString(),
+            query.value("STATUT").toString(),
+            query.value("DATECONTRAT").toDate(),
+            0.0, // prixUnitaire
+            0    // quantite
+            );
+        m_fournisseurs.append(f);
+    }
     ui->lineEdit_recherche->clear(); ui->comboBox_tri->setCurrentIndex(0);
     appliquerFiltreEtTri();
 }
@@ -821,13 +841,13 @@ void MainWindow::configurerTableau()
 void MainWindow::configurerFormulaire()
 {
     ui->cmbTriStock->addItems({"Aucun tri",
-                          "Date d'expiration : la plus proche d'abord",
-                          "Date d'expiration : la plus lointaine d'abord"});
+                               "Date d'expiration : la plus proche d'abord",
+                               "Date d'expiration : la plus lointaine d'abord"});
     ui->cmbPeriodeStock->addItems({"7 derniers jours", "30 derniers jours"});
     ui->cmbCategorieStock->addItems({"Sélectionner une catégorie", "Alimentation", "Médicament", "Équipement"});
     ui->cmbEspeceStock->addItems({"Choisir…", "Chien", "Chat", "Toutes"});
     ui->cmbUsageStock->addItems({"Choisir…", "Nutrition", "Soin", "Vaccination", "Hygiène",
-                            "Diagnostic", "Promenade", "Transport"});
+                                 "Diagnostic", "Promenade", "Transport"});
     ui->cmbEspeceStock->setToolTip("Espèce à laquelle le produit est destiné");
     ui->cmbUsageStock->setToolTip("Rôle du produit : sert à trouver des alternatives compatibles");
 
@@ -1021,7 +1041,7 @@ AnalyseStock MainWindow::analyserProduit(int index) const
     int total = 0;
     for (int d = 0; d < 30; ++d)
         total += p.consommation.value(auj.addDays(-d), 0)
-               + p.demandeNonSatisfaite.value(auj.addDays(-d), 0);   // demande réelle
+                 + p.demandeNonSatisfaite.value(auj.addDays(-d), 0);   // demande réelle
     a.consoMoyenne = total / 30.0;
 
     const bool expire = p.dateExpiration < auj;
@@ -1143,7 +1163,7 @@ bool MainWindow::creerCommande(int indexProduit, int quantite, bool silencieux)
     if (commandeEnAttente(p.nom)) {
         if (!silencieux)
             QMessageBox::information(this, "Commande déjà en cours",
-                "Une commande est déjà en attente pour « " + p.nom + " ».");
+                                     "Une commande est déjà en attente pour « " + p.nom + " ».");
         return false;
     }
 
@@ -1185,7 +1205,7 @@ void MainWindow::commanderSelection()
     }
     if (nb == 0) {
         QMessageBox::information(this, "Commander",
-            "Cochez au moins un produit dans les suggestions.");
+                                 "Cochez au moins un produit dans les suggestions.");
         return;
     }
     rafraichir();
@@ -1217,7 +1237,7 @@ void MainWindow::receptionnerCommande(int indexCommande)
     const int idx = indiceProduit(c.produit);
     if (idx < 0) {
         QMessageBox::warning(this, "Produit introuvable",
-            "Le produit « " + c.produit + " » n'existe plus dans le stock.");
+                             "Le produit « " + c.produit + " » n'existe plus dans le stock.");
         return;
     }
 
@@ -1275,7 +1295,7 @@ void MainWindow::annulerCommande(int indexCommande)
     if (indexCommande < 0 || indexCommande >= commandes.size()) return;
     CommandeStock &c = commandes[indexCommande];
     if (QMessageBox::question(this, "Annuler la commande",
-            QString("Annuler la commande n°%1 (%2 × %3) ?").arg(c.numero).arg(c.quantite).arg(c.produit))
+                              QString("Annuler la commande n°%1 (%2 × %3) ?").arg(c.numero).arg(c.quantite).arg(c.produit))
         != QMessageBox::Yes)
         return;
     c.statut = "Annulée";
@@ -1287,8 +1307,8 @@ void MainWindow::annulerCommande(int indexCommande)
 // =====================================================================
 
 void MainWindow::afficherToast(const QString &nomIcone, const QString &titre, const QString &message,
-                                const QString &couleur, const QString &texteBouton,
-                                std::function<void()> action)
+                               const QString &couleur, const QString &texteBouton,
+                               std::function<void()> action)
 {
     if (toast) toast->deleteLater();
 
@@ -1440,7 +1460,7 @@ QWidget* MainWindow::creerActions(int index)
     connect(btnSuppr, &QPushButton::clicked, this, [this, index]() {
         QTimer::singleShot(0, this, [this, index]() {
             if (QMessageBox::question(this, "Supprimer",
-                    "Voulez-vous vraiment supprimer « " + produits[index].nom + " » ?")
+                                      "Voulez-vous vraiment supprimer « " + produits[index].nom + " » ?")
                 != QMessageBox::Yes)
                 return;
             produits.removeAt(index);
@@ -1516,7 +1536,7 @@ void MainWindow::afficherTableau()
         ui->lblAffichageStock->setText("Aucun produit ne correspond à « " + filtre + " »");
     else
         ui->lblAffichageStock->setText(QString("Affichage de %1 sur %2 produits")
-                                      .arg(ordre.size()).arg(produits.size()));
+                                           .arg(ordre.size()).arg(produits.size()));
 }
 
 void MainWindow::mettreAJourCartes()
@@ -1592,7 +1612,7 @@ void MainWindow::mettreAJourAlternatives()
     for (const AlternativeStock &a : alternatives) indexAlternatives.append(a.index);
 
     ui->lblAltPourStock->setText(ref >= 0 ? "Pour : " + raccourcir(produits[ref].nom, 30)
-                                     : "Aucun produit en alerte");
+                                          : "Aucun produit en alerte");
 
     const QList<QFrame*> cadres  = {ui->frameAlt1Stock, ui->frameAlt2Stock};
     const QList<QLabel*> icones  = {ui->lblAltIcone1Stock, ui->lblAltIcone2Stock};
@@ -1987,11 +2007,11 @@ void MainWindow::supprimerProduit()
 
     if (aSupprimer.isEmpty()) {
         QMessageBox::information(this, "Supprimer",
-            "Cochez un ou plusieurs produits, ou choisissez-en un avec le bouton Modifier (crayon).");
+                                 "Cochez un ou plusieurs produits, ou choisissez-en un avec le bouton Modifier (crayon).");
         return;
     }
     if (QMessageBox::question(this, "Supprimer",
-            QString("Voulez-vous vraiment supprimer %1 produit(s) ?").arg(aSupprimer.size()))
+                              QString("Voulez-vous vraiment supprimer %1 produit(s) ?").arg(aSupprimer.size()))
         != QMessageBox::Yes)
         return;
 
@@ -2018,8 +2038,8 @@ void MainWindow::sortieDeStock(int index)
 
     bool ok = false;
     const int q = QInputDialog::getInt(this, "Sortie de stock",
-        QString("Quantité nécessaire pour « %1 » (en stock : %2) :").arg(p.nom).arg(p.quantite),
-        1, 1, 100000, 1, &ok);
+                                       QString("Quantité nécessaire pour « %1 » (en stock : %2) :").arg(p.nom).arg(p.quantite),
+                                       1, 1, 100000, 1, &ok);
     if (!ok) return;
 
     if (q > p.quantite) {           // stock insuffisant -> substitution
@@ -2115,7 +2135,7 @@ void MainWindow::ouvrirSubstitution(int indexProduit, int quantiteDemandee, int 
     if (expire)                       motif = "Produit expiré";
     else if (ref.quantite == 0)       motif = "Rupture de stock";
     else if (volontaire)              motif = (etatProduit(ref) == StockBas) ? "Stock bas préservé"
-                                                                             : "Remplacement volontaire";
+                                               : "Remplacement volontaire";
     else                              motif = "Stock insuffisant";
 
     QDialog dlg(this);
@@ -2426,10 +2446,10 @@ void MainWindow::afficherNotifications()
         const ProduitStock &p = produits[idx];
         const AnalyseStock a = analyserProduit(idx);
         const QString nomIcone = a.priorite == Critique ? "warning_red"
-                               : (a.priorite == Urgente ? "warning_orange" : "info_teal");
+                                                        : (a.priorite == Urgente ? "warning_orange" : "info_teal");
         QAction *act = menu.addAction(icone(nomIcone), libellePriorite(a.priorite) + "  —  " + p.nom
-                                      + "  (stock : " + QString::number(p.quantite)
-                                      + ", rupture : " + textePrevision(a) + ")");
+                                                           + "  (stock : " + QString::number(p.quantite)
+                                                           + ", rupture : " + textePrevision(a) + ")");
         connect(act, &QAction::triggered, this, [this, idx]() {
             changerPageStock(PAGE_STOCK);
             chargerDansFormulaire(idx);
@@ -2449,7 +2469,7 @@ void MainWindow::afficherNotifications()
 static bool ecrireCsv(QWidget *parent, const QString &nomParDefaut, const QString &contenu)
 {
     const QString chemin = QFileDialog::getSaveFileName(parent, "Enregistrer pour Excel",
-                               nomParDefaut, "Fichier Excel CSV (*.csv)");
+                                                        nomParDefaut, "Fichier Excel CSV (*.csv)");
     if (chemin.isEmpty()) return false;
 
     QFile fichier(chemin);

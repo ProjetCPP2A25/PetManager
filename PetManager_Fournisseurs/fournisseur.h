@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDate>
+#include <QSqlQueryModel>
 
 class Fournisseur
 {
@@ -24,6 +25,13 @@ public:
     QDate dateContrat() const;      void setDateContrat(const QDate &v);
     double prixUnitaire() const;    void setPrixUnitaire(double v);
     int quantite() const;           void setQuantite(int v);
+
+    // --- Database Methods (CRUD) ---
+    bool ajouter();
+    bool modifier();
+    bool supprimer(int id);
+    QSqlQueryModel* afficher();
+    static Fournisseur obtenirParId(int id);
 
 private:
     int m_idFournisseur;
