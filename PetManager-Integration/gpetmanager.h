@@ -8,8 +8,10 @@
 #include <QMap>
 #include <QList>
 #include <functional>
+#include <QAbstractItemModel>   // module Commandes : modèle du tableau, QModelIndex
 
 #include "produit.h"
+#include "commande.h"
 
 class QLabel;
 class QPushButton;
@@ -84,6 +86,15 @@ private slots:
     // === MODULE COMMANDES ================================================
     // =====================================================================
     // 💡 Étudiant(e) responsable du module Commandes écrit ici ses slots
+    // ---- Page Commandes (slots reliés automatiquement aux widgets du .ui) ----
+    void on_btnAjouterCommande_clicked();        // « + Ajouter » : ouvre le formulaire
+    void on_btnEnregistrerCommande_clicked();    // ajout ou modification selon le mode
+    void on_btnAnnulerCommande_clicked();        // ferme le formulaire
+    void on_btnExporterCommande_clicked();       // export PDF des détails
+    void on_tableCommande_clicked(const QModelIndex &index);   // Read : détails de la commande cliquée
+    void on_txtRechercheCommande_textChanged(const QString &texte);        // métier : recherche par ID
+    void on_cmbStatutCommande_currentIndexChanged(int index);              // métier : filtre de statut
+    void on_cmbTriCommande_currentIndexChanged(int index);                 // métier : tri
 
     // =====================================================================
     // === MODULE FOURNISSEURS =============================================
@@ -189,7 +200,25 @@ private:
     // =====================================================================
     // === MODULE COMMANDES : attributs et méthodes privées ================
     // =====================================================================
-    // 💡 Module Commandes (ex. objet temporaire de sa classe métier)
+    // 💡 Module Commandes
+    enum class ModeFormulaire { Ajout, Modification };
+
+    Commande c;                      // instance du modèle : c.ajouter(), c.afficher(), c.modifier(), c.supprimer(id)
+    Commande m_details;              // commande affichée dans « Détails d'une commande »
+    ModeFormulaire m_mode = ModeFormulaire::Ajout;
+    int m_idEnCours = 0;             // commande en cours de modification
+    QAbstractItemModel *m_modeleCommandes = nullptr;
+
+    // Page Commandes
+    void configurerPageCommandes();
+    void rafraichirCommandes();                  // recharge le tableau
+    void viderFormulaireCommande();
+    void fermerFormulaireCommande();
+    void ouvrirEditionCommande(int id);
+    void afficherDetailsCommande(int id);
+    void viderDetailsCommande();
+    void actionSurLigneCommande(int ligne, int action);   // 0 : crayon (modifier), 1 : poubelle (supprimer)
+    void supprimerCommande(int id);
 
     // =====================================================================
     // === MODULE FOURNISSEURS : attributs et méthodes privées =============

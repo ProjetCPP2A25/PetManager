@@ -59,5 +59,7 @@
         <file>icones/users_white.png</file>
         <file>icones/warning_orange.png</file>
         <file>icones/warning_red.png</file>
+        <file>icones/pen.png</file>
+        <file>icones/delete.png</file>
     </qresource>
 </RCC>
