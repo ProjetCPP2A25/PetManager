@@ -54,6 +54,9 @@
 #include <QStyle>
 #include <functional>
 
+// --- Includes module Rendez-vous ---
+#include <QTimeEdit>
+
 
 
 // Raccourcit un texte trop long pour un petit emplacement
@@ -128,6 +131,104 @@ public:
 
 /* Colonne « Actions » : icône crayon (modifier) et icône poubelle (supprimer), cliquables */
 class ActionsCommandeDelegate : public QStyledItemDelegate
+{
+public:
+    std::function<void(int ligne, int action)> surAction;   // action : 0 = crayon, 1 = poubelle
+    using QStyledItemDelegate::QStyledItemDelegate;
+
+    static constexpr int TAILLE = 22;
+    static constexpr int ESPACE = 14;
+
+    // Zone de l'icône i, centrée dans la cellule (dessin et clic utilisent la même zone)
+    static QRect zone(const QRect &cellule, int i)
+    {
+        const int total = 2 * TAILLE + ESPACE;
+        const int x0 = cellule.left() + (cellule.width() - total) / 2;
+        return QRect(x0 + i * (TAILLE + ESPACE),
+                     cellule.top() + (cellule.height() - TAILLE) / 2, TAILLE, TAILLE);
+    }
+
+    void paint(QPainter *p, const QStyleOptionViewItem &opt, const QModelIndex &idx) const override
+    {
+        QStyleOptionViewItem o(opt);
+        initStyleOption(&o, idx);
+        o.text.clear();
+        QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &o, p, o.widget);
+
+        static const QPixmap icones[2] = {QPixmap(":/icones/pen.png"),
+                                          QPixmap(":/icones/delete.png")};
+        p->save();
+        p->setRenderHint(QPainter::SmoothPixmapTransform);
+        for (int i = 0; i < 2; ++i)
+            p->drawPixmap(zone(opt.rect, i), icones[i]);
+        p->restore();
+    }
+
+    bool editorEvent(QEvent *e, QAbstractItemModel *, const QStyleOptionViewItem &opt,
+                     const QModelIndex &idx) override
+    {
+        if (e->type() == QEvent::MouseButtonRelease) {
+            const auto *me = static_cast<QMouseEvent *>(e);
+            for (int i = 0; i < 2; ++i) {
+                if (zone(opt.rect, i).adjusted(-4, -4, 4, 4).contains(me->pos())) {
+                    if (surAction)
+                        surAction(idx.row(), i);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
+
+} // namespace
+
+// --- Module Rendez-vous : couleurs du statut et délégués du tableau ---
+namespace {
+
+// Couleurs du badge de statut (fond, texte)
+struct CouleursStatutRdv { QString fond, texte; };
+CouleursStatutRdv couleursStatutRdv(const QString &statut)
+{
+    if (statut == "En attente") return {"#FED7AA", "#9A3412"};
+    if (statut == "Annulé")     return {"#FECDD3", "#9F1239"};
+    if (statut == "Terminé")    return {"#E2E8F0", "#334155"};
+    return {"#D1FAE5", "#065F46"};                            // Confirmé
+}
+
+/* Colonne « Statut » : badge arrondi coloré */
+class StatutRdvDelegate : public QStyledItemDelegate
+{
+public:
+    using QStyledItemDelegate::QStyledItemDelegate;
+
+    void paint(QPainter *p, const QStyleOptionViewItem &opt, const QModelIndex &idx) const override
+    {
+        QStyleOptionViewItem o(opt);
+        initStyleOption(&o, idx);
+        o.text.clear();                                         // fond / sélection seulement
+        QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &o, p, o.widget);
+
+        const QString statut = idx.data(Qt::DisplayRole).toString();
+        const CouleursStatutRdv cs = couleursStatutRdv(statut);
+        const QRect r = opt.rect.adjusted(6, 9, -6, -9);
+
+        p->save();
+        p->setRenderHint(QPainter::Antialiasing);
+        p->setPen(Qt::NoPen);
+        p->setBrush(QColor(cs.fond));
+        p->drawRoundedRect(r, 9, 9);
+        QFont f = opt.font;
+        f.setBold(true);
+        p->setFont(f);
+        p->setPen(QColor(cs.texte));
+        p->drawText(r, Qt::AlignCenter, statut);
+        p->restore();
+    }
+};
+
+/* Colonne « Actions » : icône crayon (modifier) et icône poubelle (supprimer), cliquables */
+class ActionsRdvDelegate : public QStyledItemDelegate
 {
 public:
     std::function<void(int ligne, int action)> surAction;   // action : 0 = crayon, 1 = poubelle
@@ -293,6 +394,10 @@ GPetManager::GPetManager(QWidget *parent)
     }
 
     // ---------------- MODULE RENDEZ-VOUS : initialisation ----------------
+    configurerPageRendezVous();
+    fermerFormulaireRdv();           // le formulaire n'apparaît qu'après « + Ajouter »
+    viderDetailsRdv();               // les détails n'apparaissent qu'au clic sur un rendez-vous
+    rafraichirRdv();                 // Read : affichage de la liste au lancement
 
     // ---------------- MODULE COMMANDES : initialisation ----------------
     configurerPageCommandes();
@@ -315,6 +420,7 @@ GPetManager::~GPetManager()
 {
     delete ui;
     delete m_modeleCommandes;      // module Commandes : modèle du tableau
+    delete m_modeleRdv;            // module Rendez-vous : modèle du tableau
 }
 
 bool GPetManager::eventFilter(QObject *objet, QEvent *evenement)
@@ -1774,6 +1880,311 @@ void GPetManager::on_btnExcelSuggestionsStock_clicked()
 // === MODULE RENDEZ-VOUS ==============================================
 // =====================================================================
 // 💡 Étudiant(e) responsable du module Rendez-vous écrit ici
+
+/* ------------------------------------------------------------------
+ *  Page Rendez-vous : configuration
+ * ------------------------------------------------------------------ */
+void GPetManager::configurerPageRendezVous()
+{
+    // Listes (remplies sans déclencher les slots automatiques)
+    {
+        const QSignalBlocker b1(ui->cmbStatutRdv), b2(ui->cmbTriRdv), b3(ui->cmbStatutFormRdv), b4(ui->cmbMotifRdv);
+        ui->cmbStatutRdv->addItem("Tous");
+        ui->cmbStatutRdv->addItems(Rendezvous::statutsDisponibles());
+        ui->cmbTriRdv->addItems(Rendezvous::criteresTri());
+        ui->cmbStatutFormRdv->addItems(Rendezvous::statutsDisponibles());
+        ui->cmbMotifRdv->addItems(Rendezvous::motifsDisponibles());
+    }
+
+    // Calendrier et heure
+    ui->dateRdv->setDisplayFormat("dd/MM/yyyy");
+    ui->dateRdv->setCalendarPopup(true);
+    ui->timeRdv->setDisplayFormat("HH:mm");
+
+    // Contrôle de saisie : seuls des chiffres dans les champs ID
+    ui->txtIdRdv->setValidator(new QIntValidator(1, 99999999, this));
+    ui->txtAnimalRdv->setValidator(new QIntValidator(1, 99999999, this));
+
+    // Largeurs minimales réduites : la barre d'outils se compresse au lieu de dépasser de l'écran
+    ui->txtRechercheRdv->setMinimumWidth(170);
+    ui->cmbStatutRdv->setMinimumWidth(120);
+    ui->cmbTriRdv->setMinimumWidth(170);
+    ui->btnAjouterRdv->setMinimumWidth(110);
+    ui->tableRdv->setMinimumWidth(0);
+
+    // Icône de recherche dans le champ
+    ui->txtRechercheRdv->addAction(icone("search_grey"), QLineEdit::LeadingPosition);
+
+    // Tableau (QTableView : la vue ; les données viennent du modèle)
+    QTableView *t = ui->tableRdv;
+    t->verticalHeader()->setDefaultSectionSize(46);
+    t->setItemDelegateForColumn(5, new StatutRdvDelegate(t));
+    auto *actions = new ActionsRdvDelegate(t);
+    actions->surAction = [this](int ligne, int action) {
+        // différé : on évite de détruire le modèle pendant le traitement du clic
+        QTimer::singleShot(0, this, [this, ligne, action]() { actionSurLigneRdv(ligne, action); });
+    };
+    t->setItemDelegateForColumn(6, actions);
+}
+
+// Recharge le tableau : au lancement, après chaque ajout / modification / suppression,
+// et à chaque changement de recherche, de statut ou de tri
+void GPetManager::rafraichirRdv()
+{
+    QAbstractItemModel *nouveau = r.rechercher(ui->txtRechercheRdv->text(),
+                                               ui->cmbStatutRdv->currentText(),
+                                               ui->cmbTriRdv->currentIndex());
+    ui->tableRdv->setModel(nouveau);
+    delete m_modeleRdv;                     // on détruit l'ancien modèle (sinon fuite de mémoire)
+    m_modeleRdv = nouveau;
+
+    QHeaderView *h = ui->tableRdv->horizontalHeader();
+    for (int col : {0, 1, 2, 3, 5, 6})
+        h->setSectionResizeMode(col, QHeaderView::Fixed);
+    h->setSectionResizeMode(4, QHeaderView::Stretch);        // la colonne « Motif » prend la place restante
+    ui->tableRdv->setColumnWidth(0, 85);                     // ID RDV
+    ui->tableRdv->setColumnWidth(1, 100);                    // Date
+    ui->tableRdv->setColumnWidth(2, 65);                     // Heure
+    ui->tableRdv->setColumnWidth(3, 85);                     // ID Animal
+    ui->tableRdv->setColumnWidth(5, 120);                    // Statut
+    ui->tableRdv->setColumnWidth(6, 95);                     // Actions
+    ui->tableRdv->clearSelection();
+}
+
+void GPetManager::on_txtRechercheRdv_textChanged(const QString &) { rafraichirRdv(); }
+void GPetManager::on_cmbStatutRdv_currentIndexChanged(int) { rafraichirRdv(); }
+void GPetManager::on_cmbTriRdv_currentIndexChanged(int) { rafraichirRdv(); }
+
+/* ------------------------------------------------------------------
+ *  Read : détails d'un rendez-vous (clic sur une ligne du tableau)
+ * ------------------------------------------------------------------ */
+void GPetManager::viderDetailsRdv()
+{
+    m_detailsRdv = Rendezvous();
+    ui->frameDetailsRdv->setVisible(false);
+}
+
+void GPetManager::afficherDetailsRdv(int id)
+{
+    if (!r.charger(id)) {
+        QMessageBox::warning(this, "Erreur", r.erreur());
+        return;
+    }
+    m_detailsRdv = r;
+
+    ui->lblDetVal0Rdv->setText(Rendezvous::formaterId(r.getId()));
+    ui->lblDetVal1Rdv->setText(Rendezvous::formaterDate(r.getDate()));
+    ui->lblDetVal2Rdv->setText(r.getHeure());
+    ui->lblDetVal3Rdv->setText(r.getStatut());
+    const CouleursStatutRdv cs = couleursStatutRdv(r.getStatut());
+    ui->lblDetVal3Rdv->setAlignment(Qt::AlignCenter);
+    ui->lblDetVal3Rdv->setStyleSheet(QString("background-color: %1; color: %2; border-radius: 10px;"
+                                             "font-weight: bold; font-size: 13px; padding: 2px 8px;")
+                                         .arg(cs.fond, cs.texte));
+    ui->lblDetVal4Rdv->setText(QString::number(r.getIdAnimal()));
+    ui->lblDetVal5Rdv->setText(r.getNomAnimal());
+    ui->lblDetVal6Rdv->setText(r.getMotif());
+    ui->frameDetailsRdv->setVisible(true);   // visible seulement après un clic sur un rendez-vous
+}
+
+void GPetManager::on_tableRdv_clicked(const QModelIndex &index)
+{
+    if (!m_modeleRdv || !index.isValid() || index.column() == 6)    // colonne Actions : gérée par le delegate
+        return;
+    afficherDetailsRdv(m_modeleRdv->data(m_modeleRdv->index(index.row(), 0), Qt::EditRole).toInt());
+}
+
+/* ------------------------------------------------------------------
+ *  Formulaire « Ajouter un rendez-vous » / « Modifier le rendez-vous »
+ * ------------------------------------------------------------------ */
+// Valeurs proposées pour un nouveau rendez-vous : aujourd'hui, prochaine heure pleine
+void GPetManager::viderFormulaireRdv()
+{
+    m_modeRdv = ModeFormulaireRdv::Ajout;
+    m_idEnCoursRdv = 0;
+    ui->txtIdRdv->clear();
+    ui->txtIdRdv->setReadOnly(false);
+    ui->txtIdRdv->setPlaceholderText(QString("Ex : %1").arg(Rendezvous::prochainId()));
+    ui->txtAnimalRdv->clear();
+
+    const QTime maintenant = QTime::currentTime();
+    ui->dateRdv->setMinimumDate(QDate::currentDate());      // pas de date passée à la création
+    if (maintenant.hour() < 23) {
+        ui->dateRdv->setDate(QDate::currentDate());
+        ui->timeRdv->setTime(QTime(maintenant.hour() + 1, 0));
+    } else {
+        ui->dateRdv->setDate(QDate::currentDate().addDays(1));
+        ui->timeRdv->setTime(QTime(9, 0));
+    }
+    ui->cmbMotifRdv->setCurrentIndex(0);
+    ui->cmbStatutFormRdv->setCurrentIndex(0);
+    ui->lblTitreFormRdv->setText("Ajouter un rendez-vous");
+}
+
+void GPetManager::fermerFormulaireRdv()
+{
+    viderFormulaireRdv();
+    ui->frameFormRdv->setVisible(false);
+}
+
+void GPetManager::on_btnAjouterRdv_clicked()            // « + Ajouter » : ouvre le formulaire
+{
+    viderFormulaireRdv();
+    ui->tableRdv->clearSelection();
+    ui->frameFormRdv->setVisible(true);
+    ui->txtIdRdv->setFocus();
+}
+
+void GPetManager::on_btnAnnulerRdv_clicked()
+{
+    fermerFormulaireRdv();
+    ui->tableRdv->clearSelection();
+}
+
+// Icône crayon : charge le rendez-vous dans le formulaire
+void GPetManager::ouvrirEditionRdv(int id)
+{
+    if (!r.charger(id)) {
+        QMessageBox::warning(this, "Erreur", r.erreur());
+        return;
+    }
+    m_modeRdv = ModeFormulaireRdv::Modification;
+    m_idEnCoursRdv = id;
+    ui->txtIdRdv->setText(QString::number(id));
+    ui->txtIdRdv->setReadOnly(true);                         // la clé primaire n'est saisie qu'à l'ajout
+    ui->dateRdv->setMinimumDate(QDate(2000, 1, 1));
+    ui->dateRdv->setDate(r.getDate());
+    ui->timeRdv->setTime(QTime::fromString(r.getHeure(), "HH:mm"));
+    ui->txtAnimalRdv->setText(QString::number(r.getIdAnimal()));
+    ui->cmbMotifRdv->setCurrentText(r.getMotif());
+    ui->cmbStatutFormRdv->setCurrentText(r.getStatut());
+    ui->lblTitreFormRdv->setText("Modifier le rendez-vous " + Rendezvous::formaterId(id));
+    ui->frameFormRdv->setVisible(true);
+    ui->dateRdv->setFocus();
+}
+
+void GPetManager::on_btnEnregistrerRdv_clicked()
+{
+    // Objet Rendezvous créé avec le constructeur à partir des champs du formulaire
+    const bool edition = (m_modeRdv == ModeFormulaireRdv::Modification);
+    r = Rendezvous(edition ? m_idEnCoursRdv : ui->txtIdRdv->text().toInt(),
+                   ui->dateRdv->date(),
+                   ui->timeRdv->time().toString("HH:mm"),
+                   ui->cmbStatutFormRdv->currentText(),
+                   ui->cmbMotifRdv->currentText(),
+                   ui->txtAnimalRdv->text().toInt());
+
+    if (!edition) {
+        if (r.ajouter()) {
+            rafraichirRdv();
+            fermerFormulaireRdv();
+            QMessageBox::information(this, "Succès",
+                                     QString("Rendez-vous %1 ajouté.").arg(Rendezvous::formaterId(r.getId())));
+        } else {
+            QMessageBox::warning(this, "Ajout impossible", r.erreur());
+        }
+    } else {
+        if (r.modifier()) {
+            const int idModifie = r.getId();
+            rafraichirRdv();
+            if (ui->frameDetailsRdv->isVisible() && m_detailsRdv.getId() == idModifie)
+                afficherDetailsRdv(idModifie);                // détails déjà ouverts : on les met à jour
+            fermerFormulaireRdv();
+            QMessageBox::information(this, "Succès", "Rendez-vous modifié.");
+        } else {
+            QMessageBox::warning(this, "Modification impossible", r.erreur());
+        }
+    }
+}
+
+/* ------------------------------------------------------------------
+ *  Icônes crayon (modifier) et poubelle (supprimer) de la colonne « Actions »
+ * ------------------------------------------------------------------ */
+void GPetManager::actionSurLigneRdv(int ligne, int action)
+{
+    if (!m_modeleRdv)
+        return;
+    const int id = m_modeleRdv->data(m_modeleRdv->index(ligne, 0), Qt::EditRole).toInt();
+    ui->tableRdv->selectRow(ligne);
+
+    if (action == 0)
+        ouvrirEditionRdv(id);
+    else
+        supprimerRdv(id);
+}
+
+void GPetManager::supprimerRdv(int id)
+{
+    const auto rep = QMessageBox::question(this, "Confirmation",
+                                           QString("Supprimer le rendez-vous %1 ?").arg(Rendezvous::formaterId(id)));
+    if (rep != QMessageBox::Yes)
+        return;
+
+    if (r.supprimer(id)) {
+        if (m_idEnCoursRdv == id)
+            fermerFormulaireRdv();
+        const bool etaitAffiche = (m_detailsRdv.getId() == id);
+        rafraichirRdv();
+        if (etaitAffiche)
+            viderDetailsRdv();
+        QMessageBox::information(this, "Succès", "Rendez-vous supprimé.");
+    } else {
+        QMessageBox::warning(this, "Suppression impossible", r.erreur());
+    }
+}
+
+/* ------------------------------------------------------------------
+ *  Bouton « Exporter » : PDF des détails du rendez-vous affiché
+ * ------------------------------------------------------------------ */
+void GPetManager::on_btnExporterRdv_clicked()
+{
+    if (m_detailsRdv.getId() <= 0) {
+        QMessageBox::warning(this, "Export", "Cliquez d'abord sur un rendez-vous du tableau.");
+        return;
+    }
+
+    const QString chemin = QFileDialog::getSaveFileName(
+        this, "Exporter le rendez-vous",
+        QDir::homePath() + "/rendez-vous_" + Rendezvous::formaterId(m_detailsRdv.getId()) + ".pdf",
+        "Fichiers PDF (*.pdf)");
+    if (chemin.isEmpty())
+        return;
+
+    QFile fichier(chemin);
+    if (!fichier.open(QIODevice::WriteOnly)) {
+        QMessageBox::warning(this, "Erreur", "Impossible de créer le PDF.");
+        return;
+    }
+
+    QPdfWriter pdf(&fichier);
+    pdf.setPageSize(QPageSize(QPageSize::A4));
+    pdf.setResolution(300);
+    QPainter painter(&pdf);
+
+    int y = 300;
+    painter.setFont(QFont("Segoe UI", 18, QFont::Bold));
+    painter.setPen(QColor("#2A8C86"));
+    painter.drawText(200, y, "Pet Manager - Rendez-vous " + Rendezvous::formaterId(m_detailsRdv.getId()));
+    y += 300;
+
+    const QStringList lignes = {
+                                 "Date : " + Rendezvous::formaterDate(m_detailsRdv.getDate()),
+                                 "Heure : " + m_detailsRdv.getHeure(),
+                                 "Statut : " + m_detailsRdv.getStatut(),
+                                 "ID animal : " + QString::number(m_detailsRdv.getIdAnimal()),
+                                 "Animal : " + m_detailsRdv.getNomAnimal(),
+                                 "Motif : " + m_detailsRdv.getMotif()};
+    painter.setFont(QFont("Segoe UI", 12));
+    painter.setPen(Qt::black);
+    for (const QString &l : lignes) {
+        painter.drawText(200, y, l);
+        y += 160;
+    }
+    painter.end();
+    fichier.close();
+    QMessageBox::information(this, "Succès", "PDF exporté avec succès.");
+    QDesktopServices::openUrl(QUrl::fromLocalFile(chemin));
+}
 
 // =====================================================================
 // === MODULE COMMANDES ================================================

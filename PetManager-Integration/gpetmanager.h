@@ -12,6 +12,7 @@
 
 #include "produit.h"
 #include "commande.h"
+#include "rendezvous.h"
 
 class QLabel;
 class QPushButton;
@@ -81,6 +82,15 @@ private slots:
     // === MODULE RENDEZ-VOUS ==============================================
     // =====================================================================
     // 💡 Étudiant(e) responsable du module Rendez-vous écrit ici ses slots
+    // ---- Page Rendez-vous (slots reliés automatiquement aux widgets du .ui) ----
+    void on_btnAjouterRdv_clicked();             // « + Ajouter » : ouvre le formulaire
+    void on_btnEnregistrerRdv_clicked();         // ajout ou modification selon le mode
+    void on_btnAnnulerRdv_clicked();             // ferme le formulaire
+    void on_btnExporterRdv_clicked();            // export PDF des détails
+    void on_tableRdv_clicked(const QModelIndex &index);        // Read : détails du rendez-vous cliqué
+    void on_txtRechercheRdv_textChanged(const QString &texte); // métier : recherche par ID
+    void on_cmbStatutRdv_currentIndexChanged(int index);       // métier : filtre de statut
+    void on_cmbTriRdv_currentIndexChanged(int index);          // métier : tri
 
     // =====================================================================
     // === MODULE COMMANDES ================================================
@@ -195,7 +205,25 @@ private:
     // =====================================================================
     // === MODULE RENDEZ-VOUS : attributs et méthodes privées ==============
     // =====================================================================
-    // 💡 Module Rendez-vous (ex. objet temporaire de sa classe métier)
+    // 💡 Module Rendez-vous
+    enum class ModeFormulaireRdv { Ajout, Modification };
+
+    Rendezvous r;                    // instance du modèle : r.ajouter(), r.afficher(), r.modifier(), r.supprimer(id)
+    Rendezvous m_detailsRdv;         // rendez-vous affiché dans « Détails du rendez-vous »
+    ModeFormulaireRdv m_modeRdv = ModeFormulaireRdv::Ajout;
+    int m_idEnCoursRdv = 0;          // rendez-vous en cours de modification
+    QAbstractItemModel *m_modeleRdv = nullptr;
+
+    // Page Rendez-vous
+    void configurerPageRendezVous();
+    void rafraichirRdv();                        // recharge le tableau
+    void viderFormulaireRdv();
+    void fermerFormulaireRdv();
+    void ouvrirEditionRdv(int id);
+    void afficherDetailsRdv(int id);
+    void viderDetailsRdv();
+    void actionSurLigneRdv(int ligne, int action);   // 0 : crayon (modifier), 1 : poubelle (supprimer)
+    void supprimerRdv(int id);
 
     // =====================================================================
     // === MODULE COMMANDES : attributs et méthodes privées ================

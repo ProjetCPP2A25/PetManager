@@ -8,6 +8,7 @@ CONFIG += c++17
 msvc: QMAKE_CXXFLAGS += /utf-8
 
 SOURCES += \
+    rendezvous.cpp \
     commande.cpp \
     connection.cpp \
     main.cpp \
@@ -18,6 +19,7 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    rendezvous.h \
     commande.h \
     connection.h \
     gpetmanager.h \
