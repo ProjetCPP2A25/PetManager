@@ -374,7 +374,7 @@ GPetManager::GPetManager(QWidget *parent)
 
     // ---------------- MODULE ANIMAUX : initialisation ----------------
     // L'interface du module Animaux (classe MainWindow, fichiers inchangés) est placée dans la
-    // page « Animaux ». La connexion Oracle est déjà ouverte par main() : Connexion::ouvrir() la réutilise.
+    // page « Animaux ». La connexion Oracle est déjà ouverte par main() : le module la réutilise (une seule classe : Connection).
     animauxVue = new MainWindow(ui->pageAnimaux);
     animauxVue->setWindowFlags(Qt::Widget);            // fenêtre -> widget intégré dans la page
     animauxVue->setMinimumSize(0, 0);
@@ -1934,6 +1934,13 @@ void GPetManager::rafraichirRdv()
     QAbstractItemModel *nouveau = r.rechercher(ui->txtRechercheRdv->text(),
                                                ui->cmbStatutRdv->currentText(),
                                                ui->cmbTriRdv->currentIndex());
+    if (!r.erreur().isEmpty()) {            // la requête a échoué : on le dit au lieu d'afficher un tableau vide
+        static QString dejaVue;
+        if (r.erreur() != dejaVue) {
+            dejaVue = r.erreur();
+            QMessageBox::warning(this, "Rendez-vous : lecture impossible", r.erreur());
+        }
+    }
     ui->tableRdv->setModel(nouveau);
     delete m_modeleRdv;                     // on détruit l'ancien modèle (sinon fuite de mémoire)
     m_modeleRdv = nouveau;
@@ -2244,6 +2251,13 @@ void GPetManager::rafraichirCommandes()
     QAbstractItemModel *nouveau = c.rechercher(ui->txtRechercheCommande->text(),
                                                ui->cmbStatutCommande->currentText(),
                                                ui->cmbTriCommande->currentIndex());
+    if (!c.erreur().isEmpty()) {            // la requête a échoué : on le dit au lieu d'afficher un tableau vide
+        static QString dejaVue;
+        if (c.erreur() != dejaVue) {
+            dejaVue = c.erreur();
+            QMessageBox::warning(this, "Commandes : lecture impossible", c.erreur());
+        }
+    }
     ui->tableCommande->setModel(nouveau);
     delete m_modeleCommandes;               // on détruit l'ancien modèle (sinon fuite de mémoire)
     m_modeleCommandes = nouveau;

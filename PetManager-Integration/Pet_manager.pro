@@ -15,7 +15,6 @@ SOURCES += \
     gpetmanager.cpp \
     produit.cpp \
     animal.cpp \
-    connexion.cpp \
     mainwindow.cpp
 
 HEADERS += \
@@ -25,7 +24,6 @@ HEADERS += \
     gpetmanager.h \
     produit.h \
     animal.h \
-    connexion.h \
     mainwindow.h
 
 FORMS += \
@@ -39,4 +37,6 @@ DISTFILES += \
     sql/base_commune_petmanager.sql \
     sql/donnees_test.sql \
     sql/donnees_animaux.sql \
-    sql/ajout_genealogie.sql
+    sql/ajout_genealogie.sql \
+    sql/ajouts_modules.sql \
+    sql/donnees_rdv_commande.sql

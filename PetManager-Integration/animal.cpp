@@ -1,5 +1,5 @@
 #include "animal.h"
-#include "connexion.h"
+#include "connection.h"
 
 #include <QRegularExpression>
 #include <QSqlError>
@@ -35,9 +35,9 @@ QString Animal::derniereErreur() { return s_erreur; }
 // Construit un message lisible (les messages Oracle en français sortent souvent illisibles via ODBC)
 static QString messageErreur(const QSqlQuery &q)
 {
-    if (!Connexion::instance().db().isOpen())
+    if (!QSqlDatabase::database().isOpen())
         return "Base de donn\u00e9es non connect\u00e9e : la connexion Oracle a \u00e9chou\u00e9 au d\u00e9marrage "
-               "(voir le premier message d'erreur, ou v\u00e9rifiez USER / PASSWORD dans connexion.cpp).";
+               "(voir le premier message d'erreur, ou v\u00e9rifiez USER / PASSWORD dans connection.cpp).";
     const QSqlError e = q.lastError();
     const QString brut = e.databaseText() + " " + e.driverText() + " " + e.text();
     QString code;
@@ -109,7 +109,7 @@ static QVariant parentVersSql(const QString &id)
 // ------------------------------------------------------------ CREATE
 bool Animal::ajouter()
 {
-    QSqlQuery q(Connexion::instance().db());
+    QSqlQuery q(QSqlDatabase::database());
 
     // nouvel identifiant = plus grand IDANIMAL + 1 (la table commune n'a pas de séquence)
     if (!q.exec("SELECT NVL(MAX(IDANIMAL), 0) + 1 FROM PETMANAGER.ANIMAL")) {
@@ -146,7 +146,7 @@ bool Animal::ajouter()
 // ------------------------------------------------------------ UPDATE
 bool Animal::modifier() const
 {
-    QSqlQuery q(Connexion::instance().db());
+    QSqlQuery q(QSqlDatabase::database());
     q.prepare("UPDATE PETMANAGER.ANIMAL SET PHOTO = :photo, NOM = :nom, ESPECE = :espece, RACE = :race, "
               "SEXE = :sexe, DATENAISSANCE = TO_DATE(:dn, 'YYYY-MM-DD'), POIDS = :poids, "
               "DESCRIPTION = :descr, STATUT = :statut, IDPERE = :pere, IDMERE = :mere WHERE IDANIMAL = :id");
@@ -170,7 +170,7 @@ bool Animal::modifier() const
 // ------------------------------------------------------------ DELETE
 bool Animal::supprimer(const QString &id)
 {
-    QSqlQuery q(Connexion::instance().db());
+    QSqlQuery q(QSqlDatabase::database());
     q.prepare("DELETE FROM PETMANAGER.ANIMAL WHERE IDANIMAL = :id");
     q.bindValue(":id", idVersNombre(id));
     if (!q.exec()) {
@@ -185,7 +185,7 @@ bool Animal::supprimer(const QString &id)
 QVector<Animal> Animal::afficher()
 {
     QVector<Animal> liste;
-    QSqlQuery q(Connexion::instance().db());
+    QSqlQuery q(QSqlDatabase::database());
     q.prepare("SELECT IDANIMAL, PHOTO, NOM, ESPECE, RACE, SEXE, "
               "TO_CHAR(DATENAISSANCE, 'YYYY-MM-DD'), POIDS, DESCRIPTION, STATUT, IDPERE, IDMERE "
               "FROM PETMANAGER.ANIMAL ORDER BY IDANIMAL");
@@ -214,7 +214,7 @@ QVector<Animal> Animal::afficher()
 QVector<QPair<QString,int>> Animal::statParEspece()
 {
     QVector<QPair<QString,int>> r;
-    QSqlQuery q(Connexion::instance().db());
+    QSqlQuery q(QSqlDatabase::database());
     q.prepare("SELECT ESPECE, COUNT(*) FROM PETMANAGER.ANIMAL GROUP BY ESPECE ORDER BY COUNT(*) DESC");
     if (q.exec())
         while (q.next()) r.append({q.value(0).toString(), q.value(1).toInt()});
@@ -223,7 +223,7 @@ QVector<QPair<QString,int>> Animal::statParEspece()
 
 int Animal::nombreSurveillance()
 {
-    QSqlQuery q(Connexion::instance().db());
+    QSqlQuery q(QSqlDatabase::database());
     q.prepare("SELECT COUNT(*) FROM PETMANAGER.ANIMAL WHERE STATUT = :s");
     q.bindValue(":s", "Surveillance");
     return (q.exec() && q.next()) ? q.value(0).toInt() : 0;
@@ -233,7 +233,7 @@ int Animal::nombreSurveillance()
 QHash<QString, QPair<double,int>> Animal::poidsMoyenParRace()
 {
     QHash<QString, QPair<double,int>> r;
-    QSqlQuery q(Connexion::instance().db());
+    QSqlQuery q(QSqlDatabase::database());
     // on ne compare que des adultes : un chiot pèse forcément moins que la moyenne de sa race
     q.prepare("SELECT UPPER(ESPECE), UPPER(TRIM(RACE)), AVG(POIDS), COUNT(*) FROM PETMANAGER.ANIMAL "
               "WHERE POIDS IS NOT NULL AND DATENAISSANCE <= ADD_MONTHS(TRUNC(SYSDATE), -12) "

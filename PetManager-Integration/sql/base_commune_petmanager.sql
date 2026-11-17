@@ -35,14 +35,9 @@ CREATE TABLE ANIMAL (
     DATENAISSANCE   DATE,
     POIDS           NUMBER(6,2),
     DESCRIPTION     VARCHAR2(500),
-    STATUT          VARCHAR2(20),      -- ajouté pour le module Animaux (En bonne santé / Surveillance)
     CONSTRAINT CK_ANIMAL_SEXE  CHECK (SEXE IN (UNISTR('M\00E2le'), 'Femelle')),
-    CONSTRAINT CK_ANIMAL_POIDS CHECK (POIDS > 0),
-    CONSTRAINT CK_ANIMAL_STATUT CHECK (STATUT IS NULL OR STATUT = 'Surveillance' OR STATUT LIKE 'En bonne sant_')
+    CONSTRAINT CK_ANIMAL_POIDS CHECK (POIDS > 0)
 );
-
--- Si la table ANIMAL existe déjà (script déjà exécuté), ajouter seulement la colonne :
--- ALTER TABLE ANIMAL ADD STATUT VARCHAR2(20);
 
 -- ---------------------------------------------------------------------
 --  EMPLOYE (IdEmploye, Nom, Prenom, Email, Telephone, Poste, Salaire, DateEmbauche, Statut)

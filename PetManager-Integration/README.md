@@ -25,8 +25,8 @@ Scripts : `sql/base_commune_petmanager.sql` (base commune) et `sql/donnees_test.
 
 Intégré dans la page « Animaux » du menu de gauche (`GPetManager`, section `MODULE ANIMAUX : initialisation`).
 Ses fichiers sont ceux de son projet, sans modification : `animal.h/.cpp` (entité Animal avec CRUD, contrôle de saisie,
-requêtes préparées, métiers, et widgets de graphiques), `connexion.h/.cpp`, `mainwindow.h/.cpp/.ui`.
-La connexion Oracle est celle de `Connection` (ouverte dans `main()`) : `Connexion::ouvrir()` la réutilise.
+requêtes préparées, métiers, et widgets de graphiques), `mainwindow.h/.cpp/.ui`.
+La connexion Oracle est celle de `Connection` (ouverte dans `main()`), la seule classe de connexion du projet.
 La table ANIMAL contient la colonne `STATUT` (voir `sql/base_commune_petmanager.sql`). Données de test : `sql/donnees_animaux.sql`.
 
 ### Généalogie, consanguinité et alertes (module Animaux)
@@ -36,3 +36,14 @@ La table ANIMAL contient la colonne `STATUT` (voir `sql/base_commune_petmanager.
 - Bouton « Alertes » : catégories d'âge / bientôt senior, poids anormal par rapport à la race, anniversaires du mois.
 - **Base de données** : la table ANIMAL reçoit deux colonnes `IDPERE` et `IDMERE`. Exécuter une fois `sql/ajout_genealogie.sql`
   (SYSTEM, F5) ; à relancer après chaque exécution de `sql/base_commune_petmanager.sql` (qui recrée les tables).
+
+## Base de données : une seule connexion (correctif Rendez-vous / Commandes)
+
+- `connection.cpp` est LA seule connexion Oracle (Singleton) : source ODBC « PetManager », utilisateur `petmanager`, mot de passe `0000`.
+  `connexion.h/.cpp` a été supprimé : Animaux, Rendez-vous, Commandes et Stock utilisent tous `Connection`.
+  Les 8 tables doivent appartenir à l'utilisateur Oracle `petmanager` (schéma PETMANAGER).
+- `sql/base_commune_petmanager.sql` est celui de l'équipe, **inchangé**. Les colonnes que les modules utilisent en plus
+  (ANIMAL : STATUT, IDPERE, IDMERE ; COMMANDE : QUANTITE ; IDEMPLOYE nullable dans COMMANDE et RENDEZVOUS) s'ajoutent avec
+  `sql/ajouts_modules.sql` (ALTER TABLE seulement, relançable). Ordre : base_commune -> ajouts_modules -> données de test
+  (`donnees_animaux.sql`, `donnees_test.sql`, `donnees_rdv_commande.sql`).
+- Si une lecture échoue, l'interface affiche maintenant l'erreur Oracle au lieu d'un tableau vide.

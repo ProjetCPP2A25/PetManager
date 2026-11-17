@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "connexion.h"
+#include "connection.h"
 
 #include <QButtonGroup>
 #include <QComboBox>
@@ -127,9 +127,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     setWindowTitle("Pet Manager - Gestion des animaux");
     resize(1500, 950);
     setMinimumSize(1200, 800);
-    if (!Connexion::instance().ouvrir())
+    if (!Connection::createInstance().createConnection())   // connexion unique (sans effet si déjà ouverte)
         QMessageBox::critical(this, "Base de donn\u00e9es",
-            "Connexion Oracle impossible :\n" + Connexion::instance().derniereErreur());
+            "Connexion Oracle impossible :\n" + Connection::createInstance().derniereErreur());
     chargerAnimaux();
 
     auto *central = new QWidget;
@@ -160,7 +160,7 @@ void MainWindow::chargerAnimaux()
 {
     m_animals = Animal::afficher();        // la requête SELECT est dans la classe Animal
     if (m_animals.isEmpty() && !Animal::derniereErreur().isEmpty()
-        && Connexion::instance().db().isOpen())
+        && QSqlDatabase::database().isOpen())
         QMessageBox::warning(this, "Lecture des animaux", Animal::derniereErreur());
     remplirParents(m_editId);              // les listes Père / Mère suivent la base
 }

@@ -289,6 +289,7 @@ QSqlQueryModel *Rendezvous::afficher() const
  * ------------------------------------------------------------------ */
 QSqlQueryModel *Rendezvous::rechercher(const QString &recherche, const QString &statutFiltre, int tri) const
 {
+    m_erreur.clear();
     // Le tri est choisi dans une liste fixe (jamais dans le texte saisi) : pas d'injection SQL
     static const char *ORDRES[] = {
         "r.IDRDV ASC",

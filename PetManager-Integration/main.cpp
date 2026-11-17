@@ -14,8 +14,8 @@ int main(int argc, char *argv[])
     if (!test) {
         QMessageBox::critical(nullptr, QObject::tr("Base de données"),
                               QObject::tr("Connexion à Oracle échouée.\n%1\n\n"
-                                          "Vérifiez la source ODBC « Source_Projet2A », "
-                                          "l'utilisateur et le mot de passe (connection.cpp).")
+                                          "Vérifiez la source ODBC, l'utilisateur et le mot de passe "
+                                          "(source ODBC « PetManager », utilisateur petmanager, mot de passe 0000 : connection.cpp).")
                                   .arg(c.derniereErreur()),
                               QMessageBox::Cancel);
         return 1;

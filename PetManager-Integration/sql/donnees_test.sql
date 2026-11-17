@@ -8,6 +8,8 @@
 --  À exécuter APRÈS base_commune_petmanager.sql. Peut être relancé.
 -- =====================================================================
 
+ALTER SESSION SET CURRENT_SCHEMA = PETMANAGER;
+
 -- Vider les tables du module (CONSOMMATION d'abord : clé étrangère vers STOCK)
 DELETE FROM CONSOMMATION;
 DELETE FROM STOCK;

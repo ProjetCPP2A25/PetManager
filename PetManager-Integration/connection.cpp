@@ -19,9 +19,12 @@ Connection& Connection::createInstance()
 
 bool Connection::createConnection()
 {
-    db.setDatabaseName("Source_Projet2A");   // source de données ODBC (commune au groupe)
+    if (db.isOpen())
+        return true;                         // déjà ouverte (Animaux, Rendez-vous, Commandes... partagent la même)
+
+    db.setDatabaseName("PetManager");        // source de données ODBC (commune au groupe)
     db.setUserName("petmanager");            // utilisateur Oracle commun
-    db.setPassword("0000");   // mot de passe Oracle commun
+    db.setPassword("0000");                  // mot de passe Oracle commun
 
     if (db.open()) {
         qDebug() << "Connexion établie";
